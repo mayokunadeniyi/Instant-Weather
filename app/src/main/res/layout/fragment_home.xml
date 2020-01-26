@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="cityWeather"
+            type="com.example.instantweather.data.model.CityWeather" />
+        <variable
+            name="viewModel"
+            type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
+    </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_id"
         android:layout_width="match_parent"
@@ -22,7 +30,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
 
             <com.github.pwittchen.weathericonview.WeatherIconView
                 android:id="@+id/weather_icon"
@@ -38,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textSize="60sp"
+                android:text="@{String.valueOf(cityWeather.main.temp)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weather_icon"
                 tools:text="36\u2103" />
@@ -48,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:textSize="35sp"
+                android:text="@{cityWeather.name}"
                 app:layout_constraintBottom_toBottomOf="@+id/weather_temperature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weather_icon"
@@ -59,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/error_occurred"
                 android:textAlignment="center"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +91,7 @@
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
                 tools:text="12"
+                android:text="@{String.valueOf(cityWeather.main.humidity)}"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -91,6 +104,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 tools:text="30"
+                android:text="@{String.valueOf(cityWeather.main.pressure)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/humidity_id"
                 app:layout_constraintTop_toTopOf="@+id/guideline" />
