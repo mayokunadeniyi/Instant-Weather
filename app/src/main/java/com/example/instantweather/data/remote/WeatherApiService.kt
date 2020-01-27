@@ -1,6 +1,6 @@
 package com.example.instantweather.data.remote
 
-import com.example.instantweather.data.model.CityWeather
+import com.example.instantweather.data.model.CityWeatherDto
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,7 +24,7 @@ interface WeatherApiService {
 
     @GET("/data/2.5/weather")
     suspend fun getCurrentWeather(@Query("q") location: String,
-                                  @Query("appid") apiKey: String): CityWeather
+                                  @Query("appid") apiKey: String): CityWeatherDto
 }
 
 object WeatherApi{

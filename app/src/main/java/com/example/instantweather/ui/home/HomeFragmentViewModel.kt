@@ -1,11 +1,10 @@
 package com.example.instantweather.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.instantweather.BuildConfig
-import com.example.instantweather.data.model.CityWeather
+import com.example.instantweather.data.model.CityWeatherDto
 import com.example.instantweather.data.remote.WeatherApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +23,8 @@ class HomeFragmentViewModel: ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
 
 
-    private val _cityWeather = MutableLiveData<CityWeather>()
-    val cityWeather: LiveData<CityWeather>
+    private val _cityWeather = MutableLiveData<CityWeatherDto>()
+    val cityWeatherDto: LiveData<CityWeatherDto>
     get() = _cityWeather
 
     private val _loading = MutableLiveData<Boolean>()
@@ -45,14 +44,16 @@ class HomeFragmentViewModel: ViewModel() {
 
     private fun getWeatherData() {
         coroutineScope.launch {
-            Log.i("LOOOOL","LOOOOOOOOO@@R")
+            Timber.i("Getting response........")
             try {
                 val weatherApiService = WeatherApi.retrofitService.getCurrentWeather("Lagos",API_KEY)
-                Log.i("RESPONSE","WEATHER RESPONSE ${weatherApiService}")
+                Timber.i("WEATHER RESPONSE ${weatherApiService}")
+                Timber.i("The City ID ${weatherApiService.cityId}")
                 _loading.postValue(false)
                 _cityWeather.value = weatherApiService
             }catch (e: Exception){
-                Log.i("Errror",e.message)
+                _error.postValue(true)
+                Timber.i("AN ERROR OCCURRED ${e.message}")
             }
         }
     }

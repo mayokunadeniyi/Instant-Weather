@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cityWeather"
-            type="com.example.instantweather.data.model.CityWeather" />
+            type="com.example.instantweather.data.model.CityWeatherDto" />
         <variable
             name="viewModel"
             type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
@@ -110,25 +110,25 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/humid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/humidity"
                 android:gravity="center"
-                app:layout_constraintEnd_toStartOf="@+id/pressure_id"
+                android:text="@string/humidity"
+                app:layout_constraintEnd_toEndOf="@+id/humidity_id"
                 app:layout_constraintStart_toStartOf="@+id/humidity_id"
                 app:layout_constraintTop_toBottomOf="@+id/humidity_id" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/pressure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/pressure"
                 android:gravity="center"
+                android:text="@string/pressure"
                 app:layout_constraintEnd_toEndOf="@+id/pressure_id"
-                app:layout_constraintStart_toEndOf="@+id/humidity_id"
+                app:layout_constraintStart_toStartOf="@+id/pressure_id"
                 app:layout_constraintTop_toBottomOf="@+id/pressure_id" />
 
             <androidx.constraintlayout.widget.Guideline

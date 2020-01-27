@@ -1,35 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
 
-    <me.ibrahimsn.lib.SmoothBottomBar
-        android:id="@+id/bottomNavBar"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:backgroundColor="#FFFFFF"
-        app:iconTint="#7E7E7E"
-        app:iconTintActive="#DB6A63"
-        app:indicatorColor="#F4D6D3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/home_bottom_nav"
-        app:textColor="#000000" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/primaryDarkColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instant Weather"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <fragment
+            android:id="@+id/fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/collapsingToolbarLayout"
+            app:navGraph="@navigation/nav_graph" />
+
+        <me.ibrahimsn.lib.SmoothBottomBar
+            android:id="@+id/bottomNavBar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:backgroundColor="#FFFFFF"
+            app:iconTint="#7E7E7E"
+            app:iconTintActive="#DB6A63"
+            app:indicatorColor="#F4D6D3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/home_bottom_nav"
+            app:textColor="#000000" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

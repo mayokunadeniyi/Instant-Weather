@@ -1,16 +1,16 @@
-package com.example.instantweather.data.local
+package com.example.instantweather.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.instantweather.data.model.CityWeatherDto
 import com.example.instantweather.data.model.MainDto
+import com.example.instantweather.data.model.WeatherDto
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
  */
 
-@Entity
+@Entity(tableName = "weather_response")
 class WeatherResponse(
 
     @ColumnInfo(name = "city_id")
@@ -20,7 +20,7 @@ class WeatherResponse(
     val cityName: String?,
 
     @ColumnInfo(name = "weather_details")
-    val weatherDto: CityWeatherDto,
+    val weatherDto: List<WeatherDto>,
 
     @ColumnInfo(name = "main_details")
     val mainDto: MainDto

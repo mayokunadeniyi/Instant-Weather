@@ -9,6 +9,6 @@ import timber.log.Timber
 class InstantWeatherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-        Timber.plant()
+        Timber.plant(Timber.DebugTree())
     }
 }

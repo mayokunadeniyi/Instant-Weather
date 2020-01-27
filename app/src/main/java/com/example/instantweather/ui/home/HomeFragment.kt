@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
-import com.example.instantweather.R
 import com.example.instantweather.databinding.FragmentHomeBinding
 
 /**
@@ -17,8 +16,8 @@ import com.example.instantweather.databinding.FragmentHomeBinding
  */
 class HomeFragment : Fragment() {
 
-    lateinit var binding: FragmentHomeBinding
-    lateinit var viewModel: HomeFragmentViewModel
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +38,13 @@ class HomeFragment : Fragment() {
 
         viewModel.error.observe(this, Observer { state ->
             if (state){
-                binding.errorText.visibility = View.GONE
+                binding.errorText.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+                binding.humidityId.visibility = View.GONE
+                binding.pressureId.visibility = View.GONE
+                binding.weatherTemperature.visibility = View.GONE
+                binding.pressure.visibility = View.GONE
+                binding.humid.visibility = View.GONE
             }
         })
 
@@ -51,8 +56,10 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.cityWeather.observe(this, Observer { cityWeather ->
+        viewModel.cityWeatherDto.observe(this, Observer { cityWeather ->
             binding.cityWeather = cityWeather
         })
+
+
     }
 }
