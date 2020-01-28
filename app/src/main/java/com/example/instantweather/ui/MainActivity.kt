@@ -25,12 +25,21 @@ class MainActivity : AppCompatActivity() {
                 val HISTORY_FRAGMENT = 1
                 val CHART_FRAGMENT = 2
                 val SETTINGS_FRAGMENT = 3
+                val navController = NavHostFragment.findNavController(fragment)
                 when(pos){
                     HOME_FRAGMENT -> {
-                        NavHostFragment.findNavController(fragment).navigate(R.id.homeFragment)
+                        navController.navigate(R.id.homeFragment)
                     }
                     HISTORY_FRAGMENT -> {
-                        NavHostFragment.findNavController(fragment).navigate(R.id.historyFragment)
+                        navController.navigate(R.id.historyFragment)
+                    }
+
+                    CHART_FRAGMENT -> {
+                       navController.navigate(R.id.chartFragment)
+                    }
+
+                    SETTINGS_FRAGMENT ->{
+                        navController.navigate(R.id.settingsFragment)
                     }
                 }
             }

@@ -17,5 +17,23 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.instantweather.ui.history.HistoryFragment"
-        android:label="HistoryFragment" />
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.instantweather.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.instantweather.ui.chart.ChartFragment"
+        android:label="ChartFragment"
+        tools:layout="@layout/fragment_chart">
+        <action
+            android:id="@+id/action_chartFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 </navigation>

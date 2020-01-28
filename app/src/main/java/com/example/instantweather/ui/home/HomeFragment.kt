@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-
 import com.example.instantweather.databinding.FragmentHomeBinding
 
 /**
@@ -36,30 +35,82 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
         binding.viewModel = viewModel
 
+        viewModel.refresh()
+
+        observeViewModels()
+        setUpRefreshLayout()
+
+    }
+
+    private fun setUpRefreshLayout() {
+        binding.apply {
+            swipeRefreshId.setOnRefreshListener {
+                this.errorText.visibility = View.GONE
+                viewModel?.refreshBypassCache()
+            }
+            swipeRefreshId.isRefreshing = false
+        }
+    }
+
+    private fun observeViewModels() {
         viewModel.error.observe(this, Observer { state ->
             if (state){
                 binding.errorText.visibility = View.VISIBLE
-                binding.progressBar.visibility = View.GONE
-                binding.humidityId.visibility = View.GONE
-                binding.pressureId.visibility = View.GONE
-                binding.weatherTemperature.visibility = View.GONE
-                binding.pressure.visibility = View.GONE
-                binding.humid.visibility = View.GONE
+                hideViews()
+            }else{
+                binding.errorText.visibility = View.GONE
+                unHideViews()
             }
         })
 
         viewModel.loading.observe(this, Observer { state ->
             if (state){
-                binding.progressBar.visibility = View.VISIBLE
+                binding.apply {
+                    progressBar.visibility = View.VISIBLE
+                    loadingText.visibility = View.VISIBLE
+                    hideViews()
+                }
             }else{
-                binding.progressBar.visibility = View.GONE
+                binding.apply {
+                    progressBar.visibility = View.GONE
+                    loadingText.visibility = View.GONE
+                    unHideViews()
+                }
             }
         })
 
         viewModel.cityWeatherDto.observe(this, Observer { cityWeather ->
-            binding.cityWeather = cityWeather
+            cityWeather?.let {
+                binding.cityWeather = it
+                binding.weatherDto = it.weatherDto.first()
+            }
         })
+    }
 
 
+    private fun hideViews(){
+        binding.apply {
+            weatherIn.visibility = View.GONE
+            weatherIcon.visibility = View.GONE
+            humidityId.visibility = View.GONE
+            pressureId.visibility = View.GONE
+            weatherTemperature.visibility = View.GONE
+            pressure.visibility = View.GONE
+            humid.visibility = View.GONE
+            weatherMain.visibility = View.GONE
+        }
+    }
+
+    private fun unHideViews(){
+        binding.apply {
+            weatherIn.visibility = View.VISIBLE
+            weatherIcon.visibility = View.VISIBLE
+            humidityId.visibility = View.VISIBLE
+            pressureId.visibility = View.VISIBLE
+            weatherTemperature.visibility = View.VISIBLE
+            pressure.visibility = View.VISIBLE
+            humid.visibility = View.VISIBLE
+            weatherMain.visibility = View.VISIBLE
+        }
     }
 }

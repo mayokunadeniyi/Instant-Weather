@@ -6,10 +6,13 @@
     <data>
         <variable
             name="cityWeather"
-            type="com.example.instantweather.data.model.CityWeatherDto" />
+            type="com.example.instantweather.data.local.entity.WeatherResponse" />
         <variable
             name="viewModel"
             type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
+        <variable
+            name="weatherDto"
+            type="com.example.instantweather.data.model.WeatherDto" />
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_id"
@@ -27,29 +30,60 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/loading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/loading_text"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar"
+                app:layout_constraintStart_toStartOf="@+id/progressBar"
+                app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
             <com.github.pwittchen.weathericonview.WeatherIconView
                 android:id="@+id/weather_icon"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:weatherIconColor="#000000"
+                app:weatherIconResource="@string/wi_day_cloudy"
+                app:weatherIconSize="200" />
+
+            <TextView
+                android:id="@+id/weather_in_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@{cityWeather.cityName}"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/weather_in"
+                app:layout_constraintTop_toBottomOf="@+id/weather_icon"
+                tools:text="Lagos" />
 
             <TextView
                 android:id="@+id/weather_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textSize="60sp"
-                android:text="@{String.valueOf(cityWeather.main.temp)}"
+                android:layout_marginTop="16dp"
+                android:text="@{String.valueOf(cityWeather.mainDto.temp)}"
+                android:textSize="35sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weather_icon"
+                app:layout_constraintTop_toBottomOf="@+id/weather_in_text"
                 tools:text="36\u2103" />
 
             <TextView
@@ -57,11 +91,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:text="@{weatherDto.main}"
                 android:textSize="35sp"
-                android:text="@{cityWeather.name}"
                 app:layout_constraintBottom_toBottomOf="@+id/weather_temperature"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weather_icon"
+                app:layout_constraintTop_toBottomOf="@+id/weather_in_text"
                 tools:text="Sunny" />
 
             <TextView
@@ -90,11 +124,11 @@
                 android:layout_margin="8dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
-                tools:text="12"
-                android:text="@{String.valueOf(cityWeather.main.humidity)}"
+                android:text="@{String.valueOf(cityWeather.mainDto.humidity)}"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline" />
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                tools:text="12" />
 
             <TextView
                 android:id="@+id/pressure_id"
@@ -103,11 +137,11 @@
                 android:layout_margin="8dp"
                 android:layout_marginStart="5dp"
                 android:gravity="center"
-                tools:text="30"
-                android:text="@{String.valueOf(cityWeather.main.pressure)}"
+                android:text="@{String.valueOf(cityWeather.mainDto.pressure)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/humidity_id"
-                app:layout_constraintTop_toTopOf="@+id/guideline" />
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                tools:text="30" />
 
             <TextView
                 android:id="@+id/humid"
@@ -137,6 +171,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/weather_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/weather_in"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/weather_in_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weather_icon" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

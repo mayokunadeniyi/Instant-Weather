@@ -4,14 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.instantweather.data.local.dao.WeatherDao
 import com.example.instantweather.data.local.entity.WeatherResponse
+import com.example.instantweather.utils.ListCityWeatherDtoConverter
+import com.example.instantweather.utils.ListWeatherDtoConverter
+import com.example.instantweather.utils.MainDtoConverter
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
  */
 
 @Database(entities = [WeatherResponse::class],version = 1,exportSchema = false)
+@TypeConverters(ListCityWeatherDtoConverter::class,ListWeatherDtoConverter::class,
+    MainDtoConverter::class)
 abstract class WeatherDatabase : RoomDatabase(){
 
     abstract val weatherDao: WeatherDao

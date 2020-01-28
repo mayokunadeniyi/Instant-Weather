@@ -36,12 +36,15 @@ class WeatherDto(
     val icon: String?
 )
 
+class WeatherHistoryDto(
+    @SerializedName("list")
+    val weathers: List<CityWeatherDto>
+)
 
-fun CityWeatherDto.toDatabaseModel(): WeatherResponse{
-    return WeatherResponse(
-        cityId = this.cityId,
-        cityName = this.name,
-        weatherDto = this.weatherDtos,
-        mainDto = this.main
-    )
-}
+
+fun CityWeatherDto.toDatabaseModel() = WeatherResponse(
+    cityId = this.cityId,
+    cityName = this.name,
+    weatherDto = this.weatherDtos,
+    mainDto = this.main
+)

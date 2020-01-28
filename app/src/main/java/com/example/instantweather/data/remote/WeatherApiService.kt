@@ -25,6 +25,11 @@ interface WeatherApiService {
     @GET("/data/2.5/weather")
     suspend fun getCurrentWeather(@Query("q") location: String,
                                   @Query("appid") apiKey: String): CityWeatherDto
+
+    @GET("data/2.5/history/city")
+    suspend fun getWeatherHistory(@Query("id")cityId: Long,
+                                  @Query("type")type: String,
+                                  @Query("appid") apiKey: String)
 }
 
 object WeatherApi{

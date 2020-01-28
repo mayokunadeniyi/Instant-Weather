@@ -11,4 +11,11 @@
         \n\n Swipe down to retry</string>
     <string name="pressure">Pressure</string>
     <string name="humidity">Humidity</string>
+    <string name="weather_history">Weather History</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="cache_group">Weather Data Cache</string>
+    <string name="cache_string">Cache time in seconds</string>
+    <string name="coming_soon">Weather chart coming soon!</string>
+    <string name="loading_text">Fetching weather</string>
+    <string name="weather_in">Weather in</string>
 </resources>
