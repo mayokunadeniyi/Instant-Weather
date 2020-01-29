@@ -3,8 +3,6 @@
 ## Introduction
 An Android weather application implemented using MVVM pattern, Retrofit2, LiveData, ViewModel, Coroutines, Room, Navigation Components and Data Binding.
 
-<p align="center"><a><img src="https://github.com/mayokunthefirst/Instant-Weather/blob/master/gif/demo.gif" width="300"></a></p>
-
 ## Architecture
 The architecture of this application relies and complies with the following points below:
 * A single-activity architecture, using the [Navigation Components](https://developer.android.com/guide/navigation) to manage fragment operations.
