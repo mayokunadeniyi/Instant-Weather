@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.error.observe(this, Observer { state ->
+        viewModel.error.observe(viewLifecycleOwner, Observer { state ->
             if (state){
                 binding.errorText.visibility = View.VISIBLE
                 hideViews()
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.loading.observe(this, Observer { state ->
+        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
             if (state){
                 binding.apply {
                     progressBar.visibility = View.VISIBLE
@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.cityWeatherDto.observe(this, Observer { cityWeather ->
+        viewModel.cityWeatherDto.observe(viewLifecycleOwner, Observer { cityWeather ->
             cityWeather?.let {
                 binding.cityWeather = it
                 binding.weatherDto = it.weatherDto.first()
