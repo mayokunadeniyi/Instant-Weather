@@ -111,4 +111,7 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+
+    //Test Coroutine Rule
+    testImplementation "com.github.marcinOz:TestCoroutineRule:$testCoroutineRuleVersion"
 }
