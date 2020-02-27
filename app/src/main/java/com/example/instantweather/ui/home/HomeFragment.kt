@@ -79,10 +79,10 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.cityWeatherDto.observe(viewLifecycleOwner, Observer { cityWeather ->
+        viewModel.dbWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
             cityWeather?.let {
                 binding.cityWeather = it
-                binding.weatherDto = it.weatherDto.first()
+                binding.weatherDto = it.networkWeatherDescription.first()
             }
         })
     }

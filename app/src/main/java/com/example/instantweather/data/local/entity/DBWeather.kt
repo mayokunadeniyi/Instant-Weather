@@ -3,15 +3,16 @@ package com.example.instantweather.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.instantweather.data.model.MainDto
-import com.example.instantweather.data.model.WeatherDto
+import com.example.instantweather.data.model.NetworkWeatherCondition
+import com.example.instantweather.data.model.NetworkWeatherDescription
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
  */
 
-@Entity(tableName = "weather_response")
-class WeatherResponse(
+//This class represents the Database DTO
+@Entity(tableName = "weather_table")
+class DBWeather(
 
     @ColumnInfo(name = "city_id")
     val cityId: Long,
@@ -20,10 +21,10 @@ class WeatherResponse(
     val cityName: String?,
 
     @ColumnInfo(name = "weather_details")
-    val weatherDto: List<WeatherDto>,
+    val networkWeatherDescription: List<NetworkWeatherDescription>,
 
     @ColumnInfo(name = "main_details")
-    val mainDto: MainDto
+    val networkWeatherCondition: NetworkWeatherCondition
 ){
     @PrimaryKey(autoGenerate = true)
     var uId: Int = 0

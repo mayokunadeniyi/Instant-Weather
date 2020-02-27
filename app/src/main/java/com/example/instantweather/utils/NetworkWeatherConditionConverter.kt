@@ -9,7 +9,7 @@ import java.lang.reflect.Type
 /**
  * Created by Mayokun Adeniyi on 2020-01-28.
  */
-class MainDtoConverter {
+class NetworkWeatherConditionConverter {
     val gson = Gson()
 
     val type: Type = object : TypeToken<NetworkWeatherCondition?>() {}.type

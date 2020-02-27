@@ -6,13 +6,13 @@
     <data>
         <variable
             name="cityWeather"
-            type="com.example.instantweather.data.local.entity.WeatherResponse" />
+            type="com.example.instantweather.data.local.entity.DBWeather" />
         <variable
             name="viewModel"
             type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
         <variable
             name="weatherDto"
-            type="com.example.instantweather.data.model.WeatherDto" />
+            type="com.example.instantweather.data.model.NetworkWeatherDescription" />
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_id"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@{String.valueOf(cityWeather.mainDto.temp)}"
+                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.temp)}"
                 android:textSize="35sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weather_in_text"
@@ -124,7 +124,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
-                android:text="@{String.valueOf(cityWeather.mainDto.humidity)}"
+                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.humidity)}"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline"
@@ -137,7 +137,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginStart="5dp"
                 android:gravity="center"
-                android:text="@{String.valueOf(cityWeather.mainDto.pressure)}"
+                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.pressure)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/humidity_id"
                 app:layout_constraintTop_toTopOf="@+id/guideline"

@@ -1,15 +1,14 @@
 package com.example.instantweather.ui.home
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
 import com.example.instantweather.data.local.WeatherDatabase
-import com.example.instantweather.data.local.entity.WeatherResponse
-import com.example.instantweather.data.model.CityWeatherDto
-import com.example.instantweather.data.model.toDatabaseModel
+import com.example.instantweather.data.local.entity.DBWeather
+import com.example.instantweather.data.model.NetworkWeather
+import com.example.instantweather.utils.toDatabaseModel
 import com.example.instantweather.data.remote.WeatherApi
 import com.example.instantweather.utils.SharedPreferenceHelper
 import kotlinx.coroutines.*
@@ -32,8 +31,8 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
     private val dao = WeatherDatabase.getInstance(getApplication()).weatherDao
 
 
-    private val _cityWeather = MutableLiveData<WeatherResponse>()
-    val cityWeatherDto: LiveData<WeatherResponse>
+    private val _cityWeather = MutableLiveData<DBWeather>()
+    val dbWeather: LiveData<DBWeather>
     get() = _cityWeather
 
     private val _loading = MutableLiveData<Boolean>()
@@ -101,12 +100,12 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
         }
     }
 
-    private fun storeRemoteDataLocally(weatherDto: CityWeatherDto) {
+    private fun storeRemoteDataLocally(networkWeather: NetworkWeather) {
         coroutineScope.launch {
             //Empty the db
             dao.deleteAllWeather()
 
-            val weatherResponse = weatherDto.toDatabaseModel()
+            val weatherResponse = networkWeather.toDatabaseModel()
 
             dao.insertWeather(weatherResponse)
 
@@ -116,10 +115,10 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
         prefHelper.saveUpdateTime(System.nanoTime())
     }
 
-    private fun weatherDataRetrieved(weather: WeatherResponse){
-        _cityWeather.value = weather
-        _loading.value = false
-        _error.value = false
+    private fun weatherDataRetrieved(dbWeather: DBWeather){
+        _cityWeather.postValue(dbWeather)
+        _loading.postValue(false)
+        _error.postValue(false)
     }
 
     override fun onCleared() {

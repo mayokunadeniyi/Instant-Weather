@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 
 //This class represents the Network DTO 
-class NetworkWeather(
+data class NetworkWeather(
 
     val uId: Long,
 
