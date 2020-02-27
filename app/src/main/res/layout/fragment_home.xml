@@ -5,13 +5,13 @@
 
     <data>
         <variable
-            name="cityWeather"
+            name="dbWeather"
             type="com.example.instantweather.data.local.entity.DBWeather" />
         <variable
             name="viewModel"
             type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
         <variable
-            name="weatherDto"
+            name="networkWeatherDescription"
             type="com.example.instantweather.data.model.NetworkWeatherDescription" />
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -57,7 +57,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:weatherIconColor="#000000"
-                app:weatherIconResource="@string/wi_day_cloudy"
+                setIcon="@{networkWeatherDescription.main}"
                 app:weatherIconSize="200" />
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="@{cityWeather.cityName}"
+                android:text="@{dbWeather.cityName}"
                 android:textSize="35sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/weather_in"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.temp)}"
+                android:text="@{String.valueOf(dbWeather.networkWeatherCondition.temp)}"
                 android:textSize="35sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weather_in_text"
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="@{weatherDto.main}"
+                android:text="@{networkWeatherDescription.main}"
                 android:textSize="35sp"
                 app:layout_constraintBottom_toBottomOf="@+id/weather_temperature"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +124,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
-                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.humidity)}"
+                android:text="@{String.valueOf(dbWeather.networkWeatherCondition.humidity)}"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline"
@@ -137,7 +137,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginStart="5dp"
                 android:gravity="center"
-                android:text="@{String.valueOf(cityWeather.networkWeatherCondition.pressure)}"
+                android:text="@{String.valueOf(dbWeather.networkWeatherCondition.pressure)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/humidity_id"
                 app:layout_constraintTop_toTopOf="@+id/guideline"

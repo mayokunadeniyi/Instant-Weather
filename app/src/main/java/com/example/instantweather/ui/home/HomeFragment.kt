@@ -81,8 +81,8 @@ class HomeFragment : Fragment() {
 
         viewModel.dbWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
             cityWeather?.let {
-                binding.cityWeather = it
-                binding.weatherDto = it.networkWeatherDescription.first()
+                binding.dbWeather = it
+                binding.networkWeatherDescription = it.networkWeatherDescription.first()
             }
         })
     }
