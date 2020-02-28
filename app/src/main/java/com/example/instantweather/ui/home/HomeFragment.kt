@@ -43,38 +43,40 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRefreshLayout() {
-        binding.apply {
-            swipeRefreshId.setOnRefreshListener {
-                this.errorText.visibility = View.GONE
-                viewModel?.refreshBypassCache()
-            }
-            swipeRefreshId.isRefreshing = false
+        binding.errorText.visibility = View.GONE
+        binding.swipeRefreshId.setOnRefreshListener {
+            viewModel.refreshBypassCache()
+            binding.swipeRefreshId.isRefreshing = false
         }
     }
 
     private fun observeViewModels() {
         viewModel.error.observe(viewLifecycleOwner, Observer { state ->
-            if (state){
-                binding.errorText.visibility = View.VISIBLE
+            if (state == true){
                 hideViews()
-            }else{
-                binding.errorText.visibility = View.GONE
+                binding.apply {
+                    errorText.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    loadingText.visibility = View.GONE
+                }
+            }else if (state == false){
                 unHideViews()
+                binding.errorText.visibility = View.GONE
             }
         })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
-            if (state){
+            if (state == true){
+                hideViews()
                 binding.apply {
                     progressBar.visibility = View.VISIBLE
                     loadingText.visibility = View.VISIBLE
-                    hideViews()
                 }
-            }else{
+            }else if (state == false){
+                unHideViews()
                 binding.apply {
                     progressBar.visibility = View.GONE
                     loadingText.visibility = View.GONE
-                    unHideViews()
                 }
             }
         })

@@ -3,7 +3,7 @@ package com.example.instantweather.data.model
 import com.google.gson.annotations.SerializedName
 
 
-data class NetworkWeatherHistory(
+data class NetworkWeatherForecast(
     @SerializedName("list")
     val weathers: List<NetworkWeather>
 )

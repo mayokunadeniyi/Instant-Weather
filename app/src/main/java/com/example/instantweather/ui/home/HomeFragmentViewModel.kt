@@ -73,7 +73,7 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
             val cacheDurationInt = cachePreference?.toInt() ?: 5 * 60
             refreshTime = cacheDurationInt.times(1000 * 1000 * 1000L)
         }catch (e: NumberFormatException){
-            Timber.i(e.message)
+            Timber.i(e)
         }
     }
 
@@ -87,6 +87,8 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
         _error.value = false
 
         coroutineScope.launch {
+            _error.postValue(false)
+            _loading.postValue(true)
             Timber.i("Getting response........")
             try {
                 val responseCityWeatherDto = WeatherApi.retrofitService.getCurrentWeather("Lagos",API_KEY)
@@ -95,6 +97,7 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
                 storeRemoteDataLocally(responseCityWeatherDto)
 
             }catch (e: Exception){
+                _loading.postValue(false)
                 _error.postValue(true)
                 Timber.i("AN ERROR OCCURRED ${e.message}")
             }

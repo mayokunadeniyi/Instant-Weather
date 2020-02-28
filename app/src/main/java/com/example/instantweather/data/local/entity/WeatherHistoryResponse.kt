@@ -3,7 +3,7 @@ package com.example.instantweather.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.instantweather.data.model.NetworkWeatherHistory
+import com.example.instantweather.data.model.NetworkWeatherForecast
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-28.
@@ -16,5 +16,5 @@ class WeatherHistoryResponse(
     val id: Int = 0,
 
     @ColumnInfo(name = "weathers")
-    val weathers: NetworkWeatherHistory
+    val weathers: NetworkWeatherForecast
 )
