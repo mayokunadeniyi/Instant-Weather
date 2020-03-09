@@ -11,6 +11,7 @@ import com.example.instantweather.data.local.entity.DBWeather
 import com.example.instantweather.data.model.NetworkWeather
 import com.example.instantweather.utils.toDatabaseModel
 import com.example.instantweather.data.remote.WeatherApi
+import com.example.instantweather.ui.BaseViewModel
 import com.example.instantweather.utils.SharedPreferenceHelper
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -18,19 +19,14 @@ import timber.log.Timber
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
-class HomeFragmentViewModel(application: Application): AndroidViewModel(application) {
+class HomeFragmentViewModel(application: Application): BaseViewModel(application) {
 
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
     private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L
 
     private val API_KEY = BuildConfig.API_KEY
 
-    //Coroutine Context
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
-
     private val dao = WeatherDatabase.getInstance(getApplication()).weatherDao
-
 
     private val _cityWeather = MutableLiveData<DBWeather>()
     val dbWeather: LiveData<DBWeather>
@@ -59,7 +55,8 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
     private fun getLocalWeatherData() {
         _loading.value = true
         _error.value = false
-        coroutineScope.launch {
+
+        launch {
             withContext(Dispatchers.IO){
                 val weatherData = dao.getWeather()
                 weatherDataRetrieved(weatherData)
@@ -86,7 +83,7 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
         _loading.value = true
         _error.value = false
 
-        coroutineScope.launch {
+        launch {
             _error.postValue(false)
             _loading.postValue(true)
             Timber.i("Getting response........")
@@ -105,7 +102,7 @@ class HomeFragmentViewModel(application: Application): AndroidViewModel(applicat
     }
 
     private fun storeRemoteDataLocally(networkWeather: NetworkWeather) {
-        coroutineScope.launch {
+        launch {
             //Empty the db
             dao.deleteAllWeather()
 

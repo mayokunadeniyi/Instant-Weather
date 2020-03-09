@@ -94,11 +94,7 @@ class HomeFragment : Fragment() {
         binding.apply {
             weatherIn.visibility = View.GONE
             weatherIcon.visibility = View.GONE
-            humidityId.visibility = View.GONE
-            pressureId.visibility = View.GONE
             weatherTemperature.visibility = View.GONE
-            pressure.visibility = View.GONE
-            humid.visibility = View.GONE
             weatherMain.visibility = View.GONE
         }
     }
@@ -107,11 +103,7 @@ class HomeFragment : Fragment() {
         binding.apply {
             weatherIn.visibility = View.VISIBLE
             weatherIcon.visibility = View.VISIBLE
-            humidityId.visibility = View.VISIBLE
-            pressureId.visibility = View.VISIBLE
             weatherTemperature.visibility = View.VISIBLE
-            pressure.visibility = View.VISIBLE
-            humid.visibility = View.VISIBLE
             weatherMain.visibility = View.VISIBLE
         }
     }
