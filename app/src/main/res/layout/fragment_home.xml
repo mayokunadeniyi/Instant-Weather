@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primaryColor">
-
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -63,7 +61,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:weatherIconColor="#000000"
                     setIcon="@{networkWeatherDescription.description}"
-                    app:weatherIconSize="150" />
+                    app:weatherIconSize="250" />
 
                 <TextView
                     android:id="@+id/weather_in_text"
@@ -73,7 +71,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="@{dbWeather.cityName}"
-                    android:textSize="30sp"
+                    android:textSize="35sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/weather_in"
                     app:layout_constraintTop_toBottomOf="@+id/weather_icon"
@@ -86,7 +84,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{String.valueOf(dbWeather.networkWeatherCondition.temp).concat(@string/temp_unit)}"
-                    android:textSize="30sp"
+                    android:textSize="35sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weather_in_text"
                     tools:text="36\u2103" />
@@ -98,7 +96,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{networkWeatherDescription.main}"
-                    android:textSize="30sp"
+                    android:textSize="35sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weather_temperature"
                     tools:text="Sunny" />
@@ -115,62 +113,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.85"
-                    app:layout_constraintTop_toBottomOf="@id/weather_main" />
-
-                <TextView
-                    android:id="@+id/humidity_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginEnd="5dp"
-                    android:gravity="center"
-                    android:text="@{String.valueOf(dbWeather.networkWeatherCondition.humidity)}"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline"
-                    tools:text="12" />
-
-                <TextView
-                    android:id="@+id/pressure_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:text="@{String.valueOf(dbWeather.networkWeatherCondition.pressure)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/humidity_id"
-                    app:layout_constraintTop_toTopOf="@+id/guideline"
-                    tools:text="30" />
-
-                <TextView
-                    android:id="@+id/humid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@string/humidity"
-                    app:layout_constraintEnd_toEndOf="@+id/humidity_id"
-                    app:layout_constraintStart_toStartOf="@+id/humidity_id"
-                    app:layout_constraintTop_toBottomOf="@+id/humidity_id" />
-
-                <TextView
-                    android:id="@+id/pressure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@string/pressure"
-                    app:layout_constraintEnd_toEndOf="@+id/pressure_id"
-                    app:layout_constraintStart_toStartOf="@+id/pressure_id"
-                    app:layout_constraintTop_toBottomOf="@+id/pressure_id" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
@@ -186,7 +128,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/weather_in"
-                    android:textSize="30sp"
+                    android:textSize="35sp"
                     app:layout_constraintBottom_toBottomOf="@+id/weather_in_text"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weather_icon" />

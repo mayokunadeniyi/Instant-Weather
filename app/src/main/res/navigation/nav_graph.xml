@@ -16,9 +16,9 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.instantweather.ui.history.HistoryFragment"
+        android:name="com.example.instantweather.ui.detail.DetailFragment"
         android:label="HistoryFragment"
-        tools:layout="@layout/fragment_history">
+        tools:layout="@layout/fragment_detail">
         <action
             android:id="@+id/action_historyFragment_to_chartFragment"
             app:destination="@id/chartFragment" />
@@ -29,9 +29,9 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/chartFragment"
-        android:name="com.example.instantweather.ui.chart.ChartFragment"
+        android:name="com.example.instantweather.ui.forecast.ForecastFragment"
         android:label="ChartFragment"
-        tools:layout="@layout/fragment_chart">
+        tools:layout="@layout/fragment_forecast">
         <action
             android:id="@+id/action_chartFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
