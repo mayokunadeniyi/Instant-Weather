@@ -14,18 +14,19 @@ import com.example.instantweather.data.model.NetworkWeatherDescription
 @Entity(tableName = "weather_table")
 class DBWeather(
 
+    @ColumnInfo(name = "unique_id")
+    @PrimaryKey(autoGenerate = true)
+    var uId: Int = 0,
+
     @ColumnInfo(name = "city_id")
     val cityId: Long,
 
     @ColumnInfo(name = "city_name")
-    val cityName: String?,
+    val cityName: String,
 
     @ColumnInfo(name = "weather_details")
     val networkWeatherDescription: List<NetworkWeatherDescription>,
 
     @ColumnInfo(name = "main_details")
     val networkWeatherCondition: NetworkWeatherCondition
-){
-    @PrimaryKey(autoGenerate = true)
-    var uId: Int = 0
-}
+)

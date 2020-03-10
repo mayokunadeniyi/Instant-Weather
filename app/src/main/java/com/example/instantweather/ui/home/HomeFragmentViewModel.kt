@@ -1,11 +1,9 @@
 package com.example.instantweather.ui.home
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
-import com.example.instantweather.R
 import com.example.instantweather.data.local.WeatherDatabase
 import com.example.instantweather.data.local.entity.DBWeather
 import com.example.instantweather.data.model.NetworkWeather
@@ -28,9 +26,9 @@ class HomeFragmentViewModel(application: Application): BaseViewModel(application
 
     private val dao = WeatherDatabase.getInstance(getApplication()).weatherDao
 
-    private val _cityWeather = MutableLiveData<DBWeather>()
+    private val _dbWeather = MutableLiveData<DBWeather>()
     val dbWeather: LiveData<DBWeather>
-    get() = _cityWeather
+    get() = _dbWeather
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
@@ -117,7 +115,7 @@ class HomeFragmentViewModel(application: Application): BaseViewModel(application
     }
 
     private fun weatherDataRetrieved(dbWeather: DBWeather){
-        _cityWeather.postValue(dbWeather)
+        _dbWeather.postValue(dbWeather)
         _loading.postValue(false)
         _error.postValue(false)
     }
