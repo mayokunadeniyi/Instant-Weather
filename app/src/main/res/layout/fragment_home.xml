@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="dbWeather"
-            type="com.example.instantweather.data.local.entity.DBWeather" />
+            name="weather"
+            type="com.example.instantweather.data.model.Weather" />
         <variable
             name="viewModel"
             type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
@@ -70,7 +70,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="@{dbWeather.cityName}"
+                    android:text="@{weather.name}"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/weather_in"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@{String.valueOf(dbWeather.networkWeatherCondition.temp).concat(@string/temp_unit)}"
+                    android:text="@{String.valueOf(weather.networkWeatherCondition.temp).concat(@string/temp_unit)}"
                     android:textSize="35sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weather_in_text"

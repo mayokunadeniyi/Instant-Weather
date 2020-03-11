@@ -35,7 +35,6 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.refresh()
 
         observeViewModels()
         setUpRefreshLayout()
@@ -81,9 +80,9 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.dbWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
-            cityWeather?.let {
-                binding.dbWeather = it
+        viewModel.weather.observe(viewLifecycleOwner, Observer { weather ->
+            weather?.let {
+                binding.weather = it
                 binding.networkWeatherDescription = it.networkWeatherDescription.first()
             }
         })

@@ -12,7 +12,7 @@ import com.example.instantweather.data.model.NetworkWeatherDescription
 
 //This class represents the Database DTO
 @Entity(tableName = "weather_table")
-class DBWeather(
+data class DBWeather(
 
     @ColumnInfo(name = "unique_id")
     @PrimaryKey(autoGenerate = true)

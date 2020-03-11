@@ -1,5 +1,7 @@
 package com.example.instantweather.data.local.dao
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,11 +18,11 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(vararg dbWeather: DBWeather)
 
-    @Query("SELECT * FROM weather_table ORDER BY uId DESC LIMIT 1")
-    suspend fun getWeather(): DBWeather
+    @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
+    fun getWeather(): LiveData<DBWeather>
 
-    @Query("SELECT * FROM weather_table ORDER BY uId DESC")
-    suspend fun getAllWeather(): List<DBWeather>
+    @Query("SELECT * FROM weather_table ORDER BY unique_id DESC")
+    fun getAllWeather(): LiveData<List<DBWeather>>
 
     @Query("DELETE FROM weather_table")
     suspend fun deleteAllWeather()
