@@ -50,17 +50,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.error.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.dataFetch.observe(viewLifecycleOwner, Observer { state ->
             if (state == true){
+                unHideViews()
+                binding.errorText.visibility = View.GONE
+
+            }else if (state == false){
                 hideViews()
                 binding.apply {
                     errorText.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
                     loadingText.visibility = View.GONE
                 }
-            }else if (state == false){
-                unHideViews()
-                binding.errorText.visibility = View.GONE
             }
         })
 

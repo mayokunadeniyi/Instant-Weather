@@ -33,10 +33,14 @@ class InstantWeatherRepository(
     private val dao = database.weatherDao
 
     //Weather[Domain Model] exposed to the ViewModel to be used in application
-    lateinit var weather: MutableLiveData<Weather>
+     var weather = MutableLiveData<Weather>()
+
+    val dataFetchState = MutableLiveData<Boolean>()
+    val isLoading = MutableLiveData<Boolean>()
 
 
     fun refresh() {
+        isLoading.value = true
         checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
@@ -68,6 +72,8 @@ class InstantWeatherRepository(
                 storeRemoteDataLocally(networkWeather)
 
             } catch (e: Exception) {
+                isLoading.postValue(false)
+                dataFetchState.postValue(false)
                 Timber.i("AN ERROR OCCURRED ${e.message}")
             }
         }
@@ -78,30 +84,41 @@ class InstantWeatherRepository(
         launch {
             withContext(Dispatchers.IO) {
                 //Get the weather from the database
-                val dbWeather = dao.getWeather().value
+                val dbWeather = dao.getWeather()
 
                 //Set the value for the MutableLiveData of type Weather
-                weather.value = mapper.transform(dbWeather!!)
+                weather.postValue(mapper.transform(dbWeather))
+                isLoading.postValue(false)
+                dataFetchState.postValue(true)
             }
         }
     }
 
     private fun storeRemoteDataLocally(networkWeather: NetworkWeather) {
         launch {
-            //Empty the db
-            dao.deleteAllWeather()
+            withContext(Dispatchers.IO){
+                //Empty the db
+                dao.deleteAllWeather()
 
-            //Convert the network weather response to a database model
-            val weatherResponse = networkWeather.toDatabaseModel()
+                //Convert the network weather response to a database model
+                val weatherResponse = networkWeather.toDatabaseModel()
 
-            //Insert the weather of database model into the db
-            dao.insertWeather(weatherResponse)
+                Timber.i("Weather response jakes is ${weatherResponse.cityName}")
+                //Insert the weather of database model into the db
+                dao.insertWeather(weatherResponse)
 
-            //Get the weather from the database
-            val dbWeather = dao.getWeather().value
+                Timber.i("The db has ${dao.getWeather()}")
 
-            //Set the value for the MutableLiveData of type Weather
-            weather.value = mapper.transform(dbWeather!!)
+                //Get the weather from the database
+                val dbWeather = dao.getWeather()
+
+                Timber.i("The db name is ${dbWeather.cityName}")
+
+                //Set the value for the MutableLiveData of type Weather
+                weather.postValue(mapper.transform(dbWeather))
+                isLoading.postValue(false)
+                dataFetchState.postValue(true)
+            }
         }
         prefHelper.saveUpdateTime(System.nanoTime())
     }

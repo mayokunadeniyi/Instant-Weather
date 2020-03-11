@@ -19,10 +19,10 @@ interface WeatherDao {
     suspend fun insertWeather(vararg dbWeather: DBWeather)
 
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
-    fun getWeather(): LiveData<DBWeather>
+    suspend fun getWeather(): DBWeather
 
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC")
-    fun getAllWeather(): LiveData<List<DBWeather>>
+    suspend fun getAllWeather():List<DBWeather>
 
     @Query("DELETE FROM weather_table")
     suspend fun deleteAllWeather()
