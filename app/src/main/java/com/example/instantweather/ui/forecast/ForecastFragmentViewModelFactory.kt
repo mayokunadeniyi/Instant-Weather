@@ -11,12 +11,11 @@ import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
 class DetailViewModelFactory(
-    private val placeId: Int,
     private val application: Application
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ForecastFragmentViewModel::class.java)) {
-            return ForecastFragmentViewModel(placeId, application) as T
+            return ForecastFragmentViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

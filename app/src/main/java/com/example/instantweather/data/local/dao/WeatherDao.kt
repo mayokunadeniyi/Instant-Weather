@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.instantweather.data.local.entity.DBWeather
+import com.example.instantweather.data.local.entity.WeatherForecast
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
@@ -17,6 +18,9 @@ interface WeatherDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(vararg dbWeather: DBWeather)
+
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertForecastWeather(dbWeatherForecast: WeatherForecast)
 
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
     suspend fun getWeather(): DBWeather

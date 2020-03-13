@@ -12,25 +12,25 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/historyFragment"
+        android:id="@+id/detailFragment"
         android:name="com.example.instantweather.ui.detail.DetailFragment"
-        android:label="HistoryFragment"
+        android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
         <action
             android:id="@+id/action_historyFragment_to_chartFragment"
-            app:destination="@id/chartFragment" />
+            app:destination="@id/forecastFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.instantweather.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/chartFragment"
+        android:id="@+id/forecastFragment"
         android:name="com.example.instantweather.ui.forecast.ForecastFragment"
-        android:label="ChartFragment"
+        android:label="ForecastFragment"
         tools:layout="@layout/fragment_forecast">
         <action
             android:id="@+id/action_chartFragment_to_settingsFragment"

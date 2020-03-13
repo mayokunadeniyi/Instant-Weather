@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid
+        android:color="#0099CC" />
+    <corners
+        android:radius="@dimen/day_circle_radius" />
+
+</shape>

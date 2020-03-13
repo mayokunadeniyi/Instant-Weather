@@ -8,7 +8,6 @@ import com.example.instantweather.ui.BaseViewModel
  */
 
 class ForecastFragmentViewModel(
-    private val placeId: Int,
     application: Application
 ) : BaseViewModel(application) {
 

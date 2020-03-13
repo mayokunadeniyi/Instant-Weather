@@ -25,7 +25,6 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
     //Weather[Domain Model] from repository layer to be used in the application
     val weather: LiveData<Weather> = repository.weather
 
-
     val loading: LiveData<Boolean> = repository.isLoading
 
     val dataFetch: LiveData<Boolean> = repository.dataFetchState

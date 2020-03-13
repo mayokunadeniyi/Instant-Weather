@@ -119,4 +119,7 @@ dependencies {
     //Test Coroutine Rule & Kotlinx-Coroutines-Test
     testImplementation "com.github.marcinOz:TestCoroutineRule:$testCoroutineRuleVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
+
+    //CalenderView
+    implementation "com.github.shrikanth7698:Collapsible-Calendar-View-Android:$calendarVersion"
 }

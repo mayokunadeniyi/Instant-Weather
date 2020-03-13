@@ -27,11 +27,11 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.homeFragment)
                     }
                     HISTORY_FRAGMENT -> {
-                        navController.navigate(R.id.historyFragment)
+                        navController.navigate(R.id.detailFragment)
                     }
 
                     CHART_FRAGMENT -> {
-                       navController.navigate(R.id.chartFragment)
+                       navController.navigate(R.id.forecastFragment)
                     }
 
                     SETTINGS_FRAGMENT ->{

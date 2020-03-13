@@ -50,7 +50,7 @@ class WeatherDatabaseTest {
     fun insertWeatherAndReadInList(){
         val weatherDto = NetworkWeatherDescription(1L,"MockStuff","MockStuff","MockStuff")
         val mainDto = NetworkWeatherCondition(20.0,30.0,40.0)
-        val weather = DBWeather(1L,"Lagos", listOf(weatherDto),mainDto)
+        val weather = DBWeather(1,23445,"Lagos", listOf(weatherDto),mainDto)
 
         runBlocking {
             weatherDao.insertWeather(weather)
@@ -66,7 +66,7 @@ class WeatherDatabaseTest {
     fun insertWeatherAndReadData(){
         val weatherDto = NetworkWeatherDescription(1L,"MockStuff","MockStuff","MockStuff")
         val mainDto = NetworkWeatherCondition(20.0,30.0,40.0)
-        val weather = DBWeather(1L,"Lagos", listOf(weatherDto),mainDto)
+        val weather = DBWeather(1,23445,"Lagos", listOf(weatherDto),mainDto)
 
         runBlocking {
             weatherDao.insertWeather(weather)

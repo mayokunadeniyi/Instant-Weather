@@ -19,4 +19,5 @@
     <string name="loading_text">Fetching weather</string>
     <string name="weather_in">Weather in</string>
     <string name="temp_unit">\u2103</string>
+    <string name="select_date_text">Forecast up to 5days \n Select end date for forecast.</string>
 </resources>
