@@ -3,9 +3,9 @@ package com.example.instantweather.mapper
 /**
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
-interface BaseMapperRepository<E,D> {
+interface BaseMapper<E,D> {
 
-    fun transform(type: E): D
+    fun transformToDomain(type: E): D
 
-    fun transformToRepository(type: D): E
+    fun transformToDto(type: D): E
 }

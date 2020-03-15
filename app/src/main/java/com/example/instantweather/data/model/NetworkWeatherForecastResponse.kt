@@ -6,16 +6,9 @@ import com.google.gson.annotations.SerializedName
  * Created by Mayokun Adeniyi on 13/03/2020.
  */
 
-data class NetworkWeatherForecastNested(
+data class NetworkWeatherForecastResponse(
 
-    @SerializedName("weather")
-    val networkWeatherDescriptions: List<NetworkWeatherDescription>,
+    @SerializedName("list")
+    val weathers: List<NetworkWeatherForecast>
 
-    @SerializedName("main")
-    val networkWeatherCondition: NetworkWeatherCondition,
-
-    @SerializedName("dt_txt")
-    val date: String,
-
-    val wind: Double
 )

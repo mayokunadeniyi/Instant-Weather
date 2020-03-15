@@ -2,6 +2,7 @@ package com.example.instantweather.data.remote
 
 import com.example.instantweather.data.model.NetworkWeather
 import com.example.instantweather.data.model.NetworkWeatherForecast
+import com.example.instantweather.data.model.NetworkWeatherForecastResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,7 +30,7 @@ interface WeatherApiService {
 
     @GET("data/2.5/forecast")
     suspend fun getWeatherForecast(@Query("id")cityId: Long,
-                                  @Query("appid") apiKey: String): NetworkWeatherForecast
+                                  @Query("appid") apiKey: String): NetworkWeatherForecastResponse
 }
 
 object WeatherApi{

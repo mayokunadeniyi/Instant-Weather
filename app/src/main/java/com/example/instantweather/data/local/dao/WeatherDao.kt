@@ -1,13 +1,8 @@
 package com.example.instantweather.data.local.dao
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.instantweather.data.local.entity.DBWeather
-import com.example.instantweather.data.local.entity.WeatherForecast
+import com.example.instantweather.data.local.entity.DBWeatherForecast
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
@@ -19,9 +14,6 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(vararg dbWeather: DBWeather)
 
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertForecastWeather(dbWeatherForecast: WeatherForecast)
-
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
     suspend fun getWeather(): DBWeather
 
@@ -30,4 +22,13 @@ interface WeatherDao {
 
     @Query("DELETE FROM weather_table")
     suspend fun deleteAllWeather()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertForecastWeather(vararg dbWeatherForecast: DBWeatherForecast)
+
+    @Query("SELECT * FROM weather_forecast ORDER BY id")
+    suspend fun getAllWeatherForecast(): List<DBWeatherForecast>
+
+    @Delete(entity = DBWeatherForecast::class)
+    suspend fun deleteAllWeatherForecast()
 }

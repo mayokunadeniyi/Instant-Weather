@@ -7,7 +7,9 @@ import com.example.instantweather.data.local.WeatherDatabase
 import com.example.instantweather.data.model.NetworkWeather
 import com.example.instantweather.data.model.NetworkWeatherForecast
 import com.example.instantweather.data.model.Weather
+import com.example.instantweather.data.model.WeatherForecast
 import com.example.instantweather.data.remote.WeatherApi
+import com.example.instantweather.mapper.WeatherForecastMapperLocal
 import com.example.instantweather.mapper.WeatherMapperLocal
 import com.example.instantweather.ui.BaseViewModel
 import com.example.instantweather.utils.SharedPreferenceHelper
@@ -26,7 +28,8 @@ class InstantWeatherRepository(
     application: Application
 ) : BaseViewModel(application) {
 
-    private val mapper = WeatherMapperLocal()
+    private val weatherMapperLocal = WeatherMapperLocal()
+    private val weatherForecastMapperLocal = WeatherForecastMapperLocal()
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
     private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L
     private val API_KEY = BuildConfig.API_KEY
@@ -36,6 +39,7 @@ class InstantWeatherRepository(
     var weather = MutableLiveData<Weather>()
 
     //WeatherForecast
+    var weatherForecast = MutableLiveData<List<WeatherForecast>>()
 
     val dataFetchState = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
@@ -85,21 +89,6 @@ class InstantWeatherRepository(
         }
     }
 
-    private fun getRemoteWeatherForecast() {
-        launch {
-            Timber.i("Getting weather forecast....")
-            try {
-                val networkWeatherForecast =
-                    WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
-                Timber.i("WEATHER FORECAST HAS BEEN RECEIVED......")
-                storeRemoteForecastDataLocally(networkWeatherForecast)
-            }catch (e: Exception){
-                Timber.i("AN ERROR OCCURRED ${e.message}")
-            }
-        }
-    }
-
-
     private fun getLocalWeatherData() {
         launch {
             withContext(Dispatchers.IO) {
@@ -107,7 +96,7 @@ class InstantWeatherRepository(
                 val dbWeather = dao.getWeather()
 
                 //Set the value for the MutableLiveData of type Weather
-                weather.postValue(mapper.transform(dbWeather))
+                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
                 isLoading.postValue(false)
                 dataFetchState.postValue(true)
             }
@@ -132,7 +121,7 @@ class InstantWeatherRepository(
                 Timber.i("The weather's city name is ${dbWeather.cityName}")
 
                 //Set the value for the MutableLiveData of type Weather
-                weather.postValue(mapper.transform(dbWeather))
+                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
                 isLoading.postValue(false)
                 dataFetchState.postValue(true)
             }
@@ -140,8 +129,36 @@ class InstantWeatherRepository(
         prefHelper.saveUpdateTime(System.nanoTime())
     }
 
-    private fun storeRemoteForecastDataLocally(networkWeatherForecast: NetworkWeatherForecast) {
+     fun getRemoteWeatherForecast() {
+        launch {
+            Timber.i("Getting weather forecast....")
+            try {
+                val networkWeatherForecastResponse =
+                    WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
+                val listOfNetworkWeatherForecast = networkWeatherForecastResponse.weathers
+                Timber.i("WEATHER FORECAST HAS BEEN RECEIVED......")
+                storeRemoteForecastDataLocally(listOfNetworkWeatherForecast)
+            } catch (e: Exception) {
+                Timber.i("AN ERROR OCCURRED ${e.message}")
+            }
+        }
+    }
 
+    private fun storeRemoteForecastDataLocally(listOfNetworkWeatherForecast: List<NetworkWeatherForecast>) {
+        launch {
+            withContext(Dispatchers.IO) {
+                //Empty the db
+                dao.deleteAllWeatherForecast()
+
+                for (weatherForecast in listOfNetworkWeatherForecast){
+                    dao.insertForecastWeather(weatherForecast.toDatabaseModel())
+                }
+
+                val dbForecast = dao.getAllWeatherForecast()
+
+                weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
+            }
+        }
     }
 
 }

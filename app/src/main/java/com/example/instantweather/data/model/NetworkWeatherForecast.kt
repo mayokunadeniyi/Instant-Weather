@@ -3,7 +3,19 @@ package com.example.instantweather.data.model
 import com.google.gson.annotations.SerializedName
 
 
+//This class represents the DTO for the weather forecast
 data class NetworkWeatherForecast(
-    @SerializedName("list")
-    val weathers: List<NetworkWeather>
+
+    val id: Int,
+
+    @SerializedName("dt_txt")
+    val date: String,
+
+    val wind: Double,
+
+    @SerializedName("weather")
+    val networkWeatherDescription: List<NetworkWeatherDescription>,
+
+    @SerializedName("main")
+    val networkWeatherCondition: NetworkWeatherCondition
 )

@@ -7,8 +7,8 @@ import com.example.instantweather.data.model.Weather
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
 
-class WeatherMapperLocal : BaseMapperRepository<DBWeather,Weather>{
-    override fun transform(type: DBWeather): Weather = Weather(
+class WeatherMapperLocal : BaseMapper<DBWeather,Weather>{
+    override fun transformToDomain(type: DBWeather): Weather = Weather(
         uId = type.uId,
         cityId = type.cityId,
         name = type.cityName,
@@ -16,7 +16,7 @@ class WeatherMapperLocal : BaseMapperRepository<DBWeather,Weather>{
         networkWeatherCondition = type.networkWeatherCondition
     )
 
-    override fun transformToRepository(type: Weather): DBWeather = DBWeather(
+    override fun transformToDto(type: Weather): DBWeather = DBWeather(
         uId = type.uId,
         cityId = type.cityId,
         cityName = type.name,
