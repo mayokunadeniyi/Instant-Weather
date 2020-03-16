@@ -29,7 +29,7 @@ interface WeatherApiService {
                                   @Query("appid") apiKey: String): NetworkWeather
 
     @GET("data/2.5/forecast")
-    suspend fun getWeatherForecast(@Query("id")cityId: Long,
+    suspend fun getWeatherForecast(@Query("id")cityId: Int,
                                   @Query("appid") apiKey: String): NetworkWeatherForecastResponse
 }
 

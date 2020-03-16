@@ -29,6 +29,6 @@ interface WeatherDao {
     @Query("SELECT * FROM weather_forecast ORDER BY id")
     suspend fun getAllWeatherForecast(): List<DBWeatherForecast>
 
-    @Delete(entity = DBWeatherForecast::class)
+    @Query("DELETE FROM weather_forecast")
     suspend fun deleteAllWeatherForecast()
 }

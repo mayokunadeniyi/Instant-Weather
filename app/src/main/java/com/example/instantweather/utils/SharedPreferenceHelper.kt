@@ -13,6 +13,8 @@ class SharedPreferenceHelper {
     companion object{
 
         private const val PREF_TIME = "Pref time"
+        private const val CITY_NAME = "City Name"
+        private const val CITY_ID = "City ID"
         private var prefs: SharedPreferences? = null
 
         @Volatile
@@ -39,5 +41,22 @@ class SharedPreferenceHelper {
     fun getUpdateTime() = prefs?.getLong(PREF_TIME,0L)
 
     fun getCacheDuration() = prefs?.getString("pref_cache_duration","0")
+
+    fun saveCityName(cityName: String){
+        prefs?.edit(commit = true){
+            putString(CITY_NAME,cityName)
+        }
+    }
+
+    fun getCityName() = prefs?.getString(CITY_NAME,"City Name")
+
+
+    fun saveCityId(cityId: Int){
+        prefs?.edit(commit = true){
+            putInt(CITY_ID,cityId)
+        }
+    }
+
+    fun getCityId() = prefs?.getInt(CITY_ID,0)
 
 }

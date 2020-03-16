@@ -1,6 +1,7 @@
 package com.example.instantweather.data.repository
 
 import android.app.Application
+import android.renderscript.Int2
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
 import com.example.instantweather.data.local.WeatherDatabase
@@ -44,9 +45,6 @@ class InstantWeatherRepository(
     val dataFetchState = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
 
-    //CityID
-    private var cityId = 0L
-
 
     fun refresh() {
         isLoading.value = true
@@ -77,7 +75,10 @@ class InstantWeatherRepository(
             try {
                 val networkWeather = WeatherApi.retrofitService.getCurrentWeather("Lagos", API_KEY)
                 Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
-                cityId = networkWeather.cityId
+
+
+                prefHelper.saveCityName(networkWeather.name)
+                prefHelper.saveCityId(networkWeather.cityId)
                 Timber.i("The City ID ${networkWeather.cityId}")
                 storeRemoteWeatherDataLocally(networkWeather)
 
@@ -129,10 +130,13 @@ class InstantWeatherRepository(
         prefHelper.saveUpdateTime(System.nanoTime())
     }
 
-     fun getRemoteWeatherForecast() {
+    fun getRemoteWeatherForecast() {
         launch {
             Timber.i("Getting weather forecast....")
+            val cityId = prefHelper.getCityId()
+            if (cityId != null)
             try {
+                Timber.i("Just checking the cityId ${cityId}")
                 val networkWeatherForecastResponse =
                     WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
                 val listOfNetworkWeatherForecast = networkWeatherForecastResponse.weathers
@@ -150,12 +154,15 @@ class InstantWeatherRepository(
                 //Empty the db
                 dao.deleteAllWeatherForecast()
 
-                for (weatherForecast in listOfNetworkWeatherForecast){
+                //Insert each weather forecast into the db
+                for (weatherForecast in listOfNetworkWeatherForecast) {
                     dao.insertForecastWeather(weatherForecast.toDatabaseModel())
                 }
 
+                //Get a list of weather forecast from the db
                 val dbForecast = dao.getAllWeatherForecast()
 
+                //Set the value for the weather forecast of type mutable live data
                 weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
             }
         }

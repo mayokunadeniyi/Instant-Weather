@@ -12,7 +12,7 @@ data class NetworkWeather(
     val uId: Int,
 
     @SerializedName("id")
-    val cityId: Long,
+    val cityId: Int,
 
     val name: String,
 

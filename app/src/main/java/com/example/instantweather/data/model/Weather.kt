@@ -8,7 +8,7 @@ package com.example.instantweather.data.model
 data class Weather(
 
     val uId: Int,
-    val cityId: Long,
+    val cityId: Int,
     val name: String,
     val networkWeatherDescription: List<NetworkWeatherDescription>,
     val networkWeatherCondition: NetworkWeatherCondition

@@ -11,7 +11,7 @@ data class NetworkWeatherForecast(
     @SerializedName("dt_txt")
     val date: String,
 
-    val wind: Double,
+    val wind: Wind,
 
     @SerializedName("weather")
     val networkWeatherDescription: List<NetworkWeatherDescription>,

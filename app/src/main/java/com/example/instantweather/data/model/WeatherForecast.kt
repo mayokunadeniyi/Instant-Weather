@@ -10,7 +10,7 @@ data class WeatherForecast(
 
     val date: String,
 
-    val wind: Double,
+    val wind: Wind,
 
     val networkWeatherDescription: List<NetworkWeatherDescription>,
 

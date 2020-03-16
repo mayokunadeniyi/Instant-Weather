@@ -29,6 +29,8 @@ class WeatherForecastAdapter: ListAdapter<WeatherForecast,WeatherForecastAdapter
 
         fun bind(weatherForecast: WeatherForecast){
             binding.weatherForecast = weatherForecast
+            val weatherDescription = weatherForecast.networkWeatherDescription.first()
+            binding.weatherForecastDescription = weatherDescription
             binding.executePendingBindings()
         }
         companion object{

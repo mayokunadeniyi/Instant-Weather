@@ -19,7 +19,7 @@ data class DBWeather(
     var uId: Int = 0,
 
     @ColumnInfo(name = "city_id")
-    val cityId: Long,
+    val cityId: Int,
 
     @ColumnInfo(name = "city_name")
     val cityName: String,
