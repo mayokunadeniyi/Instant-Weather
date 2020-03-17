@@ -26,4 +26,5 @@
     <string name="wind_speed_symbol">m/s</string>
     <string name="pressure_symbol">hPa</string>
     <string name="humidity_symbol">%</string>
+    <string name="instant_weather">Instant Weather</string>
 </resources>

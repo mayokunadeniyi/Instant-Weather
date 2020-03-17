@@ -9,4 +9,13 @@
         <item name="android:fontFamily">@font/googlesans</item>
     </style>
 
+    <style name="weather_item_icons">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="tint">#000</item>
+    </style>
+
 </resources>

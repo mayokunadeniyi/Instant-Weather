@@ -29,15 +29,16 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/city_name"
+                    android:id="@+id/weather_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
-                    android:textSize="30sp"
-                    android:text=""
+                    android:textSize="27sp"
+                    android:textColor="#000"
+                    android:text="@{weatherForecastDescription.main}"
                     android:layout_marginTop="20dp"
-                    tools:text="Lagos" />
+                    tools:text="Clouds" />
 
                 <com.github.pwittchen.weathericonview.WeatherIconView
                     android:id="@+id/weather_icon"
@@ -54,11 +55,12 @@
                     android:id="@+id/weather_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/city_name"
+                    android:layout_below="@id/weather_main"
                     android:layout_marginStart="10dp"
+                    android:textSize="14sp"
                     android:layout_marginTop="5dp"
-                    android:text="@{weatherForecastDescription.main}"
-                    tools:text="Cloudy" />
+                    android:text="@{weatherForecastDescription.description}"
+                    tools:text="Very cloudy" />
 
                 <TextView
                     android:id="@+id/city_temp"
@@ -67,9 +69,10 @@
                     android:layout_below="@+id/weather_description"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="25dp"
-                    tools:text="36\u2103"
+                    android:layout_marginEnd="140dp"
                     android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.temp).concat(@string/temp_unit)}"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:text="36\u2103" />
 
                 <LinearLayout
                     android:id="@+id/weather_details"
@@ -78,40 +81,48 @@
                     android:layout_below="@+id/weather_description"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="25dp"
-                    android:layout_marginEnd="20dp"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="6">
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        style="@style/weather_item_icons"
+                        app:srcCompat="@drawable/ic_humidity" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.humidity).concat(@string/humidity_symbol)}"
+                        android:textSize="14sp"
+                        tools:text="40" />
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        style="@style/weather_item_icons"
+                        app:srcCompat="@drawable/ic_pressure" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_wind"
-                        android:drawablePadding="2dp"
-                        tools:text="40"
-                        android:text="@{String.valueOf(weatherForecast.wind.speed)}"
-                        android:textSize="18sp" />
+                        android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.pressure).concat(@string/pressure_symbol)}"
+                        android:textSize="14sp"
+                        tools:text="40" />
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        app:srcCompat="@drawable/ic_wind"
+                        style="@style/weather_item_icons" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_pressure"
-                        android:drawablePadding="2dp"
-                        tools:text="40"
-                        android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.pressure)}"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_humidity"
-                        tools:text="40"
-                        android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.humidity)}"
-                        android:textSize="18sp" />
+                        android:text="@{String.valueOf(weatherForecast.wind.speed).concat(@string/wind_speed_symbol)}"
+                        android:textSize="14sp"
+                        tools:text="40" />
                 </LinearLayout>
 
                 <TextView
