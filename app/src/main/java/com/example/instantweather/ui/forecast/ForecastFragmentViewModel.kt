@@ -19,16 +19,17 @@ class ForecastFragmentViewModel(
     private val database = WeatherDatabase.getInstance(getApplication())
     private var repository: InstantWeatherRepository
     private val sharedPreferenceHelper: SharedPreferenceHelper
-    val cityName: String?
 
     init {
         repository = InstantWeatherRepository(database,application)
-        repository.getRemoteWeatherForecast()
+        repository.refreshWeatherForecastData()
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(application.applicationContext)
-        cityName = sharedPreferenceHelper.getCityName()
     }
 
     val weatherForecast: LiveData<List<WeatherForecast>> = repository.weatherForecast
+
+    val loading: LiveData<Boolean> = repository.weatherForecastIsLoading
+    val forecastDataFetch: LiveData<Boolean> = repository.weatherForecastDataFetchState
 
     override fun onCleared() {
         super.onCleared()

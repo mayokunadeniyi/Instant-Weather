@@ -14,6 +14,7 @@ fun NetworkWeather.toDatabaseModel() = DBWeather(
     uId = this.uId,
     cityId = this.cityId,
     cityName = this.name,
+    wind = this.wind,
     networkWeatherDescription = this.networkWeatherDescriptions,
     networkWeatherCondition = this.networkWeatherCondition
 )

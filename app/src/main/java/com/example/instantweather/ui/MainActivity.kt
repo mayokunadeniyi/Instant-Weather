@@ -18,16 +18,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavBar.setOnItemSelectedListener(object: OnItemSelectedListener{
             override fun onItemSelect(pos: Int) {
                 val HOME_FRAGMENT = 0
-                val HISTORY_FRAGMENT = 1
-                val CHART_FRAGMENT = 2
-                val SETTINGS_FRAGMENT = 3
+                val CHART_FRAGMENT = 1
+                val SETTINGS_FRAGMENT = 2
                 val navController = NavHostFragment.findNavController(fragment)
                 when(pos){
                     HOME_FRAGMENT -> {
                         navController.navigate(R.id.homeFragment)
-                    }
-                    HISTORY_FRAGMENT -> {
-                        navController.navigate(R.id.detailFragment)
                     }
 
                     CHART_FRAGMENT -> {

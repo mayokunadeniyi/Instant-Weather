@@ -1,7 +1,6 @@
 package com.example.instantweather.data.repository
 
 import android.app.Application
-import android.renderscript.Int2
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
 import com.example.instantweather.data.local.WeatherDatabase
@@ -38,16 +37,17 @@ class InstantWeatherRepository(
 
     //Weather[Domain Model] exposed to the ViewModel to be used in application
     var weather = MutableLiveData<Weather>()
+    val weatherDataFetchState = MutableLiveData<Boolean>()
+    val weatherIsLoading = MutableLiveData<Boolean>()
 
-    //WeatherForecast
+    //WeatherForecast[Domain Model] exposed to the ViewModel to be used in application
     var weatherForecast = MutableLiveData<List<WeatherForecast>>()
+    val weatherForecastDataFetchState = MutableLiveData<Boolean>()
+    val weatherForecastIsLoading = MutableLiveData<Boolean>()
 
-    val dataFetchState = MutableLiveData<Boolean>()
-    val isLoading = MutableLiveData<Boolean>()
 
-
-    fun refresh() {
-        isLoading.value = true
+    fun refreshWeatherData() {
+        weatherIsLoading.value = true
         checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
@@ -57,6 +57,16 @@ class InstantWeatherRepository(
         }
     }
 
+    fun refreshWeatherForecastData(){
+        weatherForecastIsLoading.value = true
+        checkCacheDuration()
+        val updateTime = prefHelper.getUpdateTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime){
+            getLocalWeatherForecastData()
+        }else{
+            getRemoteWeatherForecast()
+        }
+    }
 
     private fun checkCacheDuration() {
         val cachePreference = prefHelper.getCacheDuration()
@@ -76,15 +86,13 @@ class InstantWeatherRepository(
                 val networkWeather = WeatherApi.retrofitService.getCurrentWeather("Lagos", API_KEY)
                 Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
 
-
-                prefHelper.saveCityName(networkWeather.name)
+                //Save city ID to shared preferences
                 prefHelper.saveCityId(networkWeather.cityId)
-                Timber.i("The City ID ${networkWeather.cityId}")
                 storeRemoteWeatherDataLocally(networkWeather)
 
             } catch (e: Exception) {
-                isLoading.postValue(false)
-                dataFetchState.postValue(false)
+                weatherIsLoading.postValue(false)
+                weatherDataFetchState.postValue(false)
                 Timber.i("AN ERROR OCCURRED ${e.message}")
             }
         }
@@ -98,8 +106,8 @@ class InstantWeatherRepository(
 
                 //Set the value for the MutableLiveData of type Weather
                 weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
-                isLoading.postValue(false)
-                dataFetchState.postValue(true)
+                weatherIsLoading.postValue(false)
+                weatherDataFetchState.postValue(true)
             }
         }
     }
@@ -123,8 +131,8 @@ class InstantWeatherRepository(
 
                 //Set the value for the MutableLiveData of type Weather
                 weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
-                isLoading.postValue(false)
-                dataFetchState.postValue(true)
+                weatherIsLoading.postValue(false)
+                weatherDataFetchState.postValue(true)
             }
         }
         prefHelper.saveUpdateTime(System.nanoTime())
@@ -136,14 +144,27 @@ class InstantWeatherRepository(
             val cityId = prefHelper.getCityId()
             if (cityId != null)
             try {
-                Timber.i("Just checking the cityId ${cityId}")
                 val networkWeatherForecastResponse =
                     WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
                 val listOfNetworkWeatherForecast = networkWeatherForecastResponse.weathers
                 Timber.i("WEATHER FORECAST HAS BEEN RECEIVED......")
                 storeRemoteForecastDataLocally(listOfNetworkWeatherForecast)
             } catch (e: Exception) {
+                weatherForecastIsLoading.postValue(false)
+                weatherForecastDataFetchState.postValue(false)
                 Timber.i("AN ERROR OCCURRED ${e.message}")
+            }
+        }
+    }
+
+    private fun getLocalWeatherForecastData() {
+        launch {
+            withContext(Dispatchers.IO){
+                //Get weather forecast from db
+                val weatherForecastDb = dao.getAllWeatherForecast()
+                weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(weatherForecastDb))
+                weatherForecastIsLoading.postValue(false)
+                weatherForecastDataFetchState.postValue(true)
             }
         }
     }
@@ -164,6 +185,8 @@ class InstantWeatherRepository(
 
                 //Set the value for the weather forecast of type mutable live data
                 weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
+                weatherForecastIsLoading.postValue(false)
+                weatherForecastDataFetchState.postValue(true)
             }
         }
     }

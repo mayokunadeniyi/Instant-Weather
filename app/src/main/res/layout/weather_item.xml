@@ -35,6 +35,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
                     android:textSize="30sp"
+                    android:text=""
                     android:layout_marginTop="20dp"
                     tools:text="Lagos" />
 
@@ -56,7 +57,7 @@
                     android:layout_below="@id/city_name"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="@{weatherForecastDescription.description}"
+                    android:text="@{weatherForecastDescription.main}"
                     tools:text="Cloudy" />
 
                 <TextView

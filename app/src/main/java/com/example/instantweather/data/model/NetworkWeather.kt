@@ -16,6 +16,8 @@ data class NetworkWeather(
 
     val name: String,
 
+    val wind: Wind,
+
     @SerializedName("weather")
     val networkWeatherDescriptions: List<NetworkWeatherDescription>,
 

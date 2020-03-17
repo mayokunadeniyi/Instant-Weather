@@ -12,6 +12,7 @@ class WeatherMapperRemote : BaseMapper<NetworkWeather,Weather>{
         uId = type.uId,
         cityId = type.cityId,
         name = type.name,
+        wind = type.wind,
         networkWeatherDescription = type.networkWeatherDescriptions,
         networkWeatherCondition = type.networkWeatherCondition
     )
@@ -20,6 +21,7 @@ class WeatherMapperRemote : BaseMapper<NetworkWeather,Weather>{
         uId = type.uId,
         cityId = type.cityId,
         name = type.name,
+        wind = type.wind,
         networkWeatherDescriptions = type.networkWeatherDescription,
         networkWeatherCondition = type.networkWeatherCondition
     )

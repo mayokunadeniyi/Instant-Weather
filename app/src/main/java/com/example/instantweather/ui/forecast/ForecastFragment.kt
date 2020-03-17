@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.instantweather.R
 
 import com.example.instantweather.databinding.FragmentForecastBinding
+import com.example.instantweather.databinding.WeatherItemBinding
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.util.*
 
@@ -44,6 +46,37 @@ class ForecastFragment : Fragment() {
         viewModel.weatherForecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
             weatherForecast?.let {
                 weatherForecastAdapter.submitList(it)
+            }
+        })
+
+        observeMoreViewModels()
+    }
+
+    private fun observeMoreViewModels() {
+        viewModel.forecastDataFetch.observe(viewLifecycleOwner, Observer { state ->
+            if (state){
+                binding.apply {
+                    forecastRecyclerview.visibility = View.VISIBLE
+
+                }
+            }else{
+                binding.apply {
+                    forecastRecyclerview.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
+            if (state){
+                binding.apply {
+                    forecastProgressBar.visibility = View.VISIBLE
+                    weatherForecastText.visibility = View.GONE
+                }
+            }else{
+                binding.apply {
+                    forecastProgressBar.visibility = View.GONE
+                    weatherForecastText.visibility = View.VISIBLE
+                }
             }
         })
     }

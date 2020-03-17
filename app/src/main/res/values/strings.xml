@@ -17,7 +17,13 @@
     <string name="cache_string">Cache time in seconds</string>
     <string name="coming_soon">Weather chart coming soon!</string>
     <string name="loading_text">Fetching weather</string>
-    <string name="weather_in">Weather in</string>
+    <string name="weather_in">Weather in </string>
+    <string name="comma">, </string>
     <string name="temp_unit">\u2103</string>
-    <string name="select_date_text">Forecast up to 5days \n Select end date for forecast.</string>
+    <string name="select_date_text">Forecast up to 5days. Select end date for forecast.</string>
+    <string name="weather_forecast">Weather Forecast</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="wind_speed_symbol">m/s</string>
+    <string name="pressure_symbol">hPa</string>
+    <string name="humidity_symbol">%</string>
 </resources>

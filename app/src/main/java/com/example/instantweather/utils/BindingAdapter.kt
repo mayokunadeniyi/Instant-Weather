@@ -12,7 +12,6 @@ import timber.log.Timber
 
 @BindingAdapter("setIcon")
 fun WeatherIconView.showIcon(condition: String?) {
-    Timber.i("The condition is $condition")
     val context = this.context
     WeatherIconGenerator.getIconResources(context,this,condition)
 }

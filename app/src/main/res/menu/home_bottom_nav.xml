@@ -8,11 +8,6 @@
         android:icon="@drawable/ic_home"/>
 
     <item
-        android:id="@+id/detail_id"
-        android:title="@string/detail"
-        android:icon="@drawable/ic_format_list"/>
-
-    <item
         android:id="@+id/chart_id"
         android:title="@string/chart"
         android:icon="@drawable/ic_insert_chart"/>

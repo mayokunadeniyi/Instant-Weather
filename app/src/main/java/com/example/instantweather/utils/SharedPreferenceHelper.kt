@@ -42,14 +42,6 @@ class SharedPreferenceHelper {
 
     fun getCacheDuration() = prefs?.getString("pref_cache_duration","0")
 
-    fun saveCityName(cityName: String){
-        prefs?.edit(commit = true){
-            putString(CITY_NAME,cityName)
-        }
-    }
-
-    fun getCityName() = prefs?.getString(CITY_NAME,"City Name")
-
 
     fun saveCityId(cityId: Int){
         prefs?.edit(commit = true){

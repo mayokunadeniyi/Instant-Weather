@@ -92,7 +92,9 @@ class HomeFragment : Fragment() {
 
     private fun hideViews(){
         binding.apply {
-            weatherIn.visibility = View.GONE
+            weatherDet.visibility = View.GONE
+            separator.visibility = View.GONE
+            dateText.visibility = View.GONE
             weatherIcon.visibility = View.GONE
             weatherTemperature.visibility = View.GONE
             weatherMain.visibility = View.GONE
@@ -101,7 +103,9 @@ class HomeFragment : Fragment() {
 
     private fun unHideViews(){
         binding.apply {
-            weatherIn.visibility = View.VISIBLE
+            weatherDet.visibility = View.VISIBLE
+            separator.visibility = View.VISIBLE
+            dateText.visibility = View.VISIBLE
             weatherIcon.visibility = View.VISIBLE
             weatherTemperature.visibility = View.VISIBLE
             weatherMain.visibility = View.VISIBLE

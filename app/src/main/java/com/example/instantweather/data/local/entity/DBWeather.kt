@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.instantweather.data.model.NetworkWeatherCondition
 import com.example.instantweather.data.model.NetworkWeatherDescription
+import com.example.instantweather.data.model.Wind
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
@@ -23,6 +24,8 @@ data class DBWeather(
 
     @ColumnInfo(name = "city_name")
     val cityName: String,
+
+    val wind: Wind,
 
     @ColumnInfo(name = "weather_details")
     val networkWeatherDescription: List<NetworkWeatherDescription>,
