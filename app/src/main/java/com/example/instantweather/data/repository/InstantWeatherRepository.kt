@@ -14,6 +14,7 @@ import com.example.instantweather.mapper.WeatherMapperLocal
 import com.example.instantweather.ui.BaseViewModel
 import com.example.instantweather.utils.SharedPreferenceHelper
 import com.example.instantweather.mapper.toDatabaseModel
+import com.example.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,13 +58,13 @@ class InstantWeatherRepository(
         }
     }
 
-    fun refreshWeatherForecastData(){
+    fun refreshWeatherForecastData() {
         weatherForecastIsLoading.value = true
         checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
-        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime){
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             getLocalWeatherForecastData()
-        }else{
+        } else {
             getRemoteWeatherForecast()
         }
     }
@@ -118,6 +119,10 @@ class InstantWeatherRepository(
                 //Empty the db
                 dao.deleteAllWeather()
 
+                //Get the temperature in kelvin and convert to celsius
+                val kelvinValue = networkWeather.networkWeatherCondition.temp
+                networkWeather.networkWeatherCondition.temp = convertKelvinToCelsius(kelvinValue)
+
                 //Convert the network weather response to a database model
                 val weatherResponse = networkWeather.toDatabaseModel()
 
@@ -143,26 +148,30 @@ class InstantWeatherRepository(
             Timber.i("Getting weather forecast....")
             val cityId = prefHelper.getCityId()
             if (cityId != null)
-            try {
-                val networkWeatherForecastResponse =
-                    WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
-                val listOfNetworkWeatherForecast = networkWeatherForecastResponse.weathers
-                Timber.i("WEATHER FORECAST HAS BEEN RECEIVED......")
-                storeRemoteForecastDataLocally(listOfNetworkWeatherForecast)
-            } catch (e: Exception) {
-                weatherForecastIsLoading.postValue(false)
-                weatherForecastDataFetchState.postValue(false)
-                Timber.i("AN ERROR OCCURRED ${e.message}")
-            }
+                try {
+                    val networkWeatherForecastResponse =
+                        WeatherApi.retrofitService.getWeatherForecast(cityId, API_KEY)
+                    val listOfNetworkWeatherForecast = networkWeatherForecastResponse.weathers
+                    Timber.i("WEATHER FORECAST HAS BEEN RECEIVED......")
+                    storeRemoteForecastDataLocally(listOfNetworkWeatherForecast)
+                } catch (e: Exception) {
+                    weatherForecastIsLoading.postValue(false)
+                    weatherForecastDataFetchState.postValue(false)
+                    Timber.i("AN ERROR OCCURRED ${e.message}")
+                }
         }
     }
 
     private fun getLocalWeatherForecastData() {
         launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 //Get weather forecast from db
                 val weatherForecastDb = dao.getAllWeatherForecast()
-                weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(weatherForecastDb))
+                weatherForecast.postValue(
+                    weatherForecastMapperLocal.transformToDomain(
+                        weatherForecastDb
+                    )
+                )
                 weatherForecastIsLoading.postValue(false)
                 weatherForecastDataFetchState.postValue(true)
             }
@@ -174,9 +183,13 @@ class InstantWeatherRepository(
             withContext(Dispatchers.IO) {
                 //Empty the db
                 dao.deleteAllWeatherForecast()
-
                 //Insert each weather forecast into the db
                 for (weatherForecast in listOfNetworkWeatherForecast) {
+                    //Get the temperature in kelvin and convert to celsius
+                    val kelvinValue = weatherForecast.networkWeatherCondition.temp
+                    weatherForecast.networkWeatherCondition.temp =
+                        convertKelvinToCelsius(kelvinValue)
+
                     dao.insertForecastWeather(weatherForecast.toDatabaseModel())
                 }
 
