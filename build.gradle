@@ -9,7 +9,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.0'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         // NOTE: Do not place your application dependencies here; they belong
@@ -51,4 +51,5 @@ ext {
     version_retrofit_coroutines_adapter = "0.9.2"
     testCoroutineRuleVersion = '1.0.1'
     calendarVersion = 'v1.0.3'
+    googlePlayLocation = '17.0.0'
 }
