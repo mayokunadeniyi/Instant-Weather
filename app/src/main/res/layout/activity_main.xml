@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/primaryDarkColor"
+            android:background="@color/primaryColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
 
@@ -24,6 +24,7 @@
                 android:text="@string/instant_weather"
                 android:gravity="center"
                 android:textStyle="bold"
+                android:textColor="@color/primaryTextColor"
                 android:layout_margin="15dp"
                 android:textSize="20sp" />
         </com.google.android.material.appbar.MaterialToolbar>
@@ -46,10 +47,10 @@
             android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:backgroundColor="#FFFFFF"
-            app:iconTint="#7E7E7E"
-            app:iconTintActive="#DB6A63"
-            app:indicatorColor="#F4D6D3"
+            app:backgroundColor="#B9CFED"
+            app:iconTint="#6A6A6A"
+            app:iconTintActive="#000"
+            app:indicatorColor="#FFF"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/home_bottom_nav"
             app:textColor="#000000" />
