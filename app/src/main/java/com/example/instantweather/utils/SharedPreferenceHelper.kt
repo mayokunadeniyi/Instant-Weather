@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.example.instantweather.data.model.LocationModel
+import com.google.gson.Gson
+
 /**
  * Created by Mayokun Adeniyi on 2020-01-28.
  */
@@ -15,6 +18,9 @@ class SharedPreferenceHelper {
         private const val PREF_TIME = "Pref time"
         private const val CITY_NAME = "City Name"
         private const val CITY_ID = "City ID"
+        private const val LATITUDE = "LATITUDE"
+        private const val LONGITUDE = "LONGITUDE"
+        private const val CACHE_DURATION = "pref_cache_duration"
         private var prefs: SharedPreferences? = null
 
         @Volatile
@@ -50,5 +56,22 @@ class SharedPreferenceHelper {
     }
 
     fun getCityId() = prefs?.getInt(CITY_ID,0)
+
+    fun saveLongitude(lon: Double){
+        prefs?.edit(commit = true){
+            putLong(LONGITUDE,lon.toRawBits())
+        }
+    }
+
+    fun getLongitude() = prefs!!.getLong(LONGITUDE,0)
+
+    fun saveLatitude(lat: Double){
+        prefs?.edit(commit = true){
+            putLong(LATITUDE,lat.toRawBits())
+        }
+    }
+    
+    fun getLatitude() = prefs!!.getLong(LATITUDE,0)
+
 
 }

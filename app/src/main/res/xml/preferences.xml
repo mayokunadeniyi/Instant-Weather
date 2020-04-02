@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="@string/cache_group"
-        app:allowDividerAbove="true"
-        app:allowDividerBelow="true"
-        app:icon="@drawable/ic_cached">
+    <PreferenceCategory>
         <EditTextPreference
             android:defaultValue="10"
             android:inputType="number"
             android:key="pref_cache_duration"
             android:selectAllOnFocus="true"
             android:singleLine="true"
+            android:summary="Set a time to get new weather data"
             android:title="@string/cache_string" />
     </PreferenceCategory>
 </PreferenceScreen>
