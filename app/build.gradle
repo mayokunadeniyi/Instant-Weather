@@ -122,4 +122,8 @@ dependencies {
 
     //CalenderView
     implementation "com.github.shrikanth7698:Collapsible-Calendar-View-Android:$calendarVersion"
+
+    //Google Play Services
+    implementation "com.google.android.gms:play-services-location:$googlePlayLocation"
+
 }
