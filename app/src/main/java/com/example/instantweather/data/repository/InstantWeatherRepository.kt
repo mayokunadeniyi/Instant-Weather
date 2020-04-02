@@ -1,13 +1,11 @@
 package com.example.instantweather.data.repository
 
 import android.app.Application
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
 import com.example.instantweather.data.local.WeatherDatabase
-import com.example.instantweather.data.model.NetworkWeather
-import com.example.instantweather.data.model.NetworkWeatherForecast
-import com.example.instantweather.data.model.Weather
-import com.example.instantweather.data.model.WeatherForecast
+import com.example.instantweather.data.model.*
 import com.example.instantweather.data.remote.WeatherApi
 import com.example.instantweather.mapper.WeatherForecastMapperLocal
 import com.example.instantweather.mapper.WeatherMapperLocal
@@ -15,6 +13,11 @@ import com.example.instantweather.ui.BaseViewModel
 import com.example.instantweather.utils.SharedPreferenceHelper
 import com.example.instantweather.mapper.toDatabaseModel
 import com.example.instantweather.utils.convertKelvinToCelsius
+import com.example.instantweather.utils.round
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,6 +48,11 @@ class InstantWeatherRepository(
     var weatherForecast = MutableLiveData<List<WeatherForecast>>()
     val weatherForecastDataFetchState = MutableLiveData<Boolean>()
     val weatherForecastIsLoading = MutableLiveData<Boolean>()
+
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(application)
+
+    var latitude = 0.00
+    var longitude = 0.00
 
 
     fun refreshWeatherData() {
@@ -81,25 +89,52 @@ class InstantWeatherRepository(
     }
 
     fun getRemoteWeatherData() {
-        launch {
-            Timber.i("Getting weather response........")
-            try {
-                val networkWeather = WeatherApi.retrofitService.getCurrentWeather("Lagos", API_KEY)
-                Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
+        Timber.i("Getting data from remote yooo!")
+        val locationRequest = LocationRequest()
+            .setInterval(2000)
+            .setFastestInterval(2000)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    for (location in locationResult.locations) {
+                        latitude = location.latitude
+                        longitude = location.longitude
+                        Timber.i("This is another ${location.longitude} and ${location.latitude}")
+                    }
+                    // Few more things we can do here:
+                    // For example: Update the location of user on server
+                }
+            },
+            Looper.myLooper())
 
-                //Save city ID to shared preferences
-                prefHelper.saveCityId(networkWeather.cityId)
-                storeRemoteWeatherDataLocally(networkWeather)
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+            Timber.i("Please work ${location.longitude} and ${location.latitude}")
+            Timber.i("Lat is ${latitude} and Long is ${longitude}")
+            launch {
+                Timber.i("Getting weather response........")
+                try {
+                    val networkWeather =
+                        WeatherApi.retrofitService.getCurrentWeather(latitude, longitude, API_KEY)
+                    //Save city ID to shared preferences
+                    prefHelper.saveCityId(networkWeather.cityId)
+                    storeRemoteWeatherDataLocally(networkWeather)
 
-            } catch (e: Exception) {
-                weatherIsLoading.postValue(false)
-                weatherDataFetchState.postValue(false)
-                Timber.i("AN ERROR OCCURRED ${e.message}")
+                    Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
+
+                } catch (e: Exception) {
+                    weatherIsLoading.postValue(false)
+                    weatherDataFetchState.postValue(false)
+                    Timber.i("AN ERROR OCCURRED ${e.message}")
+                }
             }
         }
     }
 
     private fun getLocalWeatherData() {
+        Timber.i("Getting data from local broo!")
         launch {
             withContext(Dispatchers.IO) {
                 //Get the weather from the database

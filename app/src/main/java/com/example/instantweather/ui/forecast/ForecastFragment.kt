@@ -13,6 +13,7 @@ import com.example.instantweather.R
 
 import com.example.instantweather.databinding.FragmentForecastBinding
 import com.example.instantweather.databinding.WeatherItemBinding
+import com.example.instantweather.ui.MainActivity
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.util.*
 
@@ -28,7 +29,6 @@ class ForecastFragment : Fragment() {
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
         setupCalendar()
-
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -109,6 +109,17 @@ class ForecastFragment : Fragment() {
             override fun onWeekChange(position: Int) {
             }
         })
+    }
+
+    fun onPermissionResultForecast(permissionGranted: Boolean){
+      if (!permissionGranted){
+          binding.apply {
+              forecastProgressBar.visibility = View.GONE
+              forecastRecyclerview.visibility = View.GONE
+              calendarView.visibility = View.GONE
+              weatherForecastText.visibility = View.GONE
+          }
+      }
     }
 
 }

@@ -25,16 +25,27 @@ private val retrofit = Retrofit.Builder()
 interface WeatherApiService {
 
     @GET("/data/2.5/weather")
-    suspend fun getCurrentWeather(@Query("q") location: String,
-                                  @Query("appid") apiKey: String): NetworkWeather
+    suspend fun getSpecificWeather(
+        @Query("q") location: String,
+        @Query("appid") apiKey: String
+    ): NetworkWeather
+
+    @GET("/data/2.5/weather")
+    suspend fun getCurrentWeather(
+        @Query("lat") latitude: Double,
+        @Query("lon") longitude: Double,
+        @Query("appid") apiKey: String
+    ): NetworkWeather
 
     @GET("data/2.5/forecast")
-    suspend fun getWeatherForecast(@Query("id")cityId: Int,
-                                  @Query("appid") apiKey: String): NetworkWeatherForecastResponse
+    suspend fun getWeatherForecast(
+        @Query("id") cityId: Int,
+        @Query("appid") apiKey: String
+    ): NetworkWeatherForecastResponse
 }
 
-object WeatherApi{
+object WeatherApi {
     val retrofitService: WeatherApiService by lazy {
-      retrofit.create(WeatherApiService::class.java)
+        retrofit.create(WeatherApiService::class.java)
     }
 }

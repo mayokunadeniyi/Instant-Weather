@@ -9,22 +9,31 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.instantweather.databinding.FragmentHomeBinding
+import com.example.instantweather.ui.MainActivity
+import com.example.instantweather.utils.GpsUtil
+import com.example.instantweather.utils.SharedPreferenceHelper
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(){
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeFragmentViewModel
+    private var isGpsEnabled = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentHomeBinding.inflate(inflater)
-        // Inflate the layout for this fragment
+        viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
+        (activity as MainActivity).checkLocationPermission()
+        GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener{
+            override fun gpsStatus(isGPSEnabled: Boolean) {
+                this@HomeFragment.isGpsEnabled = isGPSEnabled
+            }
+        })
         return binding.root
     }
 
@@ -32,30 +41,40 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
         binding.viewModel = viewModel
-
-
-        observeViewModels()
+        hideAllViews(true)
         setUpRefreshLayout()
 
     }
 
     private fun setUpRefreshLayout() {
-        binding.errorText.visibility = View.GONE
         binding.swipeRefreshId.setOnRefreshListener {
+            binding.errorText.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+            hideViews()
             viewModel.refreshBypassCache()
             binding.swipeRefreshId.isRefreshing = false
         }
     }
 
+
+    fun onPermissionResultHome(permissionGranted: Boolean){
+        if (permissionGranted){
+            hideAllViews(false)
+            isGpsEnabled = true
+            observeViewModels()
+        }
+    }
+
+
     private fun observeViewModels() {
+
         viewModel.dataFetch.observe(viewLifecycleOwner, Observer { state ->
-            if (state == true){
+            if (state == true) {
                 unHideViews()
                 binding.errorText.visibility = View.GONE
 
-            }else if (state == false){
+            } else if (state == false) {
                 hideViews()
                 binding.apply {
                     errorText.visibility = View.VISIBLE
@@ -66,13 +85,13 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
-            if (state == true){
+            if (state == true) {
                 hideViews()
                 binding.apply {
                     progressBar.visibility = View.VISIBLE
                     loadingText.visibility = View.VISIBLE
                 }
-            }else if (state == false){
+            } else if (state == false) {
                 unHideViews()
                 binding.apply {
                     progressBar.visibility = View.GONE
@@ -90,8 +109,9 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun hideViews(){
+    private fun hideViews() {
         binding.apply {
+            weatherInText.visibility = View.GONE
             weatherDet.visibility = View.GONE
             separator.visibility = View.GONE
             dateText.visibility = View.GONE
@@ -101,14 +121,31 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun unHideViews(){
+    private fun unHideViews() {
         binding.apply {
+            weatherInText.visibility = View.VISIBLE
             weatherDet.visibility = View.VISIBLE
             separator.visibility = View.VISIBLE
             dateText.visibility = View.VISIBLE
             weatherIcon.visibility = View.VISIBLE
             weatherTemperature.visibility = View.VISIBLE
             weatherMain.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideAllViews(state: Boolean) {
+        if (state) {
+            binding.apply {
+                weatherDet.visibility = View.GONE
+                separator.visibility = View.GONE
+                dateText.visibility = View.GONE
+                weatherIcon.visibility = View.GONE
+                weatherTemperature.visibility = View.GONE
+                weatherMain.visibility = View.GONE
+                errorText.visibility = View.GONE
+                progressBar.visibility = View.GONE
+                loadingText.visibility = View.GONE
+            }
         }
     }
 }
