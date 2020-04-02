@@ -1,4 +1,4 @@
-package com.example.instantweather.utils
+package com.example.instantweather.utils.typeconverters
 
 import androidx.room.TypeConverter
 import com.example.instantweather.data.model.City
