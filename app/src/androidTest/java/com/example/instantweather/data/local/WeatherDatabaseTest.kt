@@ -8,6 +8,7 @@ import com.example.instantweather.data.local.dao.WeatherDao
 import com.example.instantweather.data.local.entity.DBWeather
 import com.example.instantweather.data.model.NetworkWeatherCondition
 import com.example.instantweather.data.model.NetworkWeatherDescription
+import com.example.instantweather.data.model.Wind
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -50,7 +51,7 @@ class WeatherDatabaseTest {
     fun insertWeatherAndReadInList(){
         val weatherDto = NetworkWeatherDescription(1L,"MockStuff","MockStuff","MockStuff")
         val mainDto = NetworkWeatherCondition(20.0,30.0,40.0)
-        val weather = DBWeather(1,23445,"Lagos", listOf(weatherDto),mainDto)
+        val weather = DBWeather(1,23445,"Lagos", Wind(2.33,12), listOf(weatherDto),mainDto)
 
         runBlocking {
             weatherDao.insertWeather(weather)
@@ -66,7 +67,7 @@ class WeatherDatabaseTest {
     fun insertWeatherAndReadData(){
         val weatherDto = NetworkWeatherDescription(1L,"MockStuff","MockStuff","MockStuff")
         val mainDto = NetworkWeatherCondition(20.0,30.0,40.0)
-        val weather = DBWeather(1,23445,"Lagos", listOf(weatherDto),mainDto)
+        val weather = DBWeather(1,23445,"Lagos", Wind(2.33,12),listOf(weatherDto),mainDto)
 
         runBlocking {
             weatherDao.insertWeather(weather)
