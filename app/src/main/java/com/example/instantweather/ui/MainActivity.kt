@@ -15,6 +15,7 @@ import com.example.instantweather.R
 import com.example.instantweather.databinding.ActivityMainBinding
 import com.example.instantweather.ui.home.HomeFragment
 import com.example.instantweather.ui.home.LocationLiveData
+import com.example.instantweather.utils.ACTIVE_TAB
 import com.example.instantweather.utils.LOCATION_REQUEST
 import com.example.instantweather.utils.SharedPreferenceHelper
 import com.google.android.gms.location.LocationCallback
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        if (savedInstanceState != null){
+            val pos = savedInstanceState.getInt(ACTIVE_TAB)
+            binding.bottomNavBar.setActiveItem(pos)
+        }
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(applicationContext)
         locationLiveData = LocationLiveData(this)
         binding.bottomNavBar.setOnItemSelectedListener(object : OnItemSelectedListener {
@@ -56,6 +61,13 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bottomNavActiveTabPos = binding.bottomNavBar.getActiveItem()
+        outState.putInt(ACTIVE_TAB,bottomNavActiveTabPos)
     }
 
     fun checkLocationPermission() {

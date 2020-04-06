@@ -6,3 +6,4 @@ package com.example.instantweather.utils
 
 const val GPS_REQUEST = 101
 const val LOCATION_REQUEST = 123
+const val ACTIVE_TAB = "Active Tab Position"
