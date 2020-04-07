@@ -89,11 +89,14 @@ class InstantWeatherRepository(
     }
 
     fun getRemoteWeatherData() {
-        Timber.i("Getting data from remote yooo!")
         val locationRequest = LocationRequest()
             .setInterval(2000)
             .setFastestInterval(2000)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest,null)
+
+        Timber.i("Getting data from remote yooo!")
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
             object : LocationCallback() {
@@ -110,25 +113,22 @@ class InstantWeatherRepository(
             },
             Looper.myLooper())
 
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-            Timber.i("Please work ${location.longitude} and ${location.latitude}")
-            Timber.i("Lat is ${latitude} and Long is ${longitude}")
-            launch {
-                Timber.i("Getting weather response........")
-                try {
-                    val networkWeather =
-                        WeatherApi.retrofitService.getCurrentWeather(latitude, longitude, API_KEY)
-                    //Save city ID to shared preferences
-                    prefHelper.saveCityId(networkWeather.cityId)
-                    storeRemoteWeatherDataLocally(networkWeather)
 
-                    Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
+        launch {
+            Timber.i("Getting weather response........")
+            try {
+                val networkWeather =
+                    WeatherApi.retrofitService.getCurrentWeather(latitude, longitude, API_KEY)
+                //Save city ID to shared preferences
+                prefHelper.saveCityId(networkWeather.cityId)
+                storeRemoteWeatherDataLocally(networkWeather)
 
-                } catch (e: Exception) {
-                    weatherIsLoading.postValue(false)
-                    weatherDataFetchState.postValue(false)
-                    Timber.i("AN ERROR OCCURRED ${e.message}")
-                }
+                Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
+
+            } catch (e: Exception) {
+                weatherIsLoading.postValue(false)
+                weatherDataFetchState.postValue(false)
+                Timber.i("AN ERROR OCCURRED ${e.message}")
             }
         }
     }
