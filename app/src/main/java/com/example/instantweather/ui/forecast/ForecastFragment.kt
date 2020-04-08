@@ -1,21 +1,28 @@
 package com.example.instantweather.ui.forecast
 
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.instantweather.data.model.WeatherForecast
 
 import com.example.instantweather.databinding.FragmentForecastBinding
-import com.example.instantweather.utils.convertDayToString
-import com.example.instantweather.utils.formatDate
-import com.example.instantweather.utils.formatDay
+import com.example.instantweather.utils.*
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import timber.log.Timber
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.FormatStyle
+import java.time.temporal.TemporalField
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -94,13 +101,21 @@ class ForecastFragment : Fragment() {
             override fun onDayChanged() {
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDaySelect() {
                 val currentDay = binding.calendarView.selectedDay
+                val checker = currentDay?.day!!
+
+
+
 
                 val currentList = weatherForecastAdapter.currentList
-
-                weatherForecastAdapter.submitList(currentList.subList(0,3))
-
+                weatherForecastAdapter.submitList(currentList.filter {
+                    val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
+                    val dv = format.parse(it.date)
+                    val sec = dv.date
+                    sec <= checker
+                })
                 weatherForecastAdapter.notifyDataSetChanged()
 
             }
