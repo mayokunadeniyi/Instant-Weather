@@ -78,12 +78,10 @@ class ForecastFragment : Fragment() {
             if (state) {
                 binding.apply {
                     forecastProgressBar.visibility = View.VISIBLE
-                    weatherForecastText.visibility = View.GONE
                 }
             } else {
                 binding.apply {
                     forecastProgressBar.visibility = View.GONE
-                    weatherForecastText.visibility = View.VISIBLE
                 }
             }
         })
@@ -141,7 +139,6 @@ class ForecastFragment : Fragment() {
                 forecastProgressBar.visibility = View.GONE
                 forecastRecyclerview.visibility = View.GONE
                 calendarView.visibility = View.GONE
-                weatherForecastText.visibility = View.GONE
             }
         }
     }
