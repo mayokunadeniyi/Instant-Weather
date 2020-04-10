@@ -8,32 +8,36 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.instantweather.ui.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        android:label="@string/home_dashboard"
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_historyFragment"
-            app:destination="@id/detailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/detailFragment"
-        android:name="com.example.instantweather.ui.detail.DetailFragment"
-        android:label="DetailFragment"
-        tools:layout="@layout/fragment_detail">
-        <action
-            android:id="@+id/action_historyFragment_to_chartFragment"
+            android:id="@+id/action_homeFragment_to_forecastFragment"
             app:destination="@id/forecastFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.instantweather.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forecastFragment"
         android:name="com.example.instantweather.ui.forecast.ForecastFragment"
-        android:label="ForecastFragment"
+        android:label="@string/forecast"
         tools:layout="@layout/fragment_forecast">
         <action
             android:id="@+id/action_chartFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_forecastFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

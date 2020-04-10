@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home_id"
+        android:id="@+id/homeFragment"
         android:title="@string/home_dashboard"
         android:icon="@drawable/ic_home"/>
 
     <item
-        android:id="@+id/chart_id"
-        android:title="@string/chart"
+        android:id="@+id/forecastFragment"
+        android:title="@string/forecast"
         android:icon="@drawable/ic_insert_chart"/>
 
     <item
-        android:id="@+id/settings_id"
+        android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings"/>
 

@@ -4,13 +4,13 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.instantweather.R
 import com.example.instantweather.databinding.ActivityMainBinding
 import com.example.instantweather.ui.home.HomeFragment
@@ -18,13 +18,7 @@ import com.example.instantweather.ui.home.LocationLiveData
 import com.example.instantweather.utils.ACTIVE_TAB
 import com.example.instantweather.utils.LOCATION_REQUEST
 import com.example.instantweather.utils.SharedPreferenceHelper
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
-import me.ibrahimsn.lib.OnItemSelectedListener
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -33,42 +27,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        if (savedInstanceState != null){
-            val pos = savedInstanceState.getInt(ACTIVE_TAB)
-            binding.bottomNavBar.setActiveItem(pos)
-        }
+        setupNavigation()
+
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(applicationContext)
         locationLiveData = LocationLiveData(this)
-        binding.bottomNavBar.setOnItemSelectedListener(object : OnItemSelectedListener {
-            override fun onItemSelect(pos: Int) {
-                val homeFragment = 0
-                val chartFragment = 1
-                val settingsFragment = 2
-                val navController = NavHostFragment.findNavController(fragment)
-                when (pos) {
-                    homeFragment -> {
-                        navController.navigate(R.id.homeFragment)
-                    }
-
-                    chartFragment -> {
-                        navController.navigate(R.id.forecastFragment)
-                    }
-
-                    settingsFragment -> {
-                        navController.navigate(R.id.settingsFragment)
-                    }
-                }
-            }
-
-        })
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val bottomNavActiveTabPos = binding.bottomNavBar.getActiveItem()
-        outState.putInt(ACTIVE_TAB,bottomNavActiveTabPos)
+    private fun setupNavigation() {
+        val navController = findNavController(R.id.mainNavFragment)
+        setupActionBarWithNavController(navController)
+        binding.bottomNavBar.setupWithNavController(navController)
     }
+
+    override fun onSupportNavigateUp() = findNavController(R.id.mainNavFragment).navigateUp()
 
     fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -109,7 +81,10 @@ class MainActivity : AppCompatActivity() {
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
             LOCATION_REQUEST
         )
     }
@@ -134,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun notifyHomeFragment(permissionGranted: Boolean) {
-        val activeFragment = fragment.childFragmentManager.primaryNavigationFragment
+        val activeFragment = mainNavFragment.childFragmentManager.primaryNavigationFragment
         if (activeFragment is HomeFragment) {
             activeFragment.onPermissionResultHome(permissionGranted)
         }

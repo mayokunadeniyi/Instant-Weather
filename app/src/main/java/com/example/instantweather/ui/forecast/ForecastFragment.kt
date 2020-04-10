@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -99,6 +100,7 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onDayChanged() {
+                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
             }
 
             @RequiresApi(Build.VERSION_CODES.O)
@@ -114,7 +116,7 @@ class ForecastFragment : Fragment() {
                     val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
                     val dv = format.parse(it.date)
                     val sec = dv.date
-                    sec <= checker
+                    sec == checker
                 })
                 weatherForecastAdapter.notifyDataSetChanged()
 
@@ -124,9 +126,11 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onMonthChange() {
+                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
             }
 
             override fun onWeekChange(position: Int) {
+                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
             }
         })
     }

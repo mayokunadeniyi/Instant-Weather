@@ -8,29 +8,8 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/collapsingToolbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/primaryColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/instant_weather"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/primaryTextColor"
-                android:layout_margin="15dp"
-                android:textSize="20sp" />
-        </com.google.android.material.appbar.MaterialToolbar>
-
         <fragment
-            android:id="@+id/fragment"
+            android:id="@+id/mainNavFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -38,19 +17,15 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/collapsingToolbarLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/nav_graph" />
 
-        <me.ibrahimsn.lib.SmoothBottomBar
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavBar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:backgroundColor="#B9CFED"
-            app:iconTint="#6A6A6A"
-            app:iconTintActive="#000"
-            app:indicatorColor="#FFF"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/home_bottom_nav"
             app:textColor="#000000" />
