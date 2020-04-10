@@ -98,9 +98,6 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    //SmoothBottomBar
-    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7'
-
     // Retrofit Coroutines Support
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
 
