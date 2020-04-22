@@ -2,7 +2,7 @@
     <string name="app_name">Instant Weather</string>
 
     <string name="home_dashboard">Home</string>
-    <string name="forecast">Weather Forecast</string>
+    <string name="forecast">Forecast</string>
     <string name="settings">Settings</string>
     <string name="error_occurred">Oops! An error occurred. \n\n Please check your internet connection.
         \n\n Swipe down to retry.</string>

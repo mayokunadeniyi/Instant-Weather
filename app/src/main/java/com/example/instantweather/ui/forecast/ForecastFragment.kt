@@ -15,14 +15,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.instantweather.databinding.FragmentForecastBinding
 import com.example.instantweather.utils.*
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import com.stone.vega.library.VegaLayoutManager
 import timber.log.Timber
-import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.FormatStyle
-import java.time.temporal.TemporalField
 import java.util.*
 
 /**
@@ -48,6 +43,7 @@ class ForecastFragment : Fragment() {
 
         val recyclerView = binding.forecastRecyclerview
 
+        recyclerView.layoutManager = VegaLayoutManager()
         recyclerView.adapter = weatherForecastAdapter
 
         viewModel = ViewModelProviders.of(this).get(ForecastFragmentViewModel::class.java)
@@ -98,16 +94,13 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onDayChanged() {
-                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
+
             }
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDaySelect() {
                 val currentDay = binding.calendarView.selectedDay
                 val checker = currentDay?.day!!
-
-
-
 
                 val currentList = weatherForecastAdapter.currentList
                 weatherForecastAdapter.submitList(currentList.filter {
@@ -124,11 +117,11 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onMonthChange() {
-                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"Month changed",Toast.LENGTH_LONG).show()
             }
 
             override fun onWeekChange(position: Int) {
-                Toast.makeText(context,"Date changed",Toast.LENGTH_LONG).show()
+
             }
         })
     }
