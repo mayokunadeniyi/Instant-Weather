@@ -96,7 +96,7 @@ dependencies {
     implementation "androidx.preference:preference:$preferencesVersion"
 
     //Timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 
     // Retrofit Coroutines Support
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
@@ -122,5 +122,8 @@ dependencies {
 
     //Google Play Services
     implementation "com.google.android.gms:play-services-location:$googlePlayLocation"
+
+    //VegaLayoutManager
+    implementation "com.stone.vega.library:VegaLayoutManager:$vega_version"
 
 }

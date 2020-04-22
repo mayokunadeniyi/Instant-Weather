@@ -52,4 +52,6 @@ ext {
     testCoroutineRuleVersion = '1.0.1'
     calendarVersion = 'v1.0.3'
     googlePlayLocation = '17.0.0'
+    timberVersion = '4.7.1'
+    vega_version = '1.0.6'
 }
