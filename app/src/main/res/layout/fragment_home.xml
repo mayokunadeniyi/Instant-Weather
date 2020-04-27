@@ -151,12 +151,10 @@
                     android:id="@+id/weather_det"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="78dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/separator">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
                         android:id="@+id/imageView12"

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.example.instantweather.data.model.LocationModel
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 /**

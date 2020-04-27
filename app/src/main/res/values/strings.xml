@@ -23,4 +23,5 @@
     <string name="pressure_symbol">hPa</string>
     <string name="humidity_symbol">%</string>
     <string name="instant_weather">Instant Weather</string>
+    <string name="no_forecast_info">Weather forecast for selected day is unavailable.</string>
 </resources>

@@ -55,7 +55,6 @@ class InstantWeatherRepository(
 
     fun refreshWeatherData() {
         location = prefHelper.getLocation()
-        Timber.i("We are still checking $location")
         weatherIsLoading.value = true
         checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
@@ -90,11 +89,9 @@ class InstantWeatherRepository(
 
 
     fun getRemoteWeatherData() {
-        Timber.i("The now now is $location")
+        Timber.i("Getting data from remote!")
         if (location != null) {
-            Timber.i("The main loc now is $location")
             launch {
-                Timber.i("Getting weather response........")
                 try {
                     val networkWeather =
                         WeatherApi.retrofitService.getCurrentWeather(
@@ -105,9 +102,7 @@ class InstantWeatherRepository(
                     //Save city ID to shared preferences
                     prefHelper.saveCityId(networkWeather.cityId)
                     storeRemoteWeatherDataLocally(networkWeather)
-
                     Timber.i("WEATHER RESPONSE HAS BEEN RECEIVED......")
-
                 } catch (e: Exception) {
                     weatherIsLoading.postValue(false)
                     weatherDataFetchState.postValue(false)
@@ -118,7 +113,7 @@ class InstantWeatherRepository(
     }
 
     private fun getLocalWeatherData() {
-        Timber.i("Getting data from local broo!")
+        Timber.i("Getting data from cache!")
         launch {
             withContext(Dispatchers.IO) {
                 //Get the weather from the database

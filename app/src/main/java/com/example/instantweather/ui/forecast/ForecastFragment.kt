@@ -7,13 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.instantweather.databinding.FragmentForecastBinding
-import com.example.instantweather.utils.*
+import com.example.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import com.stone.vega.library.VegaLayoutManager
 import timber.log.Timber
@@ -99,17 +98,28 @@ class ForecastFragment : Fragment() {
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDaySelect() {
-                val currentDay = binding.calendarView.selectedDay
-                val checker = currentDay?.day!!
+                val selectedDay = binding.calendarView.selectedDay
+                if (selectedDay != null) {
+                    val checkerDay = selectedDay.day
+                    val checkerMonth = selectedDay.month
+                    val checkerYear = selectedDay.year
 
-                val currentList = weatherForecastAdapter.currentList
-                weatherForecastAdapter.submitList(currentList.filter {
-                    val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
-                    val dv = format.parse(it.date)
-                    val sec = dv.date
-                    sec == checker
-                })
-                weatherForecastAdapter.notifyDataSetChanged()
+                    val list = viewModel.weatherForecast.value
+                    val filteredList = list?.filter { weatherForecast ->
+                        val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
+                        val formattedDate = format.parse(weatherForecast.date)
+                        val weatherForecastDay = formattedDate?.date
+                        val weatherForecastMonth = formattedDate?.month
+                        val weatherForecastYear = formattedDate?.year
+                        //This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
+                        weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
+                            1900
+                        ) == checkerYear
+                    }
+                    weatherForecastAdapter.submitList(filteredList)
+                    weatherForecastAdapter.notifyDataSetChanged()
+                    binding.emptyListText.showIf { filteredList!!.isEmpty() }
+                }
 
             }
 
@@ -117,7 +127,7 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onMonthChange() {
-                Toast.makeText(context,"Month changed",Toast.LENGTH_LONG).show()
+
             }
 
             override fun onWeekChange(position: Int) {
