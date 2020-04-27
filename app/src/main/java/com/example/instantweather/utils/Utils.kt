@@ -2,12 +2,15 @@ package com.example.instantweather.utils
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
+import android.location.Location
 import android.os.Build
+import android.view.View
 import androidx.annotation.RequiresApi
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Mayokun Adeniyi on 30/03/2020.
@@ -63,4 +66,23 @@ fun convertToInt(stuff: Array<Char>): Int{
     }
 
     return stringBuilder.toString().toInt()
+}
+
+inline fun <T: View> T.showIf(condition: (T) -> Boolean){
+    visibility = if (condition(this)){
+        View.VISIBLE
+    }else{
+        View.GONE
+    }
+}
+
+/**
+ * Returns the `location` object as a human readable string.
+ */
+fun Location?.toText():String {
+    return if (this != null) {
+        "($latitude, $longitude)"
+    } else {
+        "Unknown location"
+    }
 }

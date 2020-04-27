@@ -7,6 +7,7 @@ import com.example.instantweather.data.local.WeatherDatabase
 import com.example.instantweather.data.model.Weather
 import com.example.instantweather.data.repository.InstantWeatherRepository
 import com.example.instantweather.ui.BaseViewModel
+import com.example.instantweather.utils.LocationLiveData
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,12 +18,14 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     private val database = WeatherDatabase.getInstance(getApplication())
     private var repository: InstantWeatherRepository
+    private val locationData = LocationLiveData(application)
 
     init {
         repository = InstantWeatherRepository(database, application)
-        repository.refreshWeatherData()
         currentSystemTime()
     }
+
+    val getLocationLiveData = locationData
 
     //Weather[Domain Model] from repository layer to be used in the application
     val weather: LiveData<Weather> = repository.weather
@@ -35,12 +38,17 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
 
 
+
     @SuppressLint("SimpleDateFormat")
     fun currentSystemTime(): String{
         val currentTime = System.currentTimeMillis()
         val date = Date(currentTime)
         val dateFormat = SimpleDateFormat("EEEE MMM d, hh:mm aaa")
         return dateFormat.format(date)
+    }
+
+    fun shouldRunAfterLocation(){
+        repository.refreshWeatherData()
     }
 
     fun refreshBypassCache() {

@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.example.instantweather.data.model.LocationModel
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-28.
@@ -16,10 +17,8 @@ class SharedPreferenceHelper {
     companion object{
 
         private const val PREF_TIME = "Pref time"
-        private const val CITY_NAME = "City Name"
         private const val CITY_ID = "City ID"
-        private const val LATITUDE = "LATITUDE"
-        private const val LONGITUDE = "LONGITUDE"
+        private const val LOCATION = "LOCATION"
         private const val CACHE_DURATION = "pref_cache_duration"
         private var prefs: SharedPreferences? = null
 
@@ -57,21 +56,15 @@ class SharedPreferenceHelper {
 
     fun getCityId() = prefs?.getInt(CITY_ID,0)
 
-    fun saveLongitude(lon: Double){
+    fun saveLocation(location: LocationModel){
+        val jsonString = GsonBuilder().create().toJson(location)
         prefs?.edit(commit = true){
-            putLong(LONGITUDE,lon.toRawBits())
+            putString(LOCATION,jsonString)
         }
     }
 
-    fun getLongitude() = prefs!!.getLong(LONGITUDE,0)
-
-    fun saveLatitude(lat: Double){
-        prefs?.edit(commit = true){
-            putLong(LATITUDE,lat.toRawBits())
-        }
+    fun getLocation(): LocationModel?{
+        val value = prefs?.getString(LOCATION,null)
+        return GsonBuilder().create().fromJson(value,LocationModel::class.java)
     }
-    
-    fun getLatitude() = prefs!!.getLong(LATITUDE,0)
-
-
 }
