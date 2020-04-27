@@ -24,4 +24,8 @@
     <string name="humidity_symbol">%</string>
     <string name="instant_weather">Instant Weather</string>
     <string name="no_forecast_info">Weather forecast for selected day is unavailable.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
 </resources>

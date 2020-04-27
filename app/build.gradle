@@ -37,7 +37,7 @@ android {
         enabledForTests = true
     }
 
-    testOptions.unitTests{
+    testOptions.unitTests {
         includeAndroidResources = true
     }
 

@@ -13,6 +13,10 @@
         android:icon="@drawable/ic_insert_chart"/>
 
     <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search" />
+    <item
         android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings"/>
