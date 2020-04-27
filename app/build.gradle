@@ -15,7 +15,7 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.instantweather"
         minSdkVersion 21
@@ -59,7 +59,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13'
@@ -125,5 +125,9 @@ dependencies {
 
     //VegaLayoutManager
     implementation "com.stone.vega.library:VegaLayoutManager:$vega_version"
+
+    //Lifecycle KTX
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
 }
