@@ -5,7 +5,11 @@ import android.content.res.Resources
 import android.location.Location
 import android.os.Build
 import android.view.View
+import android.view.autofill.AutofillValue
+import android.widget.SearchView
 import androidx.annotation.RequiresApi
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat

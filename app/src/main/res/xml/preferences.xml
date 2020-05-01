@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory>
         <EditTextPreference
-            android:defaultValue="10"
+            android:defaultValue="900"
             android:inputType="number"
-            android:key="pref_cache_duration"
+            android:key="cache_duration"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="Set a time to get new weather data"

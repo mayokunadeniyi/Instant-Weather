@@ -13,7 +13,7 @@ import com.example.instantweather.databinding.WeatherItemBinding
  * Created by Mayokun Adeniyi on 15/03/2020.
  */
 
-class WeatherForecastAdapter: ListAdapter<WeatherForecast,WeatherForecastAdapter.ViewHolder>(WeatherForecastDiffCallBack()) {
+class WeatherForecastAdapter(val clickListener: ForecastOnclickListener): ListAdapter<WeatherForecast,WeatherForecastAdapter.ViewHolder>(WeatherForecastDiffCallBack()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,6 +23,9 @@ class WeatherForecastAdapter: ListAdapter<WeatherForecast,WeatherForecastAdapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val weatherForecast = getItem(position)
         holder.bind(weatherForecast)
+        holder.itemView.setOnClickListener{
+            clickListener.onClick()
+        }
     }
 
     class ViewHolder(private val binding: WeatherItemBinding): RecyclerView.ViewHolder(binding.root){
@@ -54,5 +57,9 @@ class WeatherForecastAdapter: ListAdapter<WeatherForecast,WeatherForecastAdapter
         ): Boolean {
             return oldItem == newItem
         }
+    }
+
+    class ForecastOnclickListener(){
+        fun onClick(){}
     }
 }

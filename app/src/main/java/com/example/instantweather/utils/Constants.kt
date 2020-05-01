@@ -8,3 +8,4 @@ const val GPS_REQUEST = 101
 const val ACTIVE_TAB = "Active Tab Position"
 const val WEATHER_DATE_FORMAT = "YYYY-MM-DD HH:mm:ss"
 const val CALENDAR_DATE_FORMAT = "YYYY-MM-DD HH:mm:ss"
+const val ALGOLIA_INDEX_NAME = "prod_LOCATIONS"

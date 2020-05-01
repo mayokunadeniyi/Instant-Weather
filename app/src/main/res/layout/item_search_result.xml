@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="searchResult"
+            type="com.example.instantweather.data.model.SearchResult" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/listPreferredItemHeightSmall"
+        android:layout_marginBottom="0.5dp"
+        app:cardCornerRadius="0dp">
+
+        <TextView
+            android:id="@+id/location_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{String.valueOf(searchResult.name).concat(String.valueOf(',').concat(searchResult.subcountry)).concat(String.valueOf(',').concat(searchResult.country))}"
+            android:textAppearance="?attr/textAppearanceBody1"
+            tools:text="Osogbo, Osun, Nigeria" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

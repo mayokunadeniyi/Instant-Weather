@@ -17,16 +17,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
+        <com.skydoves.elasticviews.ElasticCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:elevation="1dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/primaryLightColor"
+            android:elevation="12dp"
+            app:cardView_duration="250"
+            app:cardView_scale="0.8"
             android:layout_margin="17dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="124dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="40dp"
+                    android:src="@drawable/ic_big_cloud" />
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_big_cloud" />
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="124dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_cloud" />
+
 
                 <TextView
                     android:id="@+id/weather_main"
@@ -35,7 +58,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10dp"
                     android:textSize="27sp"
-                    android:textColor="#000"
+                    android:textColor="#FFFFFF"
                     android:text="@{weatherForecastDescription.main}"
                     android:layout_marginTop="20dp"
                     tools:text="Clouds" />
@@ -49,7 +72,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     setIcon="@{weatherForecastDescription.description}"
-                    app:weatherIconColor="#000000" />
+                    app:weatherIconColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/weather_description"
@@ -58,6 +81,7 @@
                     android:layout_below="@id/weather_main"
                     android:layout_marginStart="10dp"
                     android:textSize="14sp"
+                    android:textColor="#FFFFFF"
                     android:layout_marginTop="5dp"
                     android:text="@{weatherForecastDescription.description}"
                     tools:text="Very cloudy" />
@@ -68,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/weather_description"
                     android:layout_marginStart="10dp"
+                    android:textColor="#FFFFFF"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="140dp"
                     android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.temp).concat(@string/temp_unit)}"
@@ -91,6 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
+                        android:textColor="#FFFFFF"
                         android:layout_weight="1"
                         android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.humidity).concat(@string/humidity_symbol)}"
                         android:textSize="14sp"
@@ -106,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
+                        android:textColor="#FFFFFF"
                         android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.pressure).concat(@string/pressure_symbol)}"
                         android:textSize="14sp"
                         tools:text="40" />
@@ -120,6 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
+                        android:textColor="#FFFFFF"
                         android:text="@{String.valueOf(weatherForecast.wind.speed).concat(@string/wind_speed_symbol)}"
                         android:textSize="14sp"
                         tools:text="40" />
@@ -132,10 +160,11 @@
                     android:text="@{weatherForecast.date}"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="10dp"
                     android:layout_below="@id/weather_details" />
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+        </com.skydoves.elasticviews.ElasticCardView>
     </LinearLayout>
 </layout>

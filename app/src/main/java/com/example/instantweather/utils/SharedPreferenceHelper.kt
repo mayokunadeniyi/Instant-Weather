@@ -15,10 +15,12 @@ class SharedPreferenceHelper {
 
     companion object{
 
-        private const val PREF_TIME = "Pref time"
+        private const val WEATHER_PREF_TIME = "Weather pref time"
+        private const val WEATHER_FORECAST_PREF_TIME = "Forecast pref time"
         private const val CITY_ID = "City ID"
         private const val LOCATION = "LOCATION"
         private const val CACHE_DURATION = "pref_cache_duration"
+        private const val SEARCH_LOCATION = "Search Location"
         private var prefs: SharedPreferences? = null
 
         @Volatile
@@ -36,15 +38,23 @@ class SharedPreferenceHelper {
         }
     }
 
-    fun saveUpdateTime(time: Long){
+    fun saveTimeOfInitialWeatherFetch(time: Long){
         prefs?.edit(commit = true){
-            putLong(PREF_TIME,time)
+            putLong(WEATHER_PREF_TIME,time)
         }
     }
 
-    fun getUpdateTime() = prefs?.getLong(PREF_TIME,0L)
+    fun getTimeOfInitialWeatherFetch() = prefs?.getLong(WEATHER_PREF_TIME,0L)
 
-    fun getCacheDuration() = prefs?.getString("pref_cache_duration","0")
+    fun saveTimeOfInitialWeatherForecastFetch(time: Long){
+        prefs?.edit(commit = true){
+            putLong(WEATHER_FORECAST_PREF_TIME,time)
+        }
+    }
+
+    fun getTimeOfInitialWeatherForecastFetch() = prefs?.getLong(WEATHER_FORECAST_PREF_TIME,0L)
+
+    fun getUserSetCacheDuration() = prefs?.getString("cache_duration","0")
 
 
     fun saveCityId(cityId: Int){
@@ -66,4 +76,12 @@ class SharedPreferenceHelper {
         val value = prefs?.getString(LOCATION,null)
         return GsonBuilder().create().fromJson(value,LocationModel::class.java)
     }
+
+    fun saveSearchLocation(name: String){
+        prefs?.edit(commit = true){
+            putString(SEARCH_LOCATION,name)
+        }
+    }
+
+    fun getSearchLocation() = prefs?.getString(SEARCH_LOCATION,null)
 }

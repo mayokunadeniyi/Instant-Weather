@@ -13,36 +13,48 @@
         <action
             android:id="@+id/action_homeFragment_to_forecastFragment"
             app:destination="@id/forecastFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.instantweather.ui.settings.SettingsFragment"
-        android:label="@string/settings">
-        <action
-            android:id="@+id/action_settingsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_forecastFragment"
-            app:destination="@id/forecastFragment" />
-    </fragment>
+        android:label="@string/settings"/>
     <fragment
         android:id="@+id/forecastFragment"
         android:name="com.example.instantweather.ui.forecast.ForecastFragment"
         android:label="@string/forecast"
         tools:layout="@layout/fragment_forecast">
         <action
-            android:id="@+id/action_chartFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_forecastFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_forecastFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.instantweather.ui.search.SearchFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchDetailFragment"
+            app:destination="@id/searchDetailFragment"
+            app:enterAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_up" />
+        <action
+            android:id="@+id/action_searchFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_search_detail"
+        android:id="@+id/searchDetailFragment"
+        android:name="com.example.instantweather.ui.searchdetail.SearchDetailFragment"
+        android:label="@string/search" >
+        <argument
+            android:name="searchWeatherResult"
+            app:argType="com.example.instantweather.data.model.Weather"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="location"
+            app:argType="string"
+            app:nullable="true"
+            />
+    </fragment>
 </navigation>

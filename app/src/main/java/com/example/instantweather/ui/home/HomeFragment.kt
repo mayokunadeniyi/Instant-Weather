@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.instantweather.databinding.FragmentHomeBinding
 import com.example.instantweather.ui.MainActivity
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
         GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
@@ -156,7 +157,6 @@ class HomeFragment : Fragment() {
                     }
                 }
                 false -> {
-                   // unHideViews()
                     binding.apply {
                         progressBar.visibility = View.GONE
                         loadingText.visibility = View.GONE

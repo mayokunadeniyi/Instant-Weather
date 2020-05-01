@@ -1,11 +1,6 @@
 package com.example.instantweather.data.repository
 
 import android.app.Application
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.location.Location
-import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.example.instantweather.BuildConfig
 import com.example.instantweather.data.local.WeatherDatabase
@@ -13,17 +8,13 @@ import com.example.instantweather.data.model.*
 import com.example.instantweather.data.remote.WeatherApi
 import com.example.instantweather.mapper.WeatherForecastMapperLocal
 import com.example.instantweather.mapper.WeatherMapperLocal
+import com.example.instantweather.mapper.WeatherMapperRemote
 import com.example.instantweather.ui.BaseViewModel
 import com.example.instantweather.utils.SharedPreferenceHelper
 import com.example.instantweather.mapper.toDatabaseModel
-import com.example.instantweather.utils.LocationLiveData
 import com.example.instantweather.utils.convertKelvinToCelsius
-import com.google.android.gms.location.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
@@ -36,29 +27,36 @@ class InstantWeatherRepository(
 
     private val weatherMapperLocal = WeatherMapperLocal()
     private val weatherForecastMapperLocal = WeatherForecastMapperLocal()
+    private val weatherMapperRemote = WeatherMapperRemote()
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
-    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L
+    //This sets the time before data is gotten from remote to 15 minutes
+    private var refreshTime = 900L * 1000L * 1000L * 1000L
     private val API_KEY = BuildConfig.API_KEY
     private val dao = database.weatherDao
 
-    //Weather[Domain Model] exposed to the ViewModel to be used in application
-    var weather = MutableLiveData<Weather>()
+    //Weather[Domain Model] exposed to be used in the HomeFragmentViewModel
+    val weather = MutableLiveData<Weather>()
     val weatherDataFetchState = MutableLiveData<Boolean>()
     val weatherIsLoading = MutableLiveData<Boolean>()
 
-    //WeatherForecast[Domain Model] exposed to the ViewModel to be used in application
-    var weatherForecast = MutableLiveData<List<WeatherForecast>>()
+    //WeatherForecast[Domain Model] exposed to be used in the ForecastFragmentViewModel
+    val weatherForecast = MutableLiveData<List<WeatherForecast>>()
     val weatherForecastDataFetchState = MutableLiveData<Boolean>()
     val weatherForecastIsLoading = MutableLiveData<Boolean>()
 
-    private var location : LocationModel? = null
+    //Weather[Domain Model] exposed to be used in the SearchFragmentViewModel
+    val searchWeather = MutableLiveData<Weather>()
+    val searchWeatherState = MutableLiveData<Boolean>()
+    val searchWeatherIsLoading = MutableLiveData<Boolean>()
+
+    private var location: LocationModel? = null
 
     fun refreshWeatherData() {
         location = prefHelper.getLocation()
         weatherIsLoading.value = true
-        checkCacheDuration()
-        val updateTime = prefHelper.getUpdateTime()
-        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+        checkWeatherCacheDuration()
+        val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
+        if (initialWeatherFetch != null && initialWeatherFetch != 0L && (System.nanoTime() - initialWeatherFetch) < refreshTime) {
             getLocalWeatherData()
         } else {
             getRemoteWeatherData()
@@ -67,29 +65,32 @@ class InstantWeatherRepository(
 
     fun refreshWeatherForecastData() {
         weatherForecastIsLoading.value = true
-        checkCacheDuration()
-        val updateTime = prefHelper.getUpdateTime()
-        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+        checkWeatherCacheDuration()
+        val initialForecastFetchTime = prefHelper.getTimeOfInitialWeatherForecastFetch()
+        if (initialForecastFetchTime != null && initialForecastFetchTime != 0L && System.nanoTime() - initialForecastFetchTime < refreshTime) {
             getLocalWeatherForecastData()
         } else {
             getRemoteWeatherForecast()
         }
     }
 
-    private fun checkCacheDuration() {
-        val cachePreference = prefHelper.getCacheDuration()
+    private fun checkWeatherCacheDuration() {
+        val cachePreference = prefHelper.getUserSetCacheDuration()
         try {
-            val cacheDurationInt = cachePreference?.toInt() ?: 5 * 60
-            refreshTime = cacheDurationInt.times(1000 * 1000 * 1000L)
+            var cacheDuration = cachePreference?.toInt()
+            if (cacheDuration == null || cacheDuration == 0){
+                cacheDuration = 900
+            }
+            refreshTime = cacheDuration.times(1000L * 1000L * 1000L)
         } catch (e: NumberFormatException) {
-            Timber.i(e)
+            Timber.e("Error $e")
         }
 
     }
 
 
     fun getRemoteWeatherData() {
-        Timber.i("Getting data from remote!")
+        Timber.i("Getting weather data from remote!")
         if (location != null) {
             launch {
                 try {
@@ -113,7 +114,7 @@ class InstantWeatherRepository(
     }
 
     private fun getLocalWeatherData() {
-        Timber.i("Getting data from cache!")
+        Timber.i("Getting weather data from cache!")
         launch {
             withContext(Dispatchers.IO) {
                 //Get the weather from the database
@@ -154,12 +155,12 @@ class InstantWeatherRepository(
                 weatherDataFetchState.postValue(true)
             }
         }
-        prefHelper.saveUpdateTime(System.nanoTime())
+        prefHelper.saveTimeOfInitialWeatherFetch(System.nanoTime())
     }
 
     fun getRemoteWeatherForecast() {
         launch {
-            Timber.i("Getting weather forecast....")
+            Timber.i("Getting remote weather forecast....")
             val cityId = prefHelper.getCityId()
             if (cityId != null)
                 try {
@@ -178,6 +179,7 @@ class InstantWeatherRepository(
 
     private fun getLocalWeatherForecastData() {
         launch {
+            Timber.i("Getting local weather forecast....")
             withContext(Dispatchers.IO) {
                 //Get weather forecast from db
                 val weatherForecastDb = dao.getAllWeatherForecast()
@@ -214,6 +216,25 @@ class InstantWeatherRepository(
                 weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
                 weatherForecastIsLoading.postValue(false)
                 weatherForecastDataFetchState.postValue(true)
+            }
+        }
+        prefHelper.saveTimeOfInitialWeatherForecastFetch(System.nanoTime())
+    }
+
+    fun getSearchRemoteWeather(locationName: String) {
+        searchWeatherIsLoading.value = true
+        launch {
+            try {
+                val searchWeatherResponse =
+                    WeatherApi.retrofitService.getSpecificWeather(locationName, API_KEY)
+                searchWeather.postValue(weatherMapperRemote.transformToDomain(searchWeatherResponse))
+                searchWeatherIsLoading.postValue(false)
+                searchWeatherState.postValue(true)
+
+            } catch (e: Exception) {
+                Timber.e("An error occurred $e")
+                searchWeatherIsLoading.postValue(false)
+                searchWeatherState.postValue(false)
             }
         }
     }

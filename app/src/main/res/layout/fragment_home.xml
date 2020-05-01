@@ -21,7 +21,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_id"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -36,12 +36,12 @@
                     android:id="@+id/weather_in_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@{weather.name}"
+                    android:textColor="#000"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -87,13 +87,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/date_text"
-                    app:weatherIconColor="#000000"
-                    app:weatherIconSize="150" />
+                    app:weatherIconColor="@color/primaryLightColor"
+                    app:weatherIconSize="100" />
 
                 <TextView
                     android:id="@+id/weather_temperature"
@@ -139,7 +140,7 @@
                     android:layout_marginStart="80dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="80dp"
-                    android:background="#c5c5c5"
+                    android:background="#808080"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,16 +152,19 @@
                     android:id="@+id/weather_det"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="78dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/separator"
+                    app:layout_constraintVertical_bias="1.0">
 
                     <ImageView
                         android:id="@+id/imageView12"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:tint="#000"
+                        android:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toStartOf="@+id/imageView11"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -170,7 +174,7 @@
                         android:id="@+id/imageView11"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:tint="#000"
+                        android:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toStartOf="@+id/imageView10"
                         app:layout_constraintStart_toEndOf="@id/imageView12"
                         app:layout_constraintTop_toTopOf="parent"
@@ -180,6 +184,7 @@
                         android:id="@+id/imageView10"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
+                        android:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/imageView11"
                         app:layout_constraintTop_toTopOf="parent"

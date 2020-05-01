@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.forecast.ForecastFragment">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+            android:id="@+id/calendarView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            app:buttonLeft_drawable="@drawable/ic_arrow_left"
+            app:buttonLeft_drawableTintColor="#DB6A63"
+            app:buttonRight_drawable="@drawable/ic_arrow_right"
+            app:buttonRight_drawableTintColor="#DB6A63"
+            app:expandIconColor="#DB6A63"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectedItem_background="@drawable/circle_orange_solid_background"
+            app:selectedItem_textColor="#000"
+            app:todayItem_background="@drawable/circle_blue_solid_background"
+            app:todayItem_textColor="#FFF" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/forecast_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="com.stone.vega.library.VegaLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/weather_item" />
+
+        <ProgressBar
+            android:id="@+id/forecast_progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/forecast_recyclerview" />
+
+        <TextView
+            android:id="@+id/empty_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_forecast_info"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/forecast_recyclerview"
+            app:layout_constraintEnd_toEndOf="@+id/forecast_recyclerview"
+            app:layout_constraintStart_toStartOf="@+id/forecast_recyclerview"
+            app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

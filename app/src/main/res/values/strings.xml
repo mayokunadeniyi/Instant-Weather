@@ -24,8 +24,7 @@
     <string name="humidity_symbol">%</string>
     <string name="instant_weather">Instant Weather</string>
     <string name="no_forecast_info">Weather forecast for selected day is unavailable.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
+    <string name="enter_city_text">Enter the name of the city.</string>
+    <string name="zero_hits_text">Couldn\'t find your city. \n\n Go ahead and hit the search button.</string>
 </resources>

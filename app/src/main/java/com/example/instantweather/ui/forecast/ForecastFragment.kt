@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
 import com.example.instantweather.databinding.FragmentForecastBinding
+import com.example.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.example.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import com.stone.vega.library.VegaLayoutManager
@@ -31,7 +33,7 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
-        weatherForecastAdapter = WeatherForecastAdapter()
+        weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
         setupCalendar()
         // Inflate the layout for this fragment
         return binding.root
@@ -42,10 +44,9 @@ class ForecastFragment : Fragment() {
 
         val recyclerView = binding.forecastRecyclerview
 
-        recyclerView.layoutManager = VegaLayoutManager()
         recyclerView.adapter = weatherForecastAdapter
 
-        viewModel = ViewModelProviders.of(this).get(ForecastFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ForecastFragmentViewModel::class.java)
 
         viewModel.weatherForecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
             weatherForecast?.let {
