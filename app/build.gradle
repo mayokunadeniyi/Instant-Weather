@@ -103,9 +103,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
-    //Glide
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-
     //Preferences
     implementation "androidx.preference:preference:$preferencesVersion"
 

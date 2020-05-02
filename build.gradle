@@ -43,7 +43,6 @@ ext {
     lifeCycleExtensionVersion = '2.1.1'
     materialVersion = '1.2.0-alpha06'
     retrofitVersion = '2.8.1'
-    glideVersion = '4.11.0'
     roomVersion = '2.2.5'
     nav_version = '2.2.2'
     preferencesVersion = '1.1.1'
