@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="@color/primaryLightColor"
             android:elevation="12dp"
             app:cardView_duration="250"
             app:cardView_scale="0.8"
@@ -72,7 +71,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     setIcon="@{weatherForecastDescription.description}"
-                    app:weatherIconColor="#FFFFFF" />
+                    app:weatherIconColor="@color/primaryLightColor" />
 
                 <TextView
                     android:id="@+id/weather_description"
@@ -112,7 +111,7 @@
                         android:id="@+id/imageView12"
                         style="@style/weather_item_icons"
                         app:srcCompat="@drawable/ic_humidity"
-                        android:tint="#FFFFFF"/>
+                        android:tint="@color/primaryLightColor"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,7 +126,7 @@
                         android:id="@+id/imageView11"
                         style="@style/weather_item_icons"
                         app:srcCompat="@drawable/ic_pressure"
-                        android:tint="#FFFFFF"/>
+                        android:tint="@color/primaryLightColor"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -143,7 +142,7 @@
                         android:id="@+id/imageView10"
                         app:srcCompat="@drawable/ic_wind"
                         style="@style/weather_item_icons"
-                        android:tint="#FFFFFF"/>
+                        android:tint="@color/primaryLightColor"/>
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -77,5 +77,4 @@ class SearchFragmentViewModel(application: Application) :
         connection.disconnect()
     }
 
-
 }

@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory>
+    <PreferenceCategory
+        android:title="Cache">
         <EditTextPreference
             android:defaultValue="900"
             android:inputType="number"
-            android:key="cache_duration"
+            android:icon="@drawable/ic_cached"
+            android:key="cache_key"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:summary="Set a time to get new weather data"
             android:title="@string/cache_string" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="theme_category"
+        android:title="Theme">
+
+        <ListPreference
+            android:defaultValue="follow_system"
+            android:entries="@array/theme_names_array"
+            android:entryValues="@array/theme_values_array"
+            android:icon="@drawable/ic_palette"
+            android:key="theme_key"
+            android:title="@string/preference_theme_title" />
+
     </PreferenceCategory>
 </PreferenceScreen>

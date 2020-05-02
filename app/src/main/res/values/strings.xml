@@ -27,4 +27,17 @@
     <string name="search">Search</string>
     <string name="enter_city_text">Enter the name of the city.</string>
     <string name="zero_hits_text">Couldn\'t find your city. \n\n Go ahead and hit the search button.</string>
+
+    <!-- Preferences -->
+    <string name="preference_theme_title">Theme</string>
+
+    <string name="light_theme_name">Light theme</string>
+    <string name="dark_theme_name">Dark theme</string>
+    <string name="auto_battery_name">Auto battery</string>
+    <string name="follow_system_name">Follow system</string>
+
+    <string name="light_theme_value" translatable="false">Light</string>
+    <string name="dark_theme_value" translatable="false">Dark</string>
+    <string name="auto_battery_value" translatable="false">Auto-battery</string>
+    <string name="follow_system_value" translatable="false">System</string>
 </resources>
