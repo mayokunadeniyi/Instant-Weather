@@ -7,15 +7,15 @@
 
         <variable
             name="weather"
-            type="com.example.instantweather.data.model.Weather" />
+            type="com.mayokunadeniyi.instantweather.data.model.Weather" />
 
         <variable
             name="viewModel"
-            type="com.example.instantweather.ui.home.HomeFragmentViewModel" />
+            type="com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel" />
 
         <variable
             name="networkWeatherDescription"
-            type="com.example.instantweather.data.model.NetworkWeatherDescription" />
+            type="com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

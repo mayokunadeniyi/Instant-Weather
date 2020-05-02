@@ -6,10 +6,10 @@
     <data>
         <variable
             name="weatherForecast"
-            type="com.example.instantweather.data.model.WeatherForecast" />
+            type="com.mayokunadeniyi.instantweather.data.model.WeatherForecast" />
         <variable
             name="weatherForecastDescription"
-            type="com.example.instantweather.data.model.NetworkWeatherDescription" />
+            type="com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription" />
     </data>
 
     <LinearLayout
