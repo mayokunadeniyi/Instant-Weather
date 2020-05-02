@@ -68,6 +68,7 @@ class SearchFragment : Fragment() {
         })
 
         searchBoxView.onQuerySubmitted = {
+            binding.zeroHits.visibility = View.GONE
             if (it != null && it.isNotEmpty()){
                 viewModel.getSearchWeather(it)
                 observeViewModel(it)
@@ -100,7 +101,7 @@ class SearchFragment : Fragment() {
 
         viewModel.searchWeatherState.observe(viewLifecycleOwner, Observer { state ->
             if (!state){
-               Snackbar.make(requireView(),"An error occured! Try again",Snackbar.LENGTH_LONG).show()
+               Snackbar.make(requireView(),"An error occured! Please try again.",Snackbar.LENGTH_LONG).show()
             }
         })
     }

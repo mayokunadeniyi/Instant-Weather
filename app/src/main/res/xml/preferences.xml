@@ -17,7 +17,7 @@
         android:title="Theme">
 
         <ListPreference
-            android:defaultValue="follow_system"
+            android:defaultValue="follow system"
             android:entries="@array/theme_names_array"
             android:entryValues="@array/theme_values_array"
             android:icon="@drawable/ic_palette"

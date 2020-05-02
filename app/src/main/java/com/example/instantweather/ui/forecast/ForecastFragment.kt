@@ -10,14 +10,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 
 import com.example.instantweather.databinding.FragmentForecastBinding
 import com.example.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.example.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import com.stone.vega.library.VegaLayoutManager
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,33 +50,27 @@ class ForecastFragment : Fragment() {
                 weatherForecastAdapter.submitList(it)
             }
         })
+        binding.forecastSwipeRefresh?.setOnRefreshListener {
+            binding.forecastErrorText?.visibility = View.GONE
+            binding.forecastProgressBar.visibility = View.VISIBLE
+            binding.forecastRecyclerview.visibility = View.GONE
+            viewModel.refreshByPassCache()
+            binding.forecastSwipeRefresh?.isRefreshing = false
+        }
         observeMoreViewModels()
     }
 
     private fun observeMoreViewModels() {
-        viewModel.forecastDataFetch.observe(viewLifecycleOwner, Observer { state ->
-            if (state) {
-                binding.apply {
-                    forecastRecyclerview.visibility = View.VISIBLE
+        viewModel.forecastFetchState.observe(viewLifecycleOwner, Observer { state ->
 
-                }
-            } else {
-                binding.apply {
-                    forecastRecyclerview.visibility = View.GONE
-                }
+            binding.apply {
+                forecastRecyclerview.showIf { state }
+                forecastErrorText?.showIf { !state }
             }
         })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
-            if (state) {
-                binding.apply {
-                    forecastProgressBar.visibility = View.VISIBLE
-                }
-            } else {
-                binding.apply {
-                    forecastProgressBar.visibility = View.GONE
-                }
-            }
+           binding.forecastProgressBar.showIf { state }
         })
     }
 
@@ -136,15 +127,4 @@ class ForecastFragment : Fragment() {
             }
         })
     }
-
-    fun onPermissionResultForecast(permissionGranted: Boolean) {
-        if (!permissionGranted) {
-            binding.apply {
-                forecastProgressBar.visibility = View.GONE
-                forecastRecyclerview.visibility = View.GONE
-                calendarView.visibility = View.GONE
-            }
-        }
-    }
-
 }

@@ -13,17 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.instantweather.databinding.FragmentHomeBinding
-import com.example.instantweather.ui.MainActivity
 import com.example.instantweather.utils.GpsUtil
-import androidx.lifecycle.observe
+import com.example.instantweather.data.model.LocationModel
 import com.example.instantweather.utils.GPS_REQUEST
 import com.example.instantweather.utils.SharedPreferenceHelper
-import com.example.instantweather.utils.showIf
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 /**
@@ -36,6 +33,20 @@ class HomeFragment : Fragment() {
     private var isGpsEnabled = false
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
+            override fun gpsStatus(isGPSEnabled: Boolean) {
+                this@HomeFragment.isGpsEnabled = isGPSEnabled
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        invokeLocationAction()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,11 +54,6 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
-        GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
-            override fun gpsStatus(isGPSEnabled: Boolean) {
-                this@HomeFragment.isGpsEnabled = isGPSEnabled
-            }
-        })
         return binding.root
     }
 
@@ -55,8 +61,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         hideAllViews(true)
-        invokeLocationAction()
-        setUpRefreshLayout()
     }
 
     private fun invokeLocationAction() {
@@ -69,21 +73,13 @@ class HomeFragment : Fragment() {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Location Permission")
                     .setMessage("This application requires access to your location to function!")
-                    .setNegativeButton("No", object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            requireActivity().finish()
-                        }
-                    })
-                    .setPositiveButton("Ask me", object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            requestPermissions(REQUIRED_PERMISSIONS, LOCATION_REQUEST_CODE)
-                        }
-                    })
+                    .setNegativeButton(
+                        "No"
+                    ) { _, _ -> requireActivity().finish() }
+                    .setPositiveButton(
+                        "Ask me"
+                    ) { _, _ -> requestPermissions(REQUIRED_PERMISSIONS, LOCATION_REQUEST_CODE) }
                     .show()
-            }
-
-            !isGpsEnabled -> {
-                //Tell them to enable their location
             }
 
             else -> {
@@ -94,6 +90,7 @@ class HomeFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Timber.i("OnActivity RESULT IS CALLED!")
         if (resultCode == RESULT_OK) {
             if (requestCode == GPS_REQUEST) {
                 isGpsEnabled = true
@@ -121,12 +118,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
+        binding.apply {
+            loadingText.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
+        }
         viewModel.getLocationLiveData.observe(viewLifecycleOwner, Observer { location ->
-            if (location != null){
-                Timber.i("The main location is $location")
-                sharedPreferenceHelper.saveLocation(location)
-                viewModel.shouldRunAfterLocation()
+            setUpRefreshLayout(location)
+            if (location != null) {
+                viewModel.refreshAfterLocation(location)
                 observeWeatherViewModel()
+            }else{
+                Snackbar.make(requireView(),"Error occurred when getting location, retry.",Snackbar.LENGTH_SHORT).show()
             }
         })
         viewModel.dataFetch.observe(viewLifecycleOwner, Observer { state ->
@@ -176,12 +178,12 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun setUpRefreshLayout() {
+    private fun setUpRefreshLayout(location: LocationModel?) {
         binding.swipeRefreshId.setOnRefreshListener {
             binding.errorText.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
             hideViews()
-            viewModel.refreshBypassCache()
+            viewModel.refreshBypassCache(location)
             binding.swipeRefreshId.isRefreshing = false
         }
     }

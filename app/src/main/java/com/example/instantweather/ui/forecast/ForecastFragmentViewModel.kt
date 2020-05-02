@@ -29,11 +29,15 @@ class ForecastFragmentViewModel(
     val weatherForecast: LiveData<List<WeatherForecast>> = repository.weatherForecast
 
     val loading: LiveData<Boolean> = repository.weatherForecastIsLoading
-    val forecastDataFetch: LiveData<Boolean> = repository.weatherForecastDataFetchState
+    val forecastFetchState: LiveData<Boolean> = repository.weatherForecastDataFetchState
 
     override fun onCleared() {
         super.onCleared()
         job.cancel()
+    }
+
+    fun refreshByPassCache(){
+        repository.getRemoteWeatherForecast()
     }
 
 }

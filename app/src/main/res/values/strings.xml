@@ -27,6 +27,7 @@
     <string name="search">Search</string>
     <string name="enter_city_text">Enter the name of the city.</string>
     <string name="zero_hits_text">Couldn\'t find your city. \n\n Go ahead and hit the search button.</string>
+    <string name="gps_text">Please enable your GPS!</string>
 
     <!-- Preferences -->
     <string name="preference_theme_title">Theme</string>

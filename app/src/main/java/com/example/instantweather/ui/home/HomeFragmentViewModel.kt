@@ -2,8 +2,10 @@ package com.example.instantweather.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.location.Location
 import androidx.lifecycle.LiveData
 import com.example.instantweather.data.local.WeatherDatabase
+import com.example.instantweather.data.model.LocationModel
 import com.example.instantweather.data.model.Weather
 import com.example.instantweather.data.repository.InstantWeatherRepository
 import com.example.instantweather.ui.BaseViewModel
@@ -47,12 +49,12 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
         return dateFormat.format(date)
     }
 
-    fun shouldRunAfterLocation(){
-        repository.refreshWeatherData()
+    fun refreshAfterLocation(location: LocationModel){
+        repository.refreshWeatherData(location)
     }
 
-    fun refreshBypassCache() {
-        repository.getRemoteWeatherData()
+    fun refreshBypassCache(location: LocationModel?) {
+        repository.getRemoteWeatherData(location)
     }
 
 
