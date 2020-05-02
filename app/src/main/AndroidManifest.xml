@@ -16,7 +16,8 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:targetApi="m">
-        <activity android:name="com.mayokunadeniyi.instantweather.ui.MainActivity">
+        <activity android:name="com.mayokunadeniyi.instantweather.ui.MainActivity"
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

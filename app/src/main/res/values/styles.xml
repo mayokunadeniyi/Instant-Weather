@@ -22,4 +22,8 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/instant_weather_ic</item>
+    </style>
+
 </resources>
