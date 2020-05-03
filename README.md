@@ -1,5 +1,7 @@
 # Instant Weather :construction: :construction_worker: [Under heavy development]:hammer: :wrench:
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f34e66ed388d400e919a60a2bbae38f0)](https://app.codacy.com/manual/mayokunthefirst/Instant-Weather?utm_source=github.com&utm_medium=referral&utm_content=mayokunthefirst/Instant-Weather&utm_campaign=Badge_Grade_Dashboard)
+
 ## Introduction
 An Android weather application implemented using MVVM pattern, Retrofit2, LiveData, ViewModel, Coroutines, Room, Navigation Components and Data Binding.
 
