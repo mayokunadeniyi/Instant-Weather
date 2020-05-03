@@ -43,7 +43,7 @@
         tools:layout="@layout/fragment_search_detail"
         android:id="@+id/searchDetailFragment"
         android:name="com.mayokunadeniyi.instantweather.ui.searchdetail.SearchDetailFragment"
-        android:label="SearchDetailFragment" >
+        android:label="Search" >
         <argument
             android:name="searchWeatherResult"
             app:argType="com.mayokunadeniyi.instantweather.data.model.Weather"
