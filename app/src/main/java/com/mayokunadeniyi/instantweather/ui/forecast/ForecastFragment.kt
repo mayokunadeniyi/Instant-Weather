@@ -1,13 +1,11 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
@@ -50,12 +48,12 @@ class ForecastFragment : Fragment() {
                 weatherForecastAdapter.submitList(it)
             }
         })
-        binding.forecastSwipeRefresh?.setOnRefreshListener {
+        binding.forecastSwipeRefresh.setOnRefreshListener {
             binding.forecastErrorText?.visibility = View.GONE
             binding.forecastProgressBar.visibility = View.VISIBLE
             binding.forecastRecyclerview.visibility = View.GONE
             viewModel.refreshByPassCache()
-            binding.forecastSwipeRefresh?.isRefreshing = false
+            binding.forecastSwipeRefresh.isRefreshing = false
         }
         observeMoreViewModels()
     }
@@ -84,11 +82,12 @@ class ForecastFragment : Fragment() {
 
             }
 
+            //Called when the calendar changes in Day
             override fun onDayChanged() {
 
             }
 
-            @RequiresApi(Build.VERSION_CODES.O)
+            //Called when the a Day is selected on the calendar
             override fun onDaySelect() {
                 val selectedDay = binding.calendarView.selectedDay
                 if (selectedDay != null) {
@@ -118,10 +117,12 @@ class ForecastFragment : Fragment() {
             override fun onItemClick(v: View) {
             }
 
+            //Called when the calendar changes in Month
             override fun onMonthChange() {
 
             }
 
+            //Called when the calendar changes in Week
             override fun onWeekChange(position: Int) {
 
             }

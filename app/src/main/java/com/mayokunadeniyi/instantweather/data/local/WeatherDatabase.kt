@@ -31,6 +31,12 @@ abstract class WeatherDatabase : RoomDatabase(){
         @Volatile
         private var instance: WeatherDatabase? = null
 
+        /**
+         * This checks if there is an existing instance of the [WeatherDatabase] in the
+         * specified [context] and creates one if there isn't or else, it returns the
+         * already existing instance. This function ensures that the [WeatherDatabase] is
+         * accessed at any instance by a single thread.
+         */
         fun getInstance(context: Context): WeatherDatabase{
             synchronized(this) {
                 var _instance = instance

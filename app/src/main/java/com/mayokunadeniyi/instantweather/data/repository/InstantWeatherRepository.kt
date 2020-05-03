@@ -29,6 +29,7 @@ class InstantWeatherRepository(
     private val weatherForecastMapperLocal = WeatherForecastMapperLocal()
     private val weatherMapperRemote = WeatherMapperRemote()
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
+
     //This sets the time before data is gotten from remote to 15 minutes
     private var refreshTime = 900L * 1000L * 1000L * 1000L
     private val API_KEY = BuildConfig.API_KEY
@@ -49,6 +50,11 @@ class InstantWeatherRepository(
     val searchWeatherState = MutableLiveData<Boolean>()
     val searchWeatherIsLoading = MutableLiveData<Boolean>()
 
+    /**
+     * This function helps to get [Weather] of a [location] either from the remote or local
+     * depending on if the cache duration has expired.
+     * @param location the location whose weather information is required
+     */
     fun refreshWeatherData(location: LocationModel?) {
         weatherIsLoading.value = true
         checkWeatherCacheDuration()
@@ -60,6 +66,10 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function helps to get [WeatherForecast] of either from the remote or local
+     * depending on if the cache duration has expired.
+     */
     fun refreshWeatherForecastData() {
         weatherForecastIsLoading.value = true
         checkWeatherCacheDuration()
@@ -71,6 +81,9 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function helps to check if the cache duration has expired or not
+     */
     private fun checkWeatherCacheDuration() {
         val cachePreference = prefHelper.getUserSetCacheDuration()
         try {
@@ -85,7 +98,11 @@ class InstantWeatherRepository(
 
     }
 
-
+    /**
+     * This function helps to get [Weather] of a [location] from the remote and saves it
+     * into the database.
+     * @param location the location whose weather information is required
+     */
     fun getRemoteWeatherData(location: LocationModel?) {
         Timber.i("Getting weather data from remote!")
         if (location != null) {
@@ -109,6 +126,9 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function helps to get cached [Weather] information from the local db.
+     */
     private fun getLocalWeatherData() {
         Timber.i("Getting weather data from cache!")
         launch {
@@ -124,6 +144,12 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function is called after fresh [Weather] from the remote source has been
+     * received as it stores the [networkWeather] into the database before updating the UI.
+     * @see getRemoteWeatherData
+     * @param networkWeather the [NetworkWeather] to be converted to a database model and stored.
+     */
     private fun storeRemoteWeatherDataLocally(networkWeather: NetworkWeather) {
         launch {
             withContext(Dispatchers.IO) {
@@ -152,6 +178,10 @@ class InstantWeatherRepository(
         prefHelper.saveTimeOfInitialWeatherFetch(System.nanoTime())
     }
 
+    /**
+     * This function helps to get [WeatherForecast] from the remote and saves it
+     * into the database. It uses the cityId of the location to get it's weather forecast.
+     */
     fun getRemoteWeatherForecast() {
         launch {
             Timber.i("Getting remote weather forecast....")
@@ -170,6 +200,9 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function helps to get cached [WeatherForecast] information from the local db.
+     */
     private fun getLocalWeatherForecastData() {
         launch {
             Timber.i("Getting local weather forecast....")
@@ -187,6 +220,12 @@ class InstantWeatherRepository(
         }
     }
 
+    /**
+     * This function is called after fresh [WeatherForecast] from the remote source has been
+     * received as it stores the [listOfNetworkWeatherForecast] into the database before updating the UI.
+     * @see getRemoteWeatherForecast
+     * @param listOfNetworkWeatherForecast the list of [NetworkWeatherForecast] to be converted to a database model and stored.
+     */
     private fun storeRemoteForecastDataLocally(listOfNetworkWeatherForecast: List<NetworkWeatherForecast>) {
         launch {
             withContext(Dispatchers.IO) {
@@ -214,6 +253,10 @@ class InstantWeatherRepository(
         prefHelper.saveTimeOfInitialWeatherForecastFetch(System.nanoTime())
     }
 
+    /**
+     * This function helps to get the [Weather] for a particular location [locationName]
+     * as provided by the user.
+     */
     fun getSearchRemoteWeather(locationName: String) {
         searchWeatherIsLoading.value = true
         launch {

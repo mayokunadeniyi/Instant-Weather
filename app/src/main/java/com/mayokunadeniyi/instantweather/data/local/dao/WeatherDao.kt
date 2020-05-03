@@ -11,24 +11,31 @@ import com.mayokunadeniyi.instantweather.data.local.entity.DBWeatherForecast
 @Dao
 interface WeatherDao {
 
+    //Saves the [Weather] into the database
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(vararg dbWeather: DBWeather)
 
+    //Returns a single [Weather] ordered by their id in descending order
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
     suspend fun getWeather(): DBWeather
 
+    //Returns a list of [DBWeather] ordered by their id in descending order
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC")
     suspend fun getAllWeather():List<DBWeather>
 
+    //Deletes all [Weather] in the table
     @Query("DELETE FROM weather_table")
     suspend fun deleteAllWeather()
 
+    //Saves the [WeatherForecast] into the database
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertForecastWeather(vararg dbWeatherForecast: DBWeatherForecast)
 
+    //Returns a list of [DBWeatherForecast] ordered by their id
     @Query("SELECT * FROM weather_forecast ORDER BY id")
     suspend fun getAllWeatherForecast(): List<DBWeatherForecast>
 
+    //Deletes all [WeatherForecast] in the table
     @Query("DELETE FROM weather_forecast")
     suspend fun deleteAllWeatherForecast()
 }

@@ -14,11 +14,17 @@ class ListNetworkWeatherDescriptionConverter {
 
     val type: Type = object : TypeToken<List<NetworkWeatherDescription?>?>() {}.type
 
+    /**
+     * Converts a listOf[NetworkWeatherDescription] to a [String]
+     */
     @TypeConverter
     fun fromWeatherDtoList(list: List<NetworkWeatherDescription?>?): String {
         return gson.toJson(list, type)
     }
 
+    /**
+     * Converts a [String] to a listOf[NetworkWeatherDescription]
+     */
     @TypeConverter
     fun toWeatherDtoList(json: String?): List<NetworkWeatherDescription> {
         return gson.fromJson(json, type)

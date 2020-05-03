@@ -26,9 +26,19 @@ class ForecastFragmentViewModel(
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(application.applicationContext)
     }
 
+    /**
+     * A list of [WeatherForecast] livedata from the [repository]
+     */
     val weatherForecast: LiveData<List<WeatherForecast>> = repository.weatherForecast
 
+    /**
+     * Checks if the [WeatherForecast] data from the [repository] is still loading
+     */
     val loading: LiveData<Boolean> = repository.weatherForecastIsLoading
+
+    /**
+     * Monitors the state of the [WeatherForecast] data from the [repository] if there is an error or not.
+     */
     val forecastFetchState: LiveData<Boolean> = repository.weatherForecastDataFetchState
 
     override fun onCleared() {
@@ -36,6 +46,7 @@ class ForecastFragmentViewModel(
         job.cancel()
     }
 
+    //Called when the user uses the swipe down to refresh
     fun refreshByPassCache(){
         repository.getRemoteWeatherForecast()
     }

@@ -65,6 +65,10 @@ class SearchFragmentViewModel(application: Application) :
     val isLoading: LiveData<Boolean> = repository.searchWeatherIsLoading
     val searchWeatherState: LiveData<Boolean> = repository.searchWeatherState
 
+    /**
+     * Gets the [Weather] information for the user selected location[name]
+     * @param name value of the location whose [Weather] data is to be fetched.
+     */
     fun getSearchWeather(name: String){
         repository.getSearchRemoteWeather(name)
     }

@@ -14,11 +14,17 @@ class NetworkWeatherConditionConverter {
 
     val type: Type = object : TypeToken<NetworkWeatherCondition?>() {}.type
 
+    /**
+     * Converts a [NetworkWeatherCondition] to a [String]
+     */
     @TypeConverter
     fun fromMainDto(networkWeatherCondition: NetworkWeatherCondition?): String {
         return gson.toJson(networkWeatherCondition, type)
     }
 
+    /**
+     * Converts a [String] to a [NetworkWeatherCondition]
+     */
     @TypeConverter
     fun toMainDto(json: String?): NetworkWeatherCondition {
         return gson.fromJson(json, type)

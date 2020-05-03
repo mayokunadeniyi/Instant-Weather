@@ -12,6 +12,9 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentSearchDetailBinding
 import com.mayokunadeniyi.instantweather.ui.MainActivity
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 
+/**
+ * A simple [Fragment] subclass.
+ */
 class SearchDetailFragment : Fragment() {
 
     private lateinit var viewModel: SearchDetailViewModel

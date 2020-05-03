@@ -16,11 +16,17 @@ class CityConverter {
     val type: Type = object : TypeToken<City?>() {}.type
 
 
+    /**
+     * Converts a [City] to a [String]
+     */
     @TypeConverter
     fun fromCity(city: City?): String{
         return gson.toJson(city,type)
     }
 
+    /**
+     * Converts a [String] to a [City]
+     */
     @TypeConverter
     fun toCity(json: String?): City {
         return gson.fromJson(json,type)

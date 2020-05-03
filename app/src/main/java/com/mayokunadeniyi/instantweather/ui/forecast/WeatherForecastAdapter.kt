@@ -29,6 +29,7 @@ class WeatherForecastAdapter(val clickListener: ForecastOnclickListener): ListAd
 
     class ViewHolder(private val binding: WeatherItemBinding): RecyclerView.ViewHolder(binding.root){
 
+        //Binds the WeatherForecast in the layout
         fun bind(weatherForecast: WeatherForecast){
             binding.weatherForecast = weatherForecast
             val weatherDescription = weatherForecast.networkWeatherDescription.first()
@@ -44,7 +45,9 @@ class WeatherForecastAdapter(val clickListener: ForecastOnclickListener): ListAd
         }
     }
 
-
+    /**
+     *  A utility class [DiffUtil] that helps to calculate updates for a [RecyclerView] Adapter.
+     */
     class WeatherForecastDiffCallBack: DiffUtil.ItemCallback<WeatherForecast>(){
         override fun areItemsTheSame(oldItem: WeatherForecast, newItem: WeatherForecast): Boolean {
             return oldItem.uID == newItem.uID
@@ -58,7 +61,8 @@ class WeatherForecastAdapter(val clickListener: ForecastOnclickListener): ListAd
         }
     }
 
-    class ForecastOnclickListener(){
+    //Onclick utility class
+    class ForecastOnclickListener{
         fun onClick(){}
     }
 }

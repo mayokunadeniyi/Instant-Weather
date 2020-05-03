@@ -9,6 +9,12 @@ import com.github.pwittchen.weathericonview.WeatherIconView
  */
 class WeatherIconGenerator {
     companion object {
+        /**
+         * This function helps to dynamically set the [WeatherIconView] depending on the weather
+         * condition [condition] received.
+         * @param iconView the [WeatherIconView] whose icon is to be set
+         * @param condition the weather condition
+         */
         fun getIconResources(context: Context, iconView: WeatherIconView, condition: String?) {
             if (condition != null){
                 when {

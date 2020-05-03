@@ -52,6 +52,7 @@ class SearchResultAdapter(val clickListener: SearchResultListener) : PagedListAd
         }
     }
 
+    //Onclick listener util class
     class SearchResultListener(val clickListener: (name: String) -> Unit){
         fun onClick(searchResult: SearchResult) = clickListener(searchResult.name)
     }

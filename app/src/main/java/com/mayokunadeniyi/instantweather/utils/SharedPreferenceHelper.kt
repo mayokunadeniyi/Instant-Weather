@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-28.
@@ -21,6 +22,12 @@ class SharedPreferenceHelper {
         @Volatile
         private var instance: SharedPreferenceHelper? = null
 
+        /**
+         * This checks if there is an existing instance of the [SharedPreferences] in the
+         * specified [context] and creates one if there isn't or else, it returns the
+         * already existing instance. This function ensures that the [SharedPreferences] is
+         * accessed at any instance by a single thread.
+         */
         fun getInstance(context: Context): SharedPreferenceHelper{
             synchronized(this){
                 val _instance = instance
@@ -33,32 +40,68 @@ class SharedPreferenceHelper {
         }
     }
 
+    /**
+     * This function saves the initial time [System.nanoTime] at which the weather information
+     * at the user's location is accessed.
+     * @param time the value of [System.nanoTime] when the weather information is received.
+     */
     fun saveTimeOfInitialWeatherFetch(time: Long){
         prefs?.edit(commit = true){
             putLong(WEATHER_PREF_TIME,time)
         }
     }
 
+    /**
+     * This function returns the saved value of [System.nanoTime] when the weather information
+     * at the user's location was accessed.
+     * @see saveTimeOfInitialWeatherFetch
+     */
     fun getTimeOfInitialWeatherFetch() = prefs?.getLong(WEATHER_PREF_TIME,0L)
 
+    /**
+     * This function saves the initial time [System.nanoTime] at which the weather forecast
+     * at the user's location is accessed.
+     * @param time the value of [System.nanoTime] when the weather forecast is received.
+     */
     fun saveTimeOfInitialWeatherForecastFetch(time: Long){
         prefs?.edit(commit = true){
             putLong(WEATHER_FORECAST_PREF_TIME,time)
         }
     }
 
+    /**
+     * This function returns the saved value of [System.nanoTime] when the weather forecast
+     * at the user's location was accessed.
+     * @see saveTimeOfInitialWeatherForecastFetch
+     */
     fun getTimeOfInitialWeatherForecastFetch() = prefs?.getLong(WEATHER_FORECAST_PREF_TIME,0L)
 
+    /**
+     * This function saves the [cityId] of the location whose weather information has been
+     * received.
+     * @param cityId the id of the location whose weather has been received
+     */
     fun saveCityId(cityId: Int){
         prefs?.edit(commit = true){
             putInt(CITY_ID,cityId)
         }
     }
 
+    /**
+     * This function returns the id of the location whose weather information has been received.
+     * @see saveCityId
+     */
     fun getCityId() = prefs?.getInt(CITY_ID,0)
 
-    //Settings Screen
+    /**
+     * This function gets the value of the cache duration the user set in the
+     * Settings Fragment.
+     */
     fun getUserSetCacheDuration() = prefs?.getString("cache_key","0")
 
+    /**
+     * This function gets the value of the app theme the user set in the
+     * Settings Fragment.
+     */
     fun getSelectedThemePref() = prefs?.getString("theme_key","")
 }
