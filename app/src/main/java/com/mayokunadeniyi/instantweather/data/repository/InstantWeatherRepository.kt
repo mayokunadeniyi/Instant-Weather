@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather.data.repository
 
 import android.app.Application
+import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
@@ -55,7 +56,7 @@ class InstantWeatherRepository(
      * depending on if the cache duration has expired.
      * @param location the location whose weather information is required
      */
-    fun refreshWeatherData(location: LocationModel?) {
+    fun refreshWeatherData(location: Location?) {
         weatherIsLoading.value = true
         checkWeatherCacheDuration()
         val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
@@ -103,7 +104,7 @@ class InstantWeatherRepository(
      * into the database.
      * @param location the location whose weather information is required
      */
-    fun getRemoteWeatherData(location: LocationModel?) {
+    fun getRemoteWeatherData(location: Location?) {
         Timber.i("Getting weather data from remote!")
         if (location != null) {
             launch {

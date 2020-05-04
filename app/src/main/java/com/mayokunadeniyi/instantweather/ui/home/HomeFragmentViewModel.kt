@@ -2,14 +2,12 @@ package com.mayokunadeniyi.instantweather.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.location.Location
 import androidx.lifecycle.LiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
-import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.repository.InstantWeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
-import com.mayokunadeniyi.instantweather.utils.LocationLiveData
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,14 +18,11 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     private val database = WeatherDatabase.getInstance(getApplication())
     private var repository: InstantWeatherRepository
-    private val locationData = LocationLiveData(application)
 
     init {
         repository = InstantWeatherRepository(database, application)
         currentSystemTime()
     }
-
-    val getLocationLiveData = locationData
 
 
     /**
@@ -48,8 +43,6 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val time = currentSystemTime()
 
 
-
-
     //Gets the current system time
     @SuppressLint("SimpleDateFormat")
     fun currentSystemTime(): String{
@@ -63,7 +56,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      * This is called after the [location] data has been received.
      * This enables the [Weather] for the [location] to be received.
      */
-    fun refreshAfterLocation(location: LocationModel){
+    fun refreshWeatherData(location: Location){
         repository.refreshWeatherData(location)
     }
 
@@ -71,7 +64,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      * This is called when the user swipes down to refresh.
      * This enables the [Weather] for the current [location] to be received.
      */
-    fun refreshBypassCache(location: LocationModel?) {
+    fun refreshBypassCache(location: Location?) {
         repository.getRemoteWeatherData(location)
     }
 
