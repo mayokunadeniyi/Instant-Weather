@@ -9,9 +9,9 @@
     <application
         android:name="com.mayokunadeniyi.instantweather.InstantWeatherApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_instant_weather"
+        android:icon="@mipmap/instant_weather_new"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_instant_weather_round"
+        android:roundIcon="@mipmap/instant_weather_new_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"

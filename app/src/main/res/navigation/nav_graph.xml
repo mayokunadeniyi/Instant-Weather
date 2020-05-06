@@ -37,7 +37,9 @@
             app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_searchFragment_to_searchDetailFragment"
-            app:destination="@id/searchDetailFragment" />
+            app:destination="@id/searchDetailFragment"
+            app:enterAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_up" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_search_detail"
