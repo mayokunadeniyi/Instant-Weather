@@ -19,9 +19,11 @@ import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
 import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST
+import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import mumayank.com.airlocationlibrary.AirLocation
 import mumayank.com.airlocationlibrary.AirLocation.LocationFailedEnum
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -57,7 +59,11 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onFailed(locationFailedEnum: LocationFailedEnum) {
-                        Snackbar.make(binding.root,"Error occurred when trying to get your location",Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            binding.root,
+                            "Error occurred when trying to get your location",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 })
             }
@@ -99,14 +105,29 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         airLocation?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == GPS_REQUEST) {
-                isGPSEnabled = true
-                invokeLocationAction()
+
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                when (requestCode) {
+                    GPS_REQUEST -> {
+                        isGPSEnabled = true
+                        invokeLocationAction()
+                    }
+                }
             }
-        } else {
-            Snackbar.make(binding.root, "Enable your GPS and restart!", Snackbar.LENGTH_LONG).show()
-            finish()
+
+            Activity.RESULT_CANCELED -> {
+                when (requestCode) {
+                    GPS_REQUEST_CHECK_SETTINGS -> {
+                        Snackbar.make(
+                            binding.root,
+                            "Enable your GPS and restart!",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        //finish()
+                    }
+                }
+            }
         }
     }
 
