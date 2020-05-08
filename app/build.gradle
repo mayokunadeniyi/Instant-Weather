@@ -23,8 +23,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
-        buildConfigField("String","ALGOLIA_API_KEY",apikeyProperties['ALGOLIA_API_KEY'])
-        buildConfigField("String","ALGOLIA_APP_ID",apikeyProperties['ALGOLIA_APP_ID'])
+        buildConfigField("String", "ALGOLIA_API_KEY", apikeyProperties['ALGOLIA_API_KEY'])
+        buildConfigField("String", "ALGOLIA_APP_ID", apikeyProperties['ALGOLIA_APP_ID'])
     }
     buildTypes {
         release {
