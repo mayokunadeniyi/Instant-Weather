@@ -10,6 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create apikey.properties
+          uses: finnp/create-file-action@master
+          env:
+          FILE_NAME = "apikey.properties"
+          FILE_DATA = ""
+
       - name: Set Up JDK
         uses: actions/setup-java@v1
         with:
