@@ -14,7 +14,7 @@ jobs:
         uses: finnp/create-file-action@master
         env:
           FILE_NAME: "apikey.properties"
-          FILE_DATA: ""
+          FILE_DATA: "API_KEY = ""\nALGOLIA_API_KEY = ""\nALGOLIA_APP_ID = """
 
       - name: Set Up JDK
         uses: actions/setup-java@v1
