@@ -5,4 +5,5 @@ package com.mayokunadeniyi.instantweather.utils
  */
 
 const val GPS_REQUEST = 101
+const val GPS_REQUEST_CHECK_SETTINGS = 102
 const val ALGOLIA_INDEX_NAME = "prod_LOCATIONS"

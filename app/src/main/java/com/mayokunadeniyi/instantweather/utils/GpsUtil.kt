@@ -37,23 +37,27 @@ class GpsUtil(private val context: Context) {
                 .checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener(context as Activity) {
                     OnGpsListener?.gpsStatus(true)
-                }.addOnFailureListener(context) { exception ->
-                    when ((exception as ApiException).statusCode) {
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
+                }.addOnFailureListener {
 
+
+                }.addOnFailureListener(context) { exception ->
+
+                    when ((exception as ApiException).statusCode) {
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
                             try {
                                 val resApiException = exception as ResolvableApiException
-                                resApiException.startResolutionForResult(context, GPS_REQUEST)
-                            } catch (sendIntentException: IntentSender.SendIntentException) {
+                                resApiException.startResolutionForResult(context, GPS_REQUEST_CHECK_SETTINGS)
+                            } catch (sendIntentException: Exception) {
+                                sendIntentException.printStackTrace()
                                 Timber.i("PendingIntent unable to execute request. ")
                             }
-
+                        }
                         LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
                             val errorMessage =
                                 "Location settings are inadequate, and cannot be " + "fixed here. Fix in Settings."
                             Timber.e(errorMessage)
 
-                            Toast.makeText(context,errorMessage,Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
