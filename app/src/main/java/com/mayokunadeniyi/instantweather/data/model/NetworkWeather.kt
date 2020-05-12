@@ -22,7 +22,9 @@ data class NetworkWeather(
     val networkWeatherDescriptions: List<NetworkWeatherDescription>,
 
     @SerializedName("main")
-    val networkWeatherCondition: NetworkWeatherCondition
+    val networkWeatherCondition: NetworkWeatherCondition,
+
+    val sys: Sys
 )
 
 

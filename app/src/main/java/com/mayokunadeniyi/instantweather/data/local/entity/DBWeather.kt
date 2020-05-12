@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription
+import com.mayokunadeniyi.instantweather.data.model.Sys
 import com.mayokunadeniyi.instantweather.data.model.Wind
 
 /**
@@ -31,5 +32,9 @@ data class DBWeather(
     val networkWeatherDescription: List<NetworkWeatherDescription>,
 
     @ColumnInfo(name = "main_details")
-    val networkWeatherCondition: NetworkWeatherCondition
+    val networkWeatherCondition: NetworkWeatherCondition,
+
+    //update sqlite from version 1.0 to 2.0 add new field
+    @ColumnInfo(name = "sys", defaultValue = "")
+    val sys: Sys
 )

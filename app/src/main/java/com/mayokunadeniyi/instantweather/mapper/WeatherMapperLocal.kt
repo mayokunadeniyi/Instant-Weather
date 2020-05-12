@@ -7,14 +7,15 @@ import com.mayokunadeniyi.instantweather.data.model.Weather
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
 
-class WeatherMapperLocal : BaseMapper<DBWeather,Weather>{
+class WeatherMapperLocal : BaseMapper<DBWeather, Weather> {
     override fun transformToDomain(type: DBWeather): Weather = Weather(
         uId = type.uId,
         cityId = type.cityId,
         name = type.cityName,
         wind = type.wind,
         networkWeatherDescription = type.networkWeatherDescription,
-        networkWeatherCondition = type.networkWeatherCondition
+        networkWeatherCondition = type.networkWeatherCondition,
+        sys = type.sys
     )
 
     override fun transformToDto(type: Weather): DBWeather = DBWeather(
@@ -23,7 +24,8 @@ class WeatherMapperLocal : BaseMapper<DBWeather,Weather>{
         cityName = type.name,
         wind = type.wind,
         networkWeatherDescription = type.networkWeatherDescription,
-        networkWeatherCondition = type.networkWeatherCondition
+        networkWeatherCondition = type.networkWeatherCondition,
+        sys = type.sys
     )
 
 }
