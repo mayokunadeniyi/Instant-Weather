@@ -7,12 +7,9 @@ import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.*
 import com.mayokunadeniyi.instantweather.data.remote.WeatherApi
-import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperLocal
-import com.mayokunadeniyi.instantweather.mapper.WeatherMapperLocal
-import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
+import com.mayokunadeniyi.instantweather.mapper.*
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
-import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -29,6 +26,9 @@ class InstantWeatherRepository(
     private val weatherMapperLocal = WeatherMapperLocal()
     private val weatherForecastMapperLocal = WeatherForecastMapperLocal()
     private val weatherMapperRemote = WeatherMapperRemote()
+
+    private val searchMapperLocal = SearchMapperLocal()
+
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
 
     //This sets the time before data is gotten from remote to 15 minutes
@@ -50,6 +50,8 @@ class InstantWeatherRepository(
     val searchWeather = MutableLiveData<Weather>()
     val searchWeatherState = MutableLiveData<Boolean>()
     val searchWeatherIsLoading = MutableLiveData<Boolean>()
+
+    val searchHistory = MutableLiveData<List<SearchResult>>()
 
     /**
      * This function helps to get [Weather] of a [location] either from the remote or local
@@ -89,7 +91,7 @@ class InstantWeatherRepository(
         val cachePreference = prefHelper.getUserSetCacheDuration()
         try {
             var cacheDuration = cachePreference?.toInt()
-            if (cacheDuration == null || cacheDuration == 0){
+            if (cacheDuration == null || cacheDuration == 0) {
                 cacheDuration = 900
             }
             refreshTime = cacheDuration.times(1000L * 1000L * 1000L)
@@ -264,6 +266,10 @@ class InstantWeatherRepository(
             try {
                 val searchWeatherResponse =
                     WeatherApi.retrofitService.getSpecificWeather(locationName, API_KEY)
+                val searchResult =
+                    SearchResult(0, searchWeatherResponse.name, searchWeatherResponse.sys.country);
+                database.searchDao.insertSearch(searchMapperLocal.transformToDto(searchResult))
+                getLocalSearchData()
                 searchWeather.postValue(weatherMapperRemote.transformToDomain(searchWeatherResponse))
                 searchWeatherIsLoading.postValue(false)
                 searchWeatherState.postValue(true)
@@ -272,6 +278,17 @@ class InstantWeatherRepository(
                 Timber.e("An error occurred $e")
                 searchWeatherIsLoading.postValue(false)
                 searchWeatherState.postValue(false)
+            }
+        }
+    }
+
+
+    fun getLocalSearchData() {
+        launch {
+            Timber.i("Getting local search history....")
+            withContext(Dispatchers.IO) {
+                val searchResultList = database.searchDao.selectSearch()
+                searchHistory.postValue(searchMapperLocal.transFromToDomainList(searchResultList));
             }
         }
     }

@@ -42,7 +42,8 @@ class SearchFragmentViewModel(application: Application) :
     private val dataSourceFactory = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
         SearchResult(
             name = hit.json.getPrimitive("name").content,
-            subcountry = hit.json.getPrimitive("subcountry").content,
+            uId = 0,
+            //  subcountry = hit.json.getPrimitive("subcountry").content,
             country = hit.json.getPrimitive("country").content
         )
     }
@@ -56,20 +57,23 @@ class SearchFragmentViewModel(application: Application) :
     private val connection = ConnectionHandler()
 
     init {
-        repository = InstantWeatherRepository(database,application)
+        repository = InstantWeatherRepository(database, application)
         connection += searchBox
         connection += stats
+        repository.getLocalSearchData()
     }
 
     val searchWeather: LiveData<Weather> = repository.searchWeather
     val isLoading: LiveData<Boolean> = repository.searchWeatherIsLoading
     val searchWeatherState: LiveData<Boolean> = repository.searchWeatherState
 
+    val searchHistory: LiveData<List<SearchResult>> = repository.searchHistory
+
     /**
      * Gets the [Weather] information for the user selected location[name]
      * @param name value of the location whose [Weather] data is to be fetched.
      */
-    fun getSearchWeather(name: String){
+    fun getSearchWeather(name: String) {
         repository.getSearchRemoteWeather(name)
     }
 

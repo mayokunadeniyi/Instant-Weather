@@ -59,7 +59,7 @@ class SearchFragment : Fragment() {
 
         searchBoxView.onQuerySubmitted = {
             binding.zeroHits.visibility = View.GONE
-            if (it != null && it.isNotEmpty()){
+            if (it != null && it.isNotEmpty()) {
                 viewModel.getSearchWeather(it)
                 observeViewModel(it)
             }
@@ -70,17 +70,29 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = searchResultAdapter
 
-        viewModel.locations.observe(viewLifecycleOwner, Observer { hits ->
+        /* viewModel.locations.observe(viewLifecycleOwner, Observer { hits ->
+             searchResultAdapter.submitList(hits)
+             binding.zeroHits.showIf { hits.size == 0 }
+         })*/
+
+        viewModel.searchHistory.observe(viewLifecycleOwner, Observer { hits ->
+
             searchResultAdapter.submitList(hits)
-            binding.zeroHits.showIf { hits.size == 0 }
+            binding.zeroHits.showIf {
+                hits.isEmpty()
+            }
         })
+
 
     }
 
     private fun observeViewModel(location: String) {
         viewModel.searchWeather.observe(viewLifecycleOwner, Observer { weather ->
-            if (weather != null){
-                val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(weather,location)
+            if (weather != null) {
+                val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(
+                    weather,
+                    location
+                )
                 findNavController().navigate(action)
             }
         })
@@ -90,8 +102,12 @@ class SearchFragment : Fragment() {
         })
 
         viewModel.searchWeatherState.observe(viewLifecycleOwner, Observer { state ->
-            if (!state){
-               Snackbar.make(requireView(),"An error occured! Please try again.",Snackbar.LENGTH_LONG).show()
+            if (!state) {
+                Snackbar.make(
+                    requireView(),
+                    "An error occured! Please try again.",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         })
     }

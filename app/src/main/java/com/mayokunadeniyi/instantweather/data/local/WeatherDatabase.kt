@@ -7,7 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.mayokunadeniyi.instantweather.data.local.dao.SearchDao
 import com.mayokunadeniyi.instantweather.data.local.dao.WeatherDao
+import com.mayokunadeniyi.instantweather.data.local.entity.DBSearch
 import com.mayokunadeniyi.instantweather.data.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.utils.typeconverters.*
@@ -17,7 +19,7 @@ import com.mayokunadeniyi.instantweather.utils.typeconverters.*
  */
 
 @Database(
-    entities = [DBWeather::class, DBWeatherForecast::class],
+    entities = [DBWeather::class, DBWeatherForecast::class, DBSearch::class],
     version = 2,
     exportSchema = false
 )
@@ -31,6 +33,7 @@ import com.mayokunadeniyi.instantweather.utils.typeconverters.*
 abstract class WeatherDatabase : RoomDatabase() {
 
     abstract val weatherDao: WeatherDao
+    abstract val searchDao: SearchDao
 
     companion object {
         @Volatile

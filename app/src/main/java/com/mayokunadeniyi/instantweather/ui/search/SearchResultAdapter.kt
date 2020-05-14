@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mayokunadeniyi.instantweather.data.model.SearchResult
 import com.mayokunadeniyi.instantweather.databinding.ItemSearchResultBinding
@@ -12,7 +13,7 @@ import com.mayokunadeniyi.instantweather.databinding.ItemSearchResultBinding
  * Created by Mayokun Adeniyi on 28/04/2020.
  */
 
-class SearchResultAdapter(val clickListener: SearchResultListener) : PagedListAdapter<SearchResult,SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()){
+class SearchResultAdapter(val clickListener: SearchResultListener) : ListAdapter<SearchResult,SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }

@@ -5,7 +5,8 @@ package com.mayokunadeniyi.instantweather.data.model
  */
 
 data class SearchResult(
+    val uId: Int,
     val name: String,
-    val country: String,
-    val subcountry: String
+    val country: String
+   // val subcountry: String
 )
