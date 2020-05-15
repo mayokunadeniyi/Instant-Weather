@@ -18,12 +18,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
 import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
-import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import mumayank.com.airlocationlibrary.AirLocation
 import mumayank.com.airlocationlibrary.AirLocation.LocationFailedEnum
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
