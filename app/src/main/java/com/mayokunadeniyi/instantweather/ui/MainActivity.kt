@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         when (resultCode) {
             Activity.RESULT_OK -> {
                 when (requestCode) {
-                    GPS_REQUEST -> {
+                    GPS_REQUEST_CHECK_SETTINGS -> {
                         isGPSEnabled = true
                         invokeLocationAction()
                     }
@@ -124,7 +124,6 @@ class MainActivity : AppCompatActivity() {
                             "Enable your GPS and restart!",
                             Snackbar.LENGTH_LONG
                         ).show()
-                        //finish()
                     }
                 }
             }
