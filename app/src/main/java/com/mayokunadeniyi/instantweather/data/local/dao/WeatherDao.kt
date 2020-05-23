@@ -26,16 +26,4 @@ interface WeatherDao {
     //Deletes all [Weather] in the table
     @Query("DELETE FROM weather_table")
     suspend fun deleteAllWeather()
-
-    //Saves the [WeatherForecast] into the database
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertForecastWeather(vararg dbWeatherForecast: DBWeatherForecast)
-
-    //Returns a list of [DBWeatherForecast] ordered by their id
-    @Query("SELECT * FROM weather_forecast ORDER BY id")
-    suspend fun getAllWeatherForecast(): List<DBWeatherForecast>
-
-    //Deletes all [WeatherForecast] in the table
-    @Query("DELETE FROM weather_forecast")
-    suspend fun deleteAllWeatherForecast()
 }

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mayokunadeniyi.instantweather.data.local.dao.WeatherDao
+import com.mayokunadeniyi.instantweather.data.local.dao.WeatherForecastDao
 import com.mayokunadeniyi.instantweather.data.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.utils.typeconverters.CityConverter
@@ -26,6 +27,7 @@ import com.mayokunadeniyi.instantweather.utils.typeconverters.WindConverter
 abstract class WeatherDatabase : RoomDatabase(){
 
     abstract val weatherDao: WeatherDao
+    abstract val weatherForecastDao: WeatherForecastDao
 
     companion object{
         @Volatile
