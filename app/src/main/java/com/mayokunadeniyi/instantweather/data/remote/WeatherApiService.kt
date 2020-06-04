@@ -2,25 +2,12 @@ package com.mayokunadeniyi.instantweather.data.remote
 
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecastResponse
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * Created by Mayokun Adeniyi on 2020-01-25.
+ * Created by Mayokun Adeniyi on 23/05/2020.
  */
-
-
-private val BASE_URL = "http://api.openweathermap.org"
-
-private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .addConverterFactory(GsonConverterFactory.create())
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .build()
-
 interface WeatherApiService {
 
     /**
@@ -47,10 +34,4 @@ interface WeatherApiService {
         @Query("id") cityId: Int,
         @Query("appid") apiKey: String
     ): NetworkWeatherForecastResponse
-}
-
-object WeatherApi {
-    val retrofitService: WeatherApiService by lazy {
-        retrofit.create(WeatherApiService::class.java)
-    }
 }

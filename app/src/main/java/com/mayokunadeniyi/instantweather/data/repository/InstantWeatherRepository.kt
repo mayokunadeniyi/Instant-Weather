@@ -34,7 +34,8 @@ class InstantWeatherRepository(
     //This sets the time before data is gotten from remote to 15 minutes
     private var refreshTime = 900L * 1000L * 1000L * 1000L
     private val API_KEY = BuildConfig.API_KEY
-    private val dao = database.weatherDao
+    private val weatherDao = database.weatherDao
+    private val weatherForecastDao = database.weatherForecastDao
 
     //Weather[Domain Model] exposed to be used in the HomeFragmentViewModel
     val weather = MutableLiveData<Weather>()
@@ -135,7 +136,7 @@ class InstantWeatherRepository(
         launch {
             withContext(Dispatchers.IO) {
                 //Get the weather from the database
-                val dbWeather = dao.getWeather()
+                val dbWeather = weatherDao.getWeather()
 
                 //Set the value for the MutableLiveData of type Weather
                 weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
@@ -155,7 +156,7 @@ class InstantWeatherRepository(
         launch {
             withContext(Dispatchers.IO) {
                 //Empty the db
-                dao.deleteAllWeather()
+                weatherDao.deleteAllWeather()
 
                 //Get the temperature in kelvin and convert to celsius
                 val kelvinValue = networkWeather.networkWeatherCondition.temp
@@ -165,10 +166,10 @@ class InstantWeatherRepository(
                 val weatherResponse = networkWeather.toDatabaseModel()
 
                 //Insert the weather of database model into the db
-                dao.insertWeather(weatherResponse)
+                weatherDao.insertWeather(weatherResponse)
 
                 //Get the weather from the database
-                val dbWeather = dao.getWeather()
+                val dbWeather = weatherDao.getWeather()
 
                 //Set the value for the MutableLiveData of type Weather
                 weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
@@ -209,7 +210,7 @@ class InstantWeatherRepository(
             Timber.i("Getting local weather forecast....")
             withContext(Dispatchers.IO) {
                 //Get weather forecast from db
-                val weatherForecastDb = dao.getAllWeatherForecast()
+                val weatherForecastDb = weatherForecastDao.getAllWeatherForecast()
                 weatherForecast.postValue(
                     weatherForecastMapperLocal.transformToDomain(
                         weatherForecastDb
@@ -231,7 +232,7 @@ class InstantWeatherRepository(
         launch {
             withContext(Dispatchers.IO) {
                 //Empty the db
-                dao.deleteAllWeatherForecast()
+                weatherForecastDao.deleteAllWeatherForecast()
                 //Insert each weather forecast into the db
                 for (weatherForecast in listOfNetworkWeatherForecast) {
                     //Get the temperature in kelvin and convert to celsius
@@ -239,11 +240,11 @@ class InstantWeatherRepository(
                     weatherForecast.networkWeatherCondition.temp =
                         convertKelvinToCelsius(kelvinValue)
 
-                    dao.insertForecastWeather(weatherForecast.toDatabaseModel())
+                    weatherForecastDao.insertForecastWeather(weatherForecast.toDatabaseModel())
                 }
 
                 //Get a list of weather forecast from the db
-                val dbForecast = dao.getAllWeatherForecast()
+                val dbForecast = weatherForecastDao.getAllWeatherForecast()
 
                 //Set the value for the weather forecast of type mutable live data
                 weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
