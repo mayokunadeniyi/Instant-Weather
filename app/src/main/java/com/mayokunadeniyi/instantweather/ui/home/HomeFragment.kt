@@ -50,14 +50,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.weather.observe(viewLifecycleOwner, Observer { weather ->
+        viewModel.getWeather().observe(viewLifecycleOwner, Observer { weather ->
             weather?.let {
                 binding.weather = it
                 binding.networkWeatherDescription = it.networkWeatherDescription.first()
             }
         })
 
-        viewModel.dataFetch.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.dataFetchState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 true -> {
                     unHideViews()
@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 true -> {
                     hideViews()

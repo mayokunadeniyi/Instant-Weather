@@ -2,6 +2,7 @@ package com.mayokunadeniyi.instantweather.data.remote
 
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecastResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,7 +19,7 @@ interface WeatherApiService {
     suspend fun getSpecificWeather(
         @Query("q") location: String,
         @Query("appid") apiKey: String
-    ): NetworkWeather
+    ): Response<NetworkWeather>
 
     //This function gets the weather information for the user's location.
     @GET("/data/2.5/weather")
@@ -26,12 +27,12 @@ interface WeatherApiService {
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
         @Query("appid") apiKey: String
-    ): NetworkWeather
+    ): Response<NetworkWeather>
 
     //This function gets the weather forecast information for the user's location.
     @GET("data/2.5/forecast")
     suspend fun getWeatherForecast(
         @Query("id") cityId: Int,
         @Query("appid") apiKey: String
-    ): NetworkWeatherForecastResponse
+    ): Response<NetworkWeatherForecastResponse>
 }

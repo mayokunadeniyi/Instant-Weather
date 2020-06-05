@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             allPermissionsGranted() -> {
                 airLocation = AirLocation(this, false, true, object : AirLocation.Callbacks {
                     override fun onSuccess(location: Location) {
-                        viewModel.refreshWeatherData(location)
+                        viewModel.initialWeatherFetch(location)
                     }
 
                     override fun onFailed(locationFailedEnum: LocationFailedEnum) {
