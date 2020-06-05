@@ -13,6 +13,7 @@ import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
+import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -57,29 +58,14 @@ class InstantWeatherRepository(
      * depending on if the cache duration has expired.
      * @param location the location whose weather information is required
      */
-    fun refreshWeatherData(location: Location?) {
+    fun refreshWeatherData(location: Location): Result<Boolean> {
         weatherIsLoading.value = true
         checkWeatherCacheDuration()
         val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
         if (initialWeatherFetch != null && initialWeatherFetch != 0L && (System.nanoTime() - initialWeatherFetch) < refreshTime) {
             getLocalWeatherData()
         } else {
-            getRemoteWeatherData(location)
-        }
-    }
-
-    /**
-     * This function helps to get [WeatherForecast] of either from the remote or local
-     * depending on if the cache duration has expired.
-     */
-    fun refreshWeatherForecastData() {
-        weatherForecastIsLoading.value = true
-        checkWeatherCacheDuration()
-        val initialForecastFetchTime = prefHelper.getTimeOfInitialWeatherForecastFetch()
-        if (initialForecastFetchTime != null && initialForecastFetchTime != 0L && System.nanoTime() - initialForecastFetchTime < refreshTime) {
-            getLocalWeatherForecastData()
-        } else {
-            getRemoteWeatherForecast()
+            launch { val result = getRemoteWeatherData(location) }
         }
     }
 
@@ -90,7 +76,7 @@ class InstantWeatherRepository(
         val cachePreference = prefHelper.getUserSetCacheDuration()
         try {
             var cacheDuration = cachePreference?.toInt()
-            if (cacheDuration == null || cacheDuration == 0){
+            if (cacheDuration == null || cacheDuration == 0) {
                 cacheDuration = 900
             }
             refreshTime = cacheDuration.times(1000L * 1000L * 1000L)
@@ -105,44 +91,22 @@ class InstantWeatherRepository(
      * into the database.
      * @param location the location whose weather information is required
      */
-    fun getRemoteWeatherData(location: Location?) {
+    suspend fun getRemoteWeatherData(location: Location): Result<Boolean> {
         Timber.i("Getting weather data from remote!")
-        if (location != null) {
-            launch {
-                try {
-                    val networkWeather =
-                        WeatherApi.retrofitService.getCurrentWeather(
-                            location.latitude,
-                            location.longitude,
-                            API_KEY
-                        )
-                    //Save city ID to shared preferences
-                    prefHelper.saveCityId(networkWeather.cityId)
-                    storeRemoteWeatherDataLocally(networkWeather)
-                } catch (e: Exception) {
-                    weatherIsLoading.postValue(false)
-                    weatherDataFetchState.postValue(false)
-                    Timber.i("An error occurred ${e.message}")
-                }
+        return when (val result = WeatherApi.retrofitService.getCurrentWeather(
+            location.latitude, location.longitude, API_KEY)){
+            is Result.Success -> {
+                //Save city ID to shared preferences
+                prefHelper.saveCityId(result.data.cityId)
+                storeRemoteWeatherDataLocally(result.data)
+                Result.Success(true)
             }
-        }
-    }
 
-    /**
-     * This function helps to get cached [Weather] information from the local db.
-     */
-    private fun getLocalWeatherData() {
-        Timber.i("Getting weather data from cache!")
-        launch {
-            withContext(Dispatchers.IO) {
-                //Get the weather from the database
-                val dbWeather = weatherDao.getWeather()
-
-                //Set the value for the MutableLiveData of type Weather
-                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
-                weatherIsLoading.postValue(false)
-                weatherDataFetchState.postValue(true)
+            is Result.Error ->{
+                Result.Error(result.exception)
             }
+
+            else -> Result.Success(false)
         }
     }
 
@@ -179,6 +143,41 @@ class InstantWeatherRepository(
         }
         prefHelper.saveTimeOfInitialWeatherFetch(System.nanoTime())
     }
+
+    /**
+     * This function helps to get cached [Weather] information from the local db.
+     */
+    private fun getLocalWeatherData() {
+        Timber.i("Getting weather data from cache!")
+        launch {
+            withContext(Dispatchers.IO) {
+                //Get the weather from the database
+                val dbWeather = weatherDao.getWeather()
+
+                //Set the value for the MutableLiveData of type Weather
+                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
+                weatherIsLoading.postValue(false)
+                weatherDataFetchState.postValue(true)
+            }
+        }
+    }
+
+    /**
+     * This function helps to get [WeatherForecast] of either from the remote or local
+     * depending on if the cache duration has expired.
+     */
+    fun refreshWeatherForecastData() {
+        weatherForecastIsLoading.value = true
+        checkWeatherCacheDuration()
+        val initialForecastFetchTime = prefHelper.getTimeOfInitialWeatherForecastFetch()
+        if (initialForecastFetchTime != null && initialForecastFetchTime != 0L && System.nanoTime() - initialForecastFetchTime < refreshTime) {
+            getLocalWeatherForecastData()
+        } else {
+            getRemoteWeatherForecast()
+        }
+    }
+
+
 
     /**
      * This function helps to get [WeatherForecast] from the remote and saves it
