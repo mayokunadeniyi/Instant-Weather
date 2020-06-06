@@ -48,10 +48,8 @@ class WeatherRepository(
         checkWeatherCacheDuration(prefHelper.getUserSetCacheDuration())
         val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
         return if (initialWeatherFetch != null && initialWeatherFetch != 0L && (System.nanoTime() - initialWeatherFetch) < refreshTime) {
-            Timber.i("The local one")
             getLocalWeatherData()
         } else {
-            Timber.i("The remote one")
             fetchRemoteWeatherData(location)
         }
     }

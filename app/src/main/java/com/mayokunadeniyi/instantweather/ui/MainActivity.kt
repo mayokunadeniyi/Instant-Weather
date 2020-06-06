@@ -8,8 +8,10 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -49,19 +51,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun invokeLocationAction() {
+        viewModel.isLoading.observe(this, Observer { state ->
+            if (state) {
+                binding.mainErrorText.visibility = View.GONE
+                binding.mainProgress.visibility = View.GONE
+            }
+        })
+        binding.mainProgress.visibility = View.VISIBLE
         when {
             allPermissionsGranted() -> {
                 airLocation = AirLocation(this, false, true, object : AirLocation.Callbacks {
                     override fun onSuccess(location: Location) {
+                        binding.mainProgress.visibility = View.GONE
+                        binding.mainErrorText.visibility = View.GONE
                         viewModel.initialWeatherFetch(location)
                     }
 
                     override fun onFailed(locationFailedEnum: LocationFailedEnum) {
+                        binding.mainProgress.visibility = View.GONE
+                        binding.mainErrorText.visibility = View.VISIBLE
                         Snackbar.make(
                             binding.root,
-                            "Error occurred when trying to get your location",
+                            "Error occurred when trying to get your location!",
                             Snackbar.LENGTH_LONG
                         ).show()
+                        when (locationFailedEnum) {
+
+                            LocationFailedEnum.DeviceInFlightMode -> {
+                                binding.mainErrorText.text = getString(R.string.flight_mode_error)
+                            }
+                            LocationFailedEnum.LocationPermissionNotGranted -> {
+                                binding.mainErrorText.text =
+                                    getString(R.string.location_permission_error)
+                            }
+                            LocationFailedEnum.HighPrecisionNA_TryAgainPreferablyWithInternet -> {
+                                binding.mainErrorText.text =
+                                    getString(R.string.highprecision_internet_error)
+                            }
+                            LocationFailedEnum.LocationOptimizationPermissionNotGranted -> {
+                                binding.mainErrorText.text =
+                                    getString(R.string.location_optimization_error)
+                            }
+
+                            else -> {
+                                binding.mainErrorText.text = getString(R.string.general_main_error)
+                            }
+                        }
                     }
                 })
             }
@@ -115,6 +150,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             Activity.RESULT_CANCELED -> {
+                binding.apply {
+                    mainErrorText.visibility = View.VISIBLE
+                    mainErrorText.text = "Enable your GPS and restart!"
+                    mainProgress.visibility = View.GONE
+                }
                 when (requestCode) {
                     GPS_REQUEST_CHECK_SETTINGS -> {
                         Snackbar.make(
