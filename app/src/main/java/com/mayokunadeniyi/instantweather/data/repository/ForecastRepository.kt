@@ -44,7 +44,7 @@ class ForecastRepository(
      * This function helps to get [WeatherForecast] of either from the remote or local
      * depending on if the cache duration has expired.
      */
-    suspend fun refreshWeatherForecastData(): Result<Boolean> {
+    suspend fun initialForecastFetch(): Result<Boolean> {
         checkWeatherCacheDuration()
         val initialForecastFetchTime = prefHelper.getTimeOfInitialWeatherForecastFetch()
         return if (initialForecastFetchTime != null && initialForecastFetchTime != 0L && System.nanoTime() - initialForecastFetchTime < refreshTime) {

@@ -2,6 +2,7 @@ package com.mayokunadeniyi.instantweather.ui.search
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -17,9 +18,11 @@ import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.SearchResult
 import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.repository.InstantWeatherRepository
+import com.mayokunadeniyi.instantweather.data.repository.SearchWeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
+import com.mayokunadeniyi.instantweather.utils.Result
+import kotlinx.coroutines.launch
 
 /**
  * Created by Mayokun Adeniyi on 27/04/2020.
@@ -29,7 +32,7 @@ class SearchFragmentViewModel(application: Application) :
     BaseViewModel(application) {
 
     private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: InstantWeatherRepository
+    private var repository: SearchWeatherRepository
     private val applicationID = BuildConfig.ALGOLIA_APP_ID
     private val algoliaAPIKey = BuildConfig.ALGOLIA_API_KEY
     private val client = ClientSearch(
@@ -56,21 +59,33 @@ class SearchFragmentViewModel(application: Application) :
     private val connection = ConnectionHandler()
 
     init {
-        repository = InstantWeatherRepository(database,application)
+        repository = SearchWeatherRepository(database, application)
         connection += searchBox
         connection += stats
     }
 
-    val searchWeather: LiveData<Weather> = repository.searchWeather
-    val isLoading: LiveData<Boolean> = repository.searchWeatherIsLoading
-    val searchWeatherState: LiveData<Boolean> = repository.searchWeatherState
+    val searchWeather = repository.searchWeather
+    val isLoading = MutableLiveData<Boolean>()
+    val searchWeatherState = MutableLiveData<Boolean>()
 
     /**
      * Gets the [Weather] information for the user selected location[name]
      * @param name value of the location whose [Weather] data is to be fetched.
      */
-    fun getSearchWeather(name: String){
-        repository.getSearchRemoteWeather(name)
+    fun getSearchWeather(name: String) {
+        isLoading.value = true
+        launch {
+            when (val result = repository.getSearchRemoteWeather(name)) {
+                is Result.Success -> {
+                    isLoading.value = false
+                    searchWeatherState.value = result.data
+                }
+                is Result.Error -> {
+                    isLoading.value = false
+                    searchWeatherState.value = false
+                }
+            }
+        }
     }
 
     override fun onCleared() {

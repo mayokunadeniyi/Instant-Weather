@@ -1,10 +1,8 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
-import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.repository.ForecastRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.Result
@@ -36,7 +34,7 @@ class ForecastFragmentViewModel(
 
     fun getWeatherForecast() = launch {
         isLoading.value = true
-        when (val result = repository.refreshWeatherForecastData()) {
+        when (val result = repository.initialForecastFetch()) {
             is Result.Success -> {
                 isLoading.value = false
                 forecastFetchState.value = result.data
