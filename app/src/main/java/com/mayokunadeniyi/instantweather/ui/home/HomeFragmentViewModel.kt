@@ -3,11 +3,14 @@ package com.mayokunadeniyi.instantweather.ui.home
 import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.repository.InstantWeatherRepository
+import com.mayokunadeniyi.instantweather.data.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
+import com.mayokunadeniyi.instantweather.utils.Result
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,35 +20,44 @@ import java.util.*
 class HomeFragmentViewModel(application: Application) : BaseViewModel(application) {
 
     private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: InstantWeatherRepository
+    private var repository: WeatherRepository
 
     init {
-        repository = InstantWeatherRepository(database, application)
+        repository = WeatherRepository(database, application)
         currentSystemTime()
     }
 
-
-    /**
-     * The [Weather] LiveData from the [repository]
-     */
-    val weather: LiveData<Weather> = repository.weather
-
-    /**
-     * Checks if the [Weather] data from the [repository] is still loading
-     */
-    val loading: LiveData<Boolean> = repository.weatherIsLoading
-
-    /**
-     * Monitors the state of the [Weather] data from the [repository] if there is an error or not.
-     */
-    val dataFetch: LiveData<Boolean> = repository.weatherDataFetchState
+    val isLoading = MutableLiveData<Boolean>()
+    val dataFetchState = MutableLiveData<Boolean>()
 
     val time = currentSystemTime()
 
 
-    //Gets the current system time
+    fun getWeather() = repository.weather
+
+    /**
+     * This is called after the [location] data has been received.
+     * This enables the [Weather] for the [location] to be received.
+     */
+    fun initialWeatherFetch(location: Location) {
+        launch {
+            isLoading.value = true
+            when (val result = repository.initialWeatherFetch(location)) {
+                is Result.Success -> {
+                    isLoading.value = false
+                    dataFetchState.value = result.data
+                }
+                is Result.Error -> {
+                    isLoading.value = false
+                    dataFetchState.value = false
+                }
+            }
+        }
+
+    }
+
     @SuppressLint("SimpleDateFormat")
-    fun currentSystemTime(): String{
+    fun currentSystemTime(): String {
         val currentTime = System.currentTimeMillis()
         val date = Date(currentTime)
         val dateFormat = SimpleDateFormat("EEEE MMM d, hh:mm aaa")
@@ -53,24 +65,23 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     /**
-     * This is called after the [location] data has been received.
-     * This enables the [Weather] for the [location] to be received.
-     */
-    fun refreshWeatherData(location: Location){
-        repository.refreshWeatherData(location)
-    }
-
-    /**
      * This is called when the user swipes down to refresh.
      * This enables the [Weather] for the current [location] to be received.
      */
-    fun refreshBypassCache(location: Location?) {
-        repository.getRemoteWeatherData(location)
-    }
+    fun refreshWeather(location: Location) {
+        launch {
+            when (val result = repository.fetchRemoteWeatherData(location)) {
+                is Result.Success -> {
+                    dataFetchState.value = result.data
+                    isLoading.value = false
+                }
 
+                is Result.Error -> {
+                    dataFetchState.value = false
+                    isLoading.value = false
+                }
+            }
+        }
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
     }
 }

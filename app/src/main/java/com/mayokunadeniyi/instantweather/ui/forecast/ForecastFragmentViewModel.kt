@@ -1,12 +1,13 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 import android.app.Application
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
-import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
-import com.mayokunadeniyi.instantweather.data.repository.InstantWeatherRepository
+import com.mayokunadeniyi.instantweather.data.repository.ForecastRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
+import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import kotlinx.coroutines.launch
 
 /**
  * Created by Mayokun Adeniyi on 28/02/2020.
@@ -17,38 +18,49 @@ class ForecastFragmentViewModel(
 ) : BaseViewModel(application) {
 
     private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: InstantWeatherRepository
+    private var repository: ForecastRepository
     private val sharedPreferenceHelper: SharedPreferenceHelper
 
     init {
-        repository = InstantWeatherRepository(database,application)
-        repository.refreshWeatherForecastData()
+        repository = ForecastRepository(database, application)
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(application.applicationContext)
     }
 
-    /**
-     * A list of [WeatherForecast] livedata from the [repository]
-     */
-    val weatherForecast: LiveData<List<WeatherForecast>> = repository.weatherForecast
+    val weatherForecast = repository.weatherForecast
 
-    /**
-     * Checks if the [WeatherForecast] data from the [repository] is still loading
-     */
-    val loading: LiveData<Boolean> = repository.weatherForecastIsLoading
+    val isLoading = MutableLiveData<Boolean>()
 
-    /**
-     * Monitors the state of the [WeatherForecast] data from the [repository] if there is an error or not.
-     */
-    val forecastFetchState: LiveData<Boolean> = repository.weatherForecastDataFetchState
+    val forecastFetchState = MutableLiveData<Boolean>()
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
+    fun getWeatherForecast() = launch {
+        isLoading.value = true
+        when (val result = repository.initialForecastFetch()) {
+            is Result.Success -> {
+                isLoading.value = false
+                forecastFetchState.value = result.data
+            }
+            is Result.Error -> {
+                isLoading.value = false
+                forecastFetchState.value = false
+            }
+        }
     }
 
-    //Called when the user uses the swipe down to refresh
-    fun refreshByPassCache(){
-        repository.getRemoteWeatherForecast()
+    fun refreshForecastData() {
+        isLoading.value = true
+        launch {
+            when (val result = repository.fetchRemoteWeatherForecast()) {
+                is Result.Success -> {
+                    forecastFetchState.value = result.data
+                    isLoading.value = false
+                }
+
+                is Result.Error -> {
+                    forecastFetchState.value = false
+                    isLoading.value = false
+                }
+            }
+        }
     }
 
 }

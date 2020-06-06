@@ -44,20 +44,20 @@ class HomeFragment : Fragment() {
             binding.errorText.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
             hideViews()
-            callBody()
+            initiateRefresh()
             binding.swipeRefreshId.isRefreshing = false
         }
     }
 
     private fun observeViewModels() {
-        viewModel.weather.observe(viewLifecycleOwner, Observer { weather ->
+        viewModel.getWeather().observe(viewLifecycleOwner, Observer { weather ->
             weather?.let {
                 binding.weather = it
                 binding.networkWeatherDescription = it.networkWeatherDescription.first()
             }
         })
 
-        viewModel.dataFetch.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.dataFetchState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 true -> {
                     unHideViews()
@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 true -> {
                     hideViews()
@@ -95,13 +95,18 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun callBody() {
+    private fun initiateRefresh() {
         airLocation = AirLocation(requireActivity(),false,true,object : AirLocation.Callbacks{
             override fun onSuccess(location: Location) {
-                viewModel.refreshBypassCache(location)
+                viewModel.refreshWeather(location)
             }
             override fun onFailed(locationFailedEnum: AirLocation.LocationFailedEnum) {
-
+                hideViews()
+                binding.apply {
+                    errorText.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    loadingText.visibility = View.GONE
+                }
             }
         })
     }

@@ -33,9 +33,8 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-        enabledForTests = true
+    buildFeatures{
+        dataBinding = true
     }
 
     testOptions.unitTests {
