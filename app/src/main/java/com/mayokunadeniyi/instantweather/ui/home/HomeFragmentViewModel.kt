@@ -10,6 +10,7 @@ import com.mayokunadeniyi.instantweather.data.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,12 +44,13 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
             isLoading.value = true
             when (val result = repository.initialWeatherFetch(location)) {
                 is Result.Success -> {
-                    dataFetchState.value = result.data
+                    Timber.i("The state is ${result.data}")
                     isLoading.value = false
+                    dataFetchState.value = result.data
                 }
                 is Result.Error -> {
-                    dataFetchState.value = false
                     isLoading.value = false
+                    dataFetchState.value = false
                 }
             }
         }

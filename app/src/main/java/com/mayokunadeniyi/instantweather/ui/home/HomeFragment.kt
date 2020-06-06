@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
             binding.errorText.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
             hideViews()
-            callBody()
+            initiateWeatherRefresh()
             binding.swipeRefreshId.isRefreshing = false
         }
     }
@@ -95,13 +95,18 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun callBody() {
+    private fun initiateWeatherRefresh() {
         airLocation = AirLocation(requireActivity(),false,true,object : AirLocation.Callbacks{
             override fun onSuccess(location: Location) {
                 viewModel.refreshBypassCache(location)
             }
             override fun onFailed(locationFailedEnum: AirLocation.LocationFailedEnum) {
-
+                hideViews()
+                binding.apply {
+                    errorText.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    loadingText.visibility = View.GONE
+                }
             }
         })
     }
