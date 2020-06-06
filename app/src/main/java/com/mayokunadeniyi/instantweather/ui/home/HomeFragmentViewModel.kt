@@ -44,7 +44,6 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
             isLoading.value = true
             when (val result = repository.initialWeatherFetch(location)) {
                 is Result.Success -> {
-                    Timber.i("The state is ${result.data}")
                     isLoading.value = false
                     dataFetchState.value = result.data
                 }
@@ -69,7 +68,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      * This is called when the user swipes down to refresh.
      * This enables the [Weather] for the current [location] to be received.
      */
-    fun refreshBypassCache(location: Location) {
+    fun refreshWeather(location: Location) {
         launch {
             when (val result = repository.fetchRemoteWeatherData(location)) {
                 is Result.Success -> {

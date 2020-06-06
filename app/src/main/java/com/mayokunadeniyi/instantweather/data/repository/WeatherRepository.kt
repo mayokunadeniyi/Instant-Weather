@@ -48,8 +48,10 @@ class WeatherRepository(
         checkWeatherCacheDuration(prefHelper.getUserSetCacheDuration())
         val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
         return if (initialWeatherFetch != null && initialWeatherFetch != 0L && (System.nanoTime() - initialWeatherFetch) < refreshTime) {
+            Timber.i("The local one")
             getLocalWeatherData()
         } else {
+            Timber.i("The remote one")
             fetchRemoteWeatherData(location)
         }
     }
@@ -68,7 +70,6 @@ class WeatherRepository(
             )
             if (result.isSuccessful) {
                 val networkWeather = result.body()
-                Timber.i("The result is $networkWeather")
                 prefHelper.saveCityId(networkWeather!!.cityId)
                 storeRemoteWeatherDataLocally(networkWeather)
                 Result.Success(true)
@@ -111,13 +112,13 @@ class WeatherRepository(
      */
     private fun getLocalWeatherData(): Result<Boolean> {
         Timber.i("Getting weather data from cache!")
-        val completed = launch {
+        launch {
             withContext(Dispatchers.IO) {
                 val dbWeather = weatherDao.getWeather()
                 weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
             }
-        }.isCompleted
-        return Result.Success(completed)
+        }
+        return Result.Success(true)
     }
 
 

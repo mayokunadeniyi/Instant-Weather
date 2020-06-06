@@ -29,36 +29,32 @@ class ForecastFragment : Fragment() {
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
         weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
-        setupCalendar()
-        // Inflate the layout for this fragment
+        viewModel = ViewModelProvider(this).get(ForecastFragmentViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCalendar()
 
         val recyclerView = binding.forecastRecyclerview
-
         recyclerView.adapter = weatherForecastAdapter
+        viewModel.getWeatherForecast()
+        observeMoreViewModels()
+    }
 
-        viewModel = ViewModelProvider(this).get(ForecastFragmentViewModel::class.java)
+    private fun observeMoreViewModels() {
 
         viewModel.weatherForecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
             weatherForecast?.let {
                 weatherForecastAdapter.submitList(it)
             }
         })
-        binding.forecastSwipeRefresh.setOnRefreshListener {
-            binding.forecastErrorText?.visibility = View.GONE
-            binding.forecastProgressBar.visibility = View.VISIBLE
-            binding.forecastRecyclerview.visibility = View.GONE
-            viewModel.refreshByPassCache()
-            binding.forecastSwipeRefresh.isRefreshing = false
-        }
-        observeMoreViewModels()
-    }
 
-    private fun observeMoreViewModels() {
+        binding.forecastSwipeRefresh.setOnRefreshListener {
+            initiateRefresh()
+        }
+
         viewModel.forecastFetchState.observe(viewLifecycleOwner, Observer { state ->
 
             binding.apply {
@@ -67,9 +63,17 @@ class ForecastFragment : Fragment() {
             }
         })
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
-           binding.forecastProgressBar.showIf { state }
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { state ->
+            binding.forecastProgressBar.showIf { state }
         })
+    }
+
+    private fun initiateRefresh() {
+        binding.forecastErrorText?.visibility = View.GONE
+        binding.forecastProgressBar.visibility = View.VISIBLE
+        binding.forecastRecyclerview.visibility = View.GONE
+        viewModel.refreshForecastData()
+        binding.forecastSwipeRefresh.isRefreshing = false
     }
 
     private fun setupCalendar() {
@@ -82,12 +86,10 @@ class ForecastFragment : Fragment() {
 
             }
 
-            //Called when the calendar changes in Day
             override fun onDayChanged() {
 
             }
 
-            //Called when the a Day is selected on the calendar
             override fun onDaySelect() {
                 val selectedDay = binding.calendarView.selectedDay
                 if (selectedDay != null) {
@@ -117,12 +119,10 @@ class ForecastFragment : Fragment() {
             override fun onItemClick(v: View) {
             }
 
-            //Called when the calendar changes in Month
             override fun onMonthChange() {
 
             }
 
-            //Called when the calendar changes in Week
             override fun onWeekChange(position: Int) {
 
             }
