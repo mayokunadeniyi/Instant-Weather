@@ -8,13 +8,9 @@ import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.*
 import com.mayokunadeniyi.instantweather.data.remote.WeatherApi
 import com.mayokunadeniyi.instantweather.mapper.WeatherMapperLocal
-import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
-import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
-import com.mayokunadeniyi.instantweather.utils.API_KEY
-import com.mayokunadeniyi.instantweather.utils.Result
-import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
+import com.mayokunadeniyi.instantweather.utils.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.io.IOException
@@ -36,7 +32,9 @@ class WeatherRepository(
     private var refreshTime = 900L * 1000L * 1000L * 1000L
 
 
-    val weather = MutableLiveData<Weather>()
+    //Weather LiveData exposed to ViewModel
+    private val _weather = MutableLiveData<Weather>()
+    val weather = _weather.asLiveData()
 
 
     /**
@@ -97,7 +95,7 @@ class WeatherRepository(
                 weatherDao.insertWeather(weatherResponse)
 
                 val dbWeather = weatherDao.getWeather()
-                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
+                _weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
 
             }
         }
@@ -113,7 +111,7 @@ class WeatherRepository(
         launch {
             withContext(Dispatchers.IO) {
                 val dbWeather = weatherDao.getWeather()
-                weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
+                _weather.postValue(weatherMapperLocal.transformToDomain(dbWeather))
             }
         }
         return Result.Success(true)

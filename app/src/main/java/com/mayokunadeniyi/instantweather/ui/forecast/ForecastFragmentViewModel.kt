@@ -1,12 +1,14 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.repository.ForecastRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
 
 /**
@@ -28,36 +30,38 @@ class ForecastFragmentViewModel(
 
     val weatherForecast = repository.weatherForecast
 
-    val isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading = _isLoading.asLiveData()
 
-    val forecastFetchState = MutableLiveData<Boolean>()
+    private val _forecastFetchState = MutableLiveData<Boolean>()
+    val forecastFetchState = _forecastFetchState.asLiveData()
 
     fun getWeatherForecast() = launch {
-        isLoading.value = true
+        _isLoading.value = true
         when (val result = repository.initialForecastFetch()) {
             is Result.Success -> {
-                isLoading.value = false
-                forecastFetchState.value = result.data
+                _isLoading.value = false
+                _forecastFetchState.value = result.data
             }
             is Result.Error -> {
-                isLoading.value = false
-                forecastFetchState.value = false
+                _isLoading.value = false
+                _forecastFetchState.value = false
             }
         }
     }
 
     fun refreshForecastData() {
-        isLoading.value = true
+        _isLoading.value = true
         launch {
             when (val result = repository.fetchRemoteWeatherForecast()) {
                 is Result.Success -> {
-                    forecastFetchState.value = result.data
-                    isLoading.value = false
+                    _forecastFetchState.value = result.data
+                    _isLoading.value = false
                 }
 
                 is Result.Error -> {
-                    forecastFetchState.value = false
-                    isLoading.value = false
+                    _forecastFetchState.value = false
+                    _isLoading.value = false
                 }
             }
         }

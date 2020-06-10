@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather.data.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.Weather
@@ -9,6 +10,7 @@ import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.API_KEY
 import com.mayokunadeniyi.instantweather.utils.Result
+import com.mayokunadeniyi.instantweather.utils.asLiveData
 import timber.log.Timber
 import java.io.IOException
 
@@ -22,8 +24,10 @@ class SearchWeatherRepository(
 ) : BaseViewModel(application) {
 
     private val weatherMapperRemote = WeatherMapperRemote()
-    //Weather[Domain Model] exposed to be used in the SearchFragmentViewModel
-    val searchWeather = MutableLiveData<Weather>()
+
+    //Weather LiveData exposed to be used in the SearchFragmentViewModel
+    private val _searchWeather = MutableLiveData<Weather>()
+    val searchWeather = _searchWeather.asLiveData()
 
 
     /**
@@ -36,7 +40,7 @@ class SearchWeatherRepository(
             val result = WeatherApi.retrofitService.getSpecificWeather(locationName, API_KEY)
             if (result.isSuccessful) {
                 val searchWeatherResponse = result.body()
-                searchWeather.postValue(weatherMapperRemote.transformToDomain(searchWeatherResponse!!))
+                _searchWeather.postValue(weatherMapperRemote.transformToDomain(searchWeatherResponse!!))
                 Result.Success(true)
             } else {
                 Result.Success(false)

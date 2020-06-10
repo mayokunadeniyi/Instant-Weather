@@ -22,6 +22,7 @@ import com.mayokunadeniyi.instantweather.data.repository.SearchWeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
 import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
+import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
 
 /**
@@ -65,24 +66,28 @@ class SearchFragmentViewModel(application: Application) :
     }
 
     val searchWeather = repository.searchWeather
-    val isLoading = MutableLiveData<Boolean>()
-    val searchWeatherState = MutableLiveData<Boolean>()
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading = _isLoading.asLiveData()
+
+    private val _searchWeatherState = MutableLiveData<Boolean>()
+    val searchWeatherState = _searchWeatherState.asLiveData()
 
     /**
      * Gets the [Weather] information for the user selected location[name]
      * @param name value of the location whose [Weather] data is to be fetched.
      */
     fun getSearchWeather(name: String) {
-        isLoading.value = true
+        _isLoading.value = true
         launch {
             when (val result = repository.getSearchRemoteWeather(name)) {
                 is Result.Success -> {
-                    isLoading.value = false
-                    searchWeatherState.value = result.data
+                    _isLoading.value = false
+                    _searchWeatherState.value = result.data
                 }
                 is Result.Error -> {
-                    isLoading.value = false
-                    searchWeatherState.value = false
+                    _isLoading.value = false
+                    _searchWeatherState.value = false
                 }
             }
         }

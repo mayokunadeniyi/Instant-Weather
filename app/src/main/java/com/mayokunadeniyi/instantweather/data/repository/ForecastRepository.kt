@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather.data.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
@@ -9,10 +10,7 @@ import com.mayokunadeniyi.instantweather.data.remote.WeatherApi
 import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperLocal
 import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
-import com.mayokunadeniyi.instantweather.utils.API_KEY
-import com.mayokunadeniyi.instantweather.utils.Result
-import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
-import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
+import com.mayokunadeniyi.instantweather.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,7 +30,10 @@ class ForecastRepository(
     private val weatherForecastDao = database.weatherForecastDao
     private val weatherForecastMapperLocal = WeatherForecastMapperLocal()
 
-    val weatherForecast = MutableLiveData<List<WeatherForecast>>()
+    //WeatherForecast LiveData exposed to the ViewModel
+    private val _weatherForecast = MutableLiveData<List<WeatherForecast>>()
+    val weatherForecast = _weatherForecast.asLiveData()
+
 
     private var prefHelper = SharedPreferenceHelper.getInstance(application)
 
@@ -106,7 +107,7 @@ class ForecastRepository(
             withContext(Dispatchers.IO) {
                 //Get weather forecast from db
                 val weatherForecastDb = weatherForecastDao.getAllWeatherForecast()
-                weatherForecast.postValue(
+                _weatherForecast.postValue(
                     weatherForecastMapperLocal.transformToDomain(
                         weatherForecastDb
                     )
@@ -138,7 +139,7 @@ class ForecastRepository(
                 }
 
                 val dbForecast = weatherForecastDao.getAllWeatherForecast()
-                weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
+                _weatherForecast.postValue(weatherForecastMapperLocal.transformToDomain(dbForecast))
             }
         }
         prefHelper.saveTimeOfInitialWeatherForecastFetch(System.nanoTime())

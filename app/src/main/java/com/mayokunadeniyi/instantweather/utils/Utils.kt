@@ -1,6 +1,8 @@
 package com.mayokunadeniyi.instantweather.utils
 
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 /**
  * Created by Mayokun Adeniyi on 30/03/2020.
@@ -26,3 +28,9 @@ inline fun <T: View> T.showIf(condition: (T) -> Boolean){
         View.GONE
     }
 }
+
+/**
+ * This functions helps in transforming a [MutableLiveData] of type [T]
+ * to a [LiveData] of type [T]
+ */
+fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
