@@ -151,4 +151,7 @@ dependencies {
 
     //Air Location
     implementation "com.github.mumayank:AirLocation:$air_location_version"
+
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 }
