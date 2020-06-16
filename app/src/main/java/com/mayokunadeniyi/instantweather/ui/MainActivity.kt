@@ -16,28 +16,35 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.*
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
 import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
+import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.observeOnce
+import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
 import mumayank.com.airlocationlibrary.AirLocation
 import mumayank.com.airlocationlibrary.AirLocation.LocationFailedEnum
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: HomeFragmentViewModel
     private var airLocation: AirLocation? = null
     private var isGPSEnabled = false
+    private lateinit var prefs: SharedPreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        prefs = SharedPreferenceHelper.getInstance(this)
         setupNavigation()
-
         GpsUtil(this).turnGPSOn(object : GpsUtil.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 this@MainActivity.isGPSEnabled = isGPSEnabled
@@ -65,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                         binding.mainProgress.visibility = View.GONE
                         binding.mainErrorText.visibility = View.GONE
                         viewModel.initialWeatherFetch(location)
+                        setupWorkManager()
                     }
 
                     override fun onFailed(locationFailedEnum: LocationFailedEnum) {
@@ -135,6 +143,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupWorkManager() {
+        viewModel.getLocationLiveData().observeOnce(this, Observer {
+            prefs.saveLocation(it)
+        })
+        val constraint = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val weatherUpdateRequest =
+            PeriodicWorkRequestBuilder<UpdateWeatherWorker>(6, TimeUnit.HOURS)
+                .setConstraints(constraint)
+                .setInitialDelay(6, TimeUnit.HOURS)
+                .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "Update_weather_worker",
+            ExistingPeriodicWorkPolicy.REPLACE, weatherUpdateRequest
+        )
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         airLocation?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
@@ -152,7 +181,7 @@ class MainActivity : AppCompatActivity() {
             Activity.RESULT_CANCELED -> {
                 binding.apply {
                     mainErrorText.visibility = View.VISIBLE
-                    mainErrorText.text = "Enable your GPS and restart!"
+                    mainErrorText.text = getString(R.string.enable_gps)
                     mainProgress.visibility = View.GONE
                 }
                 when (requestCode) {
