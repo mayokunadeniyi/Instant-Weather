@@ -5,13 +5,18 @@ import android.app.Application
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.liveData
+import androidx.work.Data
 import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
+import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.ui.BaseViewModel
-import com.mayokunadeniyi.instantweather.utils.Result
-import com.mayokunadeniyi.instantweather.utils.asLiveData
+import com.mayokunadeniyi.instantweather.utils.*
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,6 +27,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     private val database = WeatherDatabase.getInstance(getApplication())
     private var repository: WeatherRepository
+    private val locationLiveData = LocationLiveData(application)
 
     init {
         repository = WeatherRepository(database, application)
@@ -36,8 +42,8 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     val time = currentSystemTime()
 
-
     fun getWeather() = repository.weather
+    fun getLocationLiveData() = locationLiveData
 
     /**
      * This is called after the [location] data has been received.
@@ -46,7 +52,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
     fun initialWeatherFetch(location: Location) {
         launch {
             _isLoading.value = true
-            when (val result = repository.initialWeatherFetch(location)) {
+            when (val result = repository.initialWeatherFetch(location.asLocationModel())) {
                 is Result.Success -> {
                     _isLoading.value = false
                     _dataFetchState.value = result.data
@@ -57,7 +63,6 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
                 }
             }
         }
-
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -74,7 +79,7 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      */
     fun refreshWeather(location: Location) {
         launch {
-            when (val result = repository.fetchRemoteWeatherData(location)) {
+            when (val result = repository.fetchRemoteWeatherData(location.asLocationModel())) {
                 is Result.Success -> {
                     _dataFetchState.value = result.data
                     _isLoading.value = false

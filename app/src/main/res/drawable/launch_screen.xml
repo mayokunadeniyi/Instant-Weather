@@ -10,7 +10,7 @@
     <item>
 
         <bitmap
-            android:src="@drawable/instant_weather_sli"
+            android:src="@drawable/launcher_bitmap"
             android:gravity="center"/>
 
     </item>

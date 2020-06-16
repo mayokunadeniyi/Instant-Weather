@@ -1,8 +1,13 @@
 package com.mayokunadeniyi.instantweather.utils
 
+import android.location.Location
+import android.location.LocationProvider
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.mayokunadeniyi.instantweather.data.model.LocationModel
 
 /**
  * Created by Mayokun Adeniyi on 30/03/2020.
@@ -21,10 +26,10 @@ fun convertKelvinToCelsius(number: Number): Double {
  * This function helps to toggle the visibility of a [View]. If the condition
  * is met, the [View] is made visible else it is hidden.
  */
-inline fun <T: View> T.showIf(condition: (T) -> Boolean){
-    visibility = if (condition(this)){
+inline fun <T : View> T.showIf(condition: (T) -> Boolean) {
+    visibility = if (condition(this)) {
         View.VISIBLE
-    }else{
+    } else {
         View.GONE
     }
 }
@@ -34,3 +39,20 @@ inline fun <T: View> T.showIf(condition: (T) -> Boolean){
  * to a [LiveData] of type [T]
  */
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
+
+/**
+ * This function helps in transforming a [Location] to a [LocationModel]
+ */
+fun Location.asLocationModel() = LocationModel(this.longitude, this.latitude)
+
+/**
+ * This function helps to observe a [LiveData] once
+ */
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
+}

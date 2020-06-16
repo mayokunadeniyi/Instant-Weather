@@ -42,7 +42,7 @@ class WeatherRepository(
      * depending on if the cache duration has expired.
      * @param location the location whose weather information is required
      */
-    suspend fun initialWeatherFetch(location: Location): Result<Boolean> {
+    suspend fun initialWeatherFetch(location: LocationModel): Result<Boolean> {
         checkWeatherCacheDuration(prefHelper.getUserSetCacheDuration())
         val initialWeatherFetch = prefHelper.getTimeOfInitialWeatherFetch()
         return if (initialWeatherFetch != null && initialWeatherFetch != 0L && (System.nanoTime() - initialWeatherFetch) < refreshTime) {
@@ -58,7 +58,7 @@ class WeatherRepository(
      * into the database.
      * @param location the location whose weather information is required
      */
-    suspend fun fetchRemoteWeatherData(location: Location): Result<Boolean> {
+    suspend fun fetchRemoteWeatherData(location: LocationModel): Result<Boolean> {
         Timber.i("Getting weather data from remote!")
         return try {
             val result = WeatherApi.retrofitService.getCurrentWeather(
