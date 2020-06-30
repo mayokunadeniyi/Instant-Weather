@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
       - run: echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
       - run: echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
 
-      - name: Set Up JDK
+      - name: Set Up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -38,6 +38,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Create APIKEY.PROPERTIES File
+        env:
+          API_KEY: ${{ secrets.APIKEY }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
+        run: touch apikey.properties
+
+      - run: echo "API_KEY = $API_KEY" >> apikey.properties
+      - run: echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
+      - run: echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
+
       - name: set up JDK 1.8
         uses: actions/setup-java@v1
         with:
