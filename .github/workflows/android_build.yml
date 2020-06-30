@@ -4,27 +4,58 @@ on: [push, pull_request]
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Create apikey.properties
+      - name: Create APIKEY.PROPERTIES File
+        env:
+          API_KEY: ${{ secrets.APIKEY }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
         run: |
-          cat <<EOF> apikey.properties
-          API_KEY = "API_KEY"
-          ALGOLIA_API_KEY = "ALGOLIA_API_KEY"
-          ALGOLIA_APP_ID = "ALGOLIA_APP_ID"
-          EOF
+          touch apikey.properties
+          echo "API_KEY = $API_KEY" >> apikey.properties
+          echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
+          echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
 
-      - name: Set Up JDK
+      - name: Set Up JDK 1.8
         uses: actions/setup-java@v1
         with:
-         java-version: 1.8
+          java-version: 1.8
 
       - name: Run Tests
         run: ./gradlew test
 
       - name: Build Project
         run: ./gradlew assemble
+
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create APIKEY.PROPERTIES File
+        env:
+          API_KEY: ${{ secrets.APIKEY }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
+        run: |
+          touch apikey.properties
+          echo "API_KEY = $API_KEY" >> apikey.properties
+          echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
+          echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
+
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build debug APK
+        run: bash ./gradlew assembleDebug --stacktrace
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: app/build/outputs/apk/debug/app-debug.apk
