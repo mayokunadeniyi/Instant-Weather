@@ -10,18 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Create apikey.properties
-        run: |
-          cat <<EOF> apikey.properties
-          API_KEY = "API_KEY"
-          ALGOLIA_API_KEY = "ALGOLIA_API_KEY"
-          ALGOLIA_APP_ID = "ALGOLIA_APP_ID"
-          EOF
+      - name: Create APIKEY.PROPERTIES File
+        env:
+          API_KEY: ${{ secrets.APIKEY }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
+        run: touch apikey.properties
+
+      - run: echo "API_KEY = $API_KEY" >> apikey.properties
+      - run: echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
+      - run: echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
 
       - name: Set Up JDK
         uses: actions/setup-java@v1
         with:
-         java-version: 1.8
+          java-version: 1.8
 
       - name: Run Tests
         run: ./gradlew test
