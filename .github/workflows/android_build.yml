@@ -9,9 +9,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Create APIKEY.PROPERTIES File
-      - shell: bash
         env:
           API_KEY: ${{ secrets.APIKEY }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
@@ -39,9 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Create APIKEY.PROPERTIES File
-      - shell: bash
         env:
           API_KEY: ${{ secrets.APIKEY }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
