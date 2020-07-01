@@ -1,0 +1,83 @@
+# linter:
+# # https://help.sider.review/getting-started/custom-configuration
+
+#   # https://help.sider.review/tools/others/misspell
+#   misspell:
+#     exclude:
+#       - vendor
+#       - "**/*.min.js"
+#       - exclude_file.rb
+#     targets:
+#       - target_directory
+#       - another_target_directory/foo.rb
+#       - bar.rb
+#     locale: UK
+#     ignore: center,behavior
+
+#   # https://help.sider.review/tools/kotlin/ktlint
+#   ktlint:
+#     cli:
+#       patterns:
+#         - "src/**/*.kt"
+#         - "!src/**/*Test.kt"
+#       ruleset:
+#         - "https://example.com/custom/ruleset.jar"
+#       disabled_rules:
+#         - "no-wildcard-imports"
+#       experimental: true
+#     gradle:
+#       task: ktlint
+#       reporter: checkstyle
+#       output: build/reports/ktlint/ktlintMainSourceSetCheck.xml
+#     maven:
+#       goal: "antrun:run@ktlint"
+#       reporter: checkstyle
+#       output: target/ktlint.xml
+
+#   # https://help.sider.review/tools/shellscript/shellcheck
+#   shellcheck:
+#     target: "src/**/*.{sh,bash}"
+#     include: "SC2104,SC2105"
+#     exclude: "SC1000,SC1118"
+#     enable: "all"
+#     shell: "bash"
+#     severity: "error"
+#     norc: true
+
+#   # https://help.sider.review/tools/kotlin/detekt
+#   detekt:
+#     baseline: "baseline.xml"
+#     config:
+#       - "path/to/detekt-config.yml"
+#       - "path/to/another/detekt-config.yml"
+#     config-resource: []
+#     disable-default-rulesets: false
+#     excludes:
+#       - "**/excludes_dir/**"
+#       - "**/another/excludes_dir/**"
+#     includes: []
+#     input:
+#       - "src/"
+
+#   # https://help.sider.review/tools/markdown/remark-lint
+#   remark_lint:
+#     target: docs/
+#     ext: md,markdown
+#     rc-path: config/.remarkrc
+#     ignore-path: config/.remarkignore
+#     use:
+#       - remark-lint-file-extension
+#       - remark-lint-no-heading-punctuation
+
+# # https://help.sider.review/getting-started/custom-configuration#ignore
+# ignore:
+#   - "*.pdf"
+#   - "*.mp4"
+#   - "images/**"
+
+# # https://help.sider.review/getting-started/custom-configuration#branchesexclude
+# branches:
+#   exclude:
+#     - master
+#     - development
+#     - /^release-.*$/
