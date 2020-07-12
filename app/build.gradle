@@ -124,7 +124,6 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
 
     //Test Coroutine Rule & Kotlinx-Coroutines-Test
-    testImplementation "com.github.marcinOz:TestCoroutineRule:$testCoroutineRuleVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 
     //CalenderView
