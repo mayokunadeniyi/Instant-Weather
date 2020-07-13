@@ -124,7 +124,6 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
 
     //Test Coroutine Rule & Kotlinx-Coroutines-Test
-    testImplementation "com.github.marcinOz:TestCoroutineRule:$testCoroutineRuleVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 
     //CalenderView
@@ -148,9 +147,6 @@ dependencies {
 
     //Elastic view
     implementation "com.github.skydoves:elasticviews:$elastic_version"
-
-    //Air Location
-    implementation "com.github.mumayank:AirLocation:$air_location_version"
 
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:$work_version"
