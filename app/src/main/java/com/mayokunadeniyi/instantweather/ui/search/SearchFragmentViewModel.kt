@@ -29,11 +29,11 @@ import kotlinx.coroutines.launch
  * Created by Mayokun Adeniyi on 27/04/2020.
  */
 
-class SearchFragmentViewModel(application: Application) :
-    BaseViewModel(application) {
+class SearchFragmentViewModel(
+    private val repository: SearchWeatherRepository,
+    application: Application
+) : BaseViewModel(application) {
 
-    private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: SearchWeatherRepository
     private val applicationID = BuildConfig.ALGOLIA_APP_ID
     private val algoliaAPIKey = BuildConfig.ALGOLIA_API_KEY
     private val client = ClientSearch(
@@ -60,7 +60,6 @@ class SearchFragmentViewModel(application: Application) :
     private val connection = ConnectionHandler()
 
     init {
-        repository = SearchWeatherRepository(database, application)
         connection += searchBox
         connection += stats
     }

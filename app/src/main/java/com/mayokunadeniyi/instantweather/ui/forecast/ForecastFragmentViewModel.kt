@@ -16,17 +16,9 @@ import kotlinx.coroutines.launch
  */
 
 class ForecastFragmentViewModel(
+    private val repository: ForecastRepository,
     application: Application
 ) : BaseViewModel(application) {
-
-    private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: ForecastRepository
-    private val sharedPreferenceHelper: SharedPreferenceHelper
-
-    init {
-        repository = ForecastRepository(database, application)
-        sharedPreferenceHelper = SharedPreferenceHelper.getInstance(application.applicationContext)
-    }
 
     val weatherForecast = repository.weatherForecast
 

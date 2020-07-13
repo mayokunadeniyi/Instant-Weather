@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.observeOnce
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * A simple [Fragment] subclass.
@@ -21,19 +23,23 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeFragmentViewModel
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = getViewModel { parametersOf() }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel = ViewModelProvider(requireActivity()).get(HomeFragmentViewModel::class.java)
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initiateRefresh()
         binding.viewModel = viewModel
         hideAllViews(true)
         observeViewModels()

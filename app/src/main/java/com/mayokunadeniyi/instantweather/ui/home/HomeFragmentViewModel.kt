@@ -23,14 +23,14 @@ import java.util.*
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
-class HomeFragmentViewModel(application: Application) : BaseViewModel(application) {
+class HomeFragmentViewModel(
+    private val repository: WeatherRepository,
+    application: Application
+) : BaseViewModel(application) {
 
-    private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: WeatherRepository
     private val locationLiveData = LocationLiveData(application)
 
     init {
-        repository = WeatherRepository(database, application)
         currentSystemTime()
     }
 

@@ -5,8 +5,13 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.DelegatingWorkerFactory
+import com.mayokunadeniyi.instantweather.di.dbModule
+import com.mayokunadeniyi.instantweather.di.repositoryModule
+import com.mayokunadeniyi.instantweather.di.viewModelModule
 import com.mayokunadeniyi.instantweather.utils.ThemeManager
 import com.mayokunadeniyi.instantweather.worker.MyWorkerFactory
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
@@ -17,6 +22,11 @@ class InstantWeatherApplication: Application(), Configuration.Provider {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         initTheme()
+
+        startKoin {
+            androidContext(this@InstantWeatherApplication)
+            modules(listOf(dbModule, repositoryModule, viewModelModule))
+        }
     }
 
     private fun initTheme(){

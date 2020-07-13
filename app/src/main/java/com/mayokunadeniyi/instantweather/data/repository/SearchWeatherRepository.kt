@@ -18,10 +18,7 @@ import java.io.IOException
  * Created by Mayokun Adeniyi on 05/06/2020.
  */
 
-class SearchWeatherRepository(
-    private val database: WeatherDatabase,
-    application: Application
-) : BaseViewModel(application) {
+class SearchWeatherRepository(application: Application) : BaseViewModel(application) {
 
     private val weatherMapperRemote = WeatherMapperRemote()
 

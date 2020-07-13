@@ -13,6 +13,8 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,13 +25,18 @@ class ForecastFragment : Fragment() {
     private lateinit var binding: FragmentForecastBinding
     private lateinit var viewModel: ForecastFragmentViewModel
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = getViewModel { parametersOf() }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
         weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
-        viewModel = ViewModelProvider(this).get(ForecastFragmentViewModel::class.java)
         return binding.root
     }
 

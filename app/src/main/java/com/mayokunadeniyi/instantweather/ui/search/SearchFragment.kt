@@ -21,6 +21,8 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
 import com.mayokunadeniyi.instantweather.ui.search.SearchResultAdapter.SearchResultListener
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.utils.showIf
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * A simple [Fragment] subclass.
@@ -32,6 +34,11 @@ class SearchFragment : Fragment() {
     private val connection = ConnectionHandler()
     private lateinit var searchBoxView: SearchBoxViewAppCompat
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = getViewModel { parametersOf() }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +49,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchFragmentViewModel::class.java)
-
         searchBoxView = SearchBoxViewAppCompat(binding.searchView)
         searchBoxView.searchView.isIconified = false
 

@@ -20,7 +20,7 @@ import java.io.IOException
  */
 
 class WeatherRepository(
-    private val database: WeatherDatabase,
+    database: WeatherDatabase,
     application: Application
 ) : BaseViewModel(application) {
 
