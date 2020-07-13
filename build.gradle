@@ -56,6 +56,5 @@ ext {
     algolia_version = '2.3.1'
     paging_version = '2.1.2'
     elastic_version = '2.0.7'
-    air_location_version = '1.3.1'
     work_version = '2.3.4'
 }

@@ -49,10 +49,10 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      * This is called after the [location] data has been received.
      * This enables the [Weather] for the [location] to be received.
      */
-    fun initialWeatherFetch(location: Location) {
+    fun initialWeatherFetch(location: LocationModel) {
         launch {
             _isLoading.value = true
-            when (val result = repository.initialWeatherFetch(location.asLocationModel())) {
+            when (val result = repository.initialWeatherFetch(location)) {
                 is Result.Success -> {
                     _isLoading.value = false
                     _dataFetchState.value = result.data
@@ -77,9 +77,9 @@ class HomeFragmentViewModel(application: Application) : BaseViewModel(applicatio
      * This is called when the user swipes down to refresh.
      * This enables the [Weather] for the current [location] to be received.
      */
-    fun refreshWeather(location: Location) {
+    fun refreshWeather(location: LocationModel) {
         launch {
-            when (val result = repository.fetchRemoteWeatherData(location.asLocationModel())) {
+            when (val result = repository.fetchRemoteWeatherData(location)) {
                 is Result.Success -> {
                     _dataFetchState.value = result.data
                     _isLoading.value = false

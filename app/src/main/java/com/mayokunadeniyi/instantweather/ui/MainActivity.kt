@@ -1,11 +1,11 @@
 package com.mayokunadeniyi.instantweather.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -26,15 +26,11 @@ import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
-import mumayank.com.airlocationlibrary.AirLocation
-import mumayank.com.airlocationlibrary.AirLocation.LocationFailedEnum
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: HomeFragmentViewModel
-    private var airLocation: AirLocation? = null
     private var isGPSEnabled = false
     private lateinit var prefs: SharedPreferenceHelper
 
@@ -57,54 +53,14 @@ class MainActivity : AppCompatActivity() {
         invokeLocationAction()
     }
 
+    @SuppressLint("NewApi")
     private fun invokeLocationAction() {
-        viewModel.isLoading.observe(this, Observer { state ->
-            if (state) {
-                binding.mainErrorText.visibility = View.GONE
-                binding.mainProgress.visibility = View.GONE
-            }
-        })
-        binding.mainProgress.visibility = View.VISIBLE
         when {
             allPermissionsGranted() -> {
-                airLocation = AirLocation(this, false, true, object : AirLocation.Callbacks {
-                    override fun onSuccess(location: Location) {
-                        binding.mainProgress.visibility = View.GONE
-                        binding.mainErrorText.visibility = View.GONE
+                viewModel.getLocationLiveData().observe(this, Observer { location ->
+                    if (location != null){
                         viewModel.initialWeatherFetch(location)
                         setupWorkManager()
-                    }
-
-                    override fun onFailed(locationFailedEnum: LocationFailedEnum) {
-                        binding.mainProgress.visibility = View.GONE
-                        binding.mainErrorText.visibility = View.VISIBLE
-                        Snackbar.make(
-                            binding.root,
-                            "Error occurred when trying to get your location!",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        when (locationFailedEnum) {
-
-                            LocationFailedEnum.DeviceInFlightMode -> {
-                                binding.mainErrorText.text = getString(R.string.flight_mode_error)
-                            }
-                            LocationFailedEnum.LocationPermissionNotGranted -> {
-                                binding.mainErrorText.text =
-                                    getString(R.string.location_permission_error)
-                            }
-                            LocationFailedEnum.HighPrecisionNA_TryAgainPreferablyWithInternet -> {
-                                binding.mainErrorText.text =
-                                    getString(R.string.highprecision_internet_error)
-                            }
-                            LocationFailedEnum.LocationOptimizationPermissionNotGranted -> {
-                                binding.mainErrorText.text =
-                                    getString(R.string.location_optimization_error)
-                            }
-
-                            else -> {
-                                binding.mainErrorText.text = getString(R.string.general_main_error)
-                            }
-                        }
                     }
                 })
             }
@@ -165,9 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        airLocation?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-
         when (resultCode) {
             Activity.RESULT_OK -> {
                 when (requestCode) {
@@ -179,11 +133,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             Activity.RESULT_CANCELED -> {
-                binding.apply {
-                    mainErrorText.visibility = View.VISIBLE
-                    mainErrorText.text = getString(R.string.enable_gps)
-                    mainProgress.visibility = View.GONE
-                }
                 when (requestCode) {
                     GPS_REQUEST_CHECK_SETTINGS -> {
                         Snackbar.make(
@@ -201,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    @SuppressLint("NewApi")
     private fun shouldShowRequestPermissionRationale() = REQUIRED_PERMISSIONS.all {
         shouldShowRequestPermissionRationale(it)
     }
@@ -210,7 +160,6 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        airLocation?.onRequestPermissionsResult(requestCode, permissions, grantResults)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQUEST_CODE) {
             invokeLocationAction()
