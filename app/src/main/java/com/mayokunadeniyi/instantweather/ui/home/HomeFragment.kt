@@ -1,8 +1,6 @@
 package com.mayokunadeniyi.instantweather.ui.home
 
 
-
-import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
-import mumayank.com.airlocationlibrary.AirLocation
+import com.mayokunadeniyi.instantweather.utils.observeOnce
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +20,6 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeFragmentViewModel
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
-    private var airLocation: AirLocation? = null
 
 
     override fun onCreateView(
@@ -96,11 +93,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun initiateRefresh() {
-        airLocation = AirLocation(requireActivity(),false,true,object : AirLocation.Callbacks{
-            override fun onSuccess(location: Location) {
+        viewModel.getLocationLiveData().observeOnce(viewLifecycleOwner, Observer { location ->
+            if (location != null) {
                 viewModel.refreshWeather(location)
-            }
-            override fun onFailed(locationFailedEnum: AirLocation.LocationFailedEnum) {
+            } else {
                 hideViews()
                 binding.apply {
                     errorText.visibility = View.VISIBLE

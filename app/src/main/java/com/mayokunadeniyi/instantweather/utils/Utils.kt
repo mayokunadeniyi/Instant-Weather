@@ -40,10 +40,6 @@ inline fun <T : View> T.showIf(condition: (T) -> Boolean) {
  */
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
-/**
- * This function helps in transforming a [Location] to a [LocationModel]
- */
-fun Location.asLocationModel() = LocationModel(this.longitude, this.latitude)
 
 /**
  * This function helps to observe a [LiveData] once
