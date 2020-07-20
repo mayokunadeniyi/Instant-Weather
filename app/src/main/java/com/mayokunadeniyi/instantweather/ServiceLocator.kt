@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSourceImpl
-import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
 import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSourceImpl
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepositoryImpl
