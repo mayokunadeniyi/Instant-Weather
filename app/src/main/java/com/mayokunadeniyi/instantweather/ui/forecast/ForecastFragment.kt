@@ -13,7 +13,8 @@ import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.Fore
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -94,28 +95,27 @@ class ForecastFragment : Fragment() {
             }
 
             override fun onDaySelect() {
-//                val selectedDay = binding.calendarView.selectedDay
-//                if (selectedDay != null) {
-//                    val checkerDay = selectedDay.day
-//                    val checkerMonth = selectedDay.month
-//                    val checkerYear = selectedDay.year
-//
-//                    val list = viewModel.weatherForecast.value
-//                    val filteredList = list?.filter { weatherForecast ->
-//                        val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
-//                        val formattedDate = format.parse(weatherForecast.date)
-//                        val weatherForecastDay = formattedDate?.date
-//                        val weatherForecastMonth = formattedDate?.month
-//                        val weatherForecastYear = formattedDate?.year
-//                        //This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
-//                        weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
-//                            1900
-//                        ) == checkerYear
-//                    }
-//                    weatherForecastAdapter.submitList(filteredList)
-//                    weatherForecastAdapter.notifyDataSetChanged()
-//                    binding.emptyListText.showIf { filteredList!!.isEmpty() }
-//                }
+                val selectedDay = binding.calendarView.selectedDay
+                if (selectedDay != null) {
+                    val checkerDay = selectedDay.day
+                    val checkerMonth = selectedDay.month
+                    val checkerYear = selectedDay.year
+
+                    val list = viewModel.forecast.value
+                    val filteredList = list?.filter { weatherForecast ->
+                        val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
+                        val formattedDate = format.parse(weatherForecast.date)
+                        val weatherForecastDay = formattedDate?.date
+                        val weatherForecastMonth = formattedDate?.month
+                        val weatherForecastYear = formattedDate?.year
+                        //This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
+                        weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
+                            1900
+                        ) == checkerYear
+                    }
+                    weatherForecastAdapter.submitList(filteredList)
+                    binding.emptyListText.showIf { filteredList!!.isEmpty() }
+                }
 
             }
 

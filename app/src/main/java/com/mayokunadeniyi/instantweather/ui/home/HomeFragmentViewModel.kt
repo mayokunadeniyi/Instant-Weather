@@ -85,9 +85,10 @@ class HomeFragmentViewModel(
                     if (result.data != null) {
                         val networkWeather = result.data
                         _dataFetchState.value = true
-                        val check = WeatherMapperRemote().transformToDomain(networkWeather)
-                        Timber.i("The check is $check")
-                        _weather.value = check
+                        val weatherValue = WeatherMapperRemote().transformToDomain(networkWeather.apply {
+                            this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
+                        })
+                        _weather.value = weatherValue
                         repository.deleteWeatherData()
                         repository.storeWeatherData(networkWeather)
                     } else {

@@ -9,6 +9,7 @@ import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperRemote
 import com.mayokunadeniyi.instantweather.mapper.toDomain
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
+import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 
 /**
@@ -54,7 +55,12 @@ class ForecastFragmentViewModel(
                             _dataFetchState.value = true
                             _forecast.postValue(
                                 WeatherForecastMapperRemote().transformToDomain(
-                                    result.data
+                                    result.data.apply {
+                                        forEach {
+                                            it.networkWeatherCondition.temp =
+                                                convertKelvinToCelsius(it.networkWeatherCondition.temp)
+                                        }
+                                    }
                                 )
                             )
                             repository.deleteForecastData()

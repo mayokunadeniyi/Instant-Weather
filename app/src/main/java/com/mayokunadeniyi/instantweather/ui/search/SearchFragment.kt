@@ -21,6 +21,7 @@ import com.algolia.instantsearch.helper.stats.connectView
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
 import com.mayokunadeniyi.instantweather.ui.search.SearchResultAdapter.SearchResultListener
 import com.google.android.material.snackbar.Snackbar
+import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 
@@ -81,8 +82,11 @@ class SearchFragment : Fragment() {
     private fun observeViewModel(location: String) {
         viewModel.weatherInfo.observe(viewLifecycleOwner, Observer { weather ->
             if (weather != null) {
+                val weatherValue = weather.apply {
+                    this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
+                }
                 val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(
-                    weather,
+                    weatherValue,
                     location
                 )
                 findNavController().navigate(action)

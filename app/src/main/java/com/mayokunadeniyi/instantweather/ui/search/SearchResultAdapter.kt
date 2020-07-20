@@ -12,7 +12,7 @@ import com.mayokunadeniyi.instantweather.databinding.ItemSearchResultBinding
  * Created by Mayokun Adeniyi on 28/04/2020.
  */
 
-class SearchResultAdapter(val clickListener: SearchResultListener) : PagedListAdapter<SearchResult,SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()){
+class SearchResultAdapter(private val clickListener: SearchResultListener) : PagedListAdapter<SearchResult,SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }

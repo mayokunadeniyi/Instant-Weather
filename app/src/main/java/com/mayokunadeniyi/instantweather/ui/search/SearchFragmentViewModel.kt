@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather.ui.search
 
-import android.app.Application
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -83,8 +82,6 @@ class SearchFragmentViewModel(private val repository: WeatherRepository) :
                         val networkWeather = result.data
                         _dataFetchState.value = true
                         _weatherInfo.postValue(WeatherMapperRemote().transformToDomain(networkWeather))
-                        repository.deleteWeatherData()
-                        repository.storeWeatherData(networkWeather)
                     } else {
                         _dataFetchState.postValue(false)
                     }

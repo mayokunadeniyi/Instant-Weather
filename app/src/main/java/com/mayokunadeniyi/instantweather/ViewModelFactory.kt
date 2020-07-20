@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather
 
-import android.app.Application
 import android.os.Bundle
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.ui.forecast.ForecastFragmentViewModel
-import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
 import com.mayokunadeniyi.instantweather.ui.search.SearchFragmentViewModel
 
 /**
