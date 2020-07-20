@@ -1,14 +1,15 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
-import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
-import com.mayokunadeniyi.instantweather.data.repository.ForecastRepository
-import com.mayokunadeniyi.instantweather.ui.BaseViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
+import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperRemote
+import com.mayokunadeniyi.instantweather.mapper.toDomain
 import com.mayokunadeniyi.instantweather.utils.Result
-import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.asLiveData
+import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 
 /**
@@ -16,53 +17,68 @@ import kotlinx.coroutines.launch
  */
 
 class ForecastFragmentViewModel(
-    application: Application
-) : BaseViewModel(application) {
+    private val repository: WeatherRepository
+) : ViewModel() {
 
-    private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: ForecastRepository
-    private val sharedPreferenceHelper: SharedPreferenceHelper
-
-    init {
-        repository = ForecastRepository(database, application)
-        sharedPreferenceHelper = SharedPreferenceHelper.getInstance(application.applicationContext)
-    }
-
-    val weatherForecast = repository.weatherForecast
+    private val _forecast = MutableLiveData<List<WeatherForecast>>()
+    val forecast = _forecast.asLiveData()
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading = _isLoading.asLiveData()
 
-    private val _forecastFetchState = MutableLiveData<Boolean>()
-    val forecastFetchState = _forecastFetchState.asLiveData()
+    private val _dataFetchState = MutableLiveData<Boolean>()
+    val dataFetchState = _dataFetchState.asLiveData()
 
-    fun getWeatherForecast() = launch {
+    fun getWeatherForecast() {
         _isLoading.value = true
-        when (val result = repository.initialForecastFetch()) {
-            is Result.Success -> {
-                _isLoading.value = false
-                _forecastFetchState.value = result.data
-            }
-            is Result.Error -> {
-                _isLoading.value = false
-                _forecastFetchState.value = false
+        viewModelScope.launch {
+            val localForecast = repository.getLocalWeatherForecastData()
+            if (localForecast.isNullOrEmpty()) {
+                refreshForecastData()
+            } else {
+                _forecast.postValue(localForecast.toDomain())
+                _isLoading.postValue(false)
+                _dataFetchState.postValue(true)
             }
         }
     }
 
     fun refreshForecastData() {
         _isLoading.value = true
-        launch {
-            when (val result = repository.fetchRemoteWeatherForecast()) {
-                is Result.Success -> {
-                    _forecastFetchState.value = result.data
-                    _isLoading.value = false
-                }
+        viewModelScope.launch {
+            val cityId = repository.getLocalWeatherData()?.cityId
+            if (cityId != null) {
+                when (val result = repository.fetchRemoteWeatherForecast(cityId)) {
+                    is Result.Success -> {
+                        _isLoading.value = false
+                        if (result.data != null) {
+                            _dataFetchState.value = true
+                            _forecast.postValue(
+                                WeatherForecastMapperRemote().transformToDomain(
+                                    result.data.apply {
+                                        forEach {
+                                            it.networkWeatherCondition.temp =
+                                                convertKelvinToCelsius(it.networkWeatherCondition.temp)
+                                        }
+                                    }
+                                )
+                            )
+                            repository.deleteForecastData()
+                            repository.storeForecastData(result.data)
+                        } else {
+                            _dataFetchState.postValue(false)
+                        }
 
-                is Result.Error -> {
-                    _forecastFetchState.value = false
-                    _isLoading.value = false
+                    }
+
+                    is Result.Error -> {
+                        _dataFetchState.value = false
+                        _isLoading.value = false
+                    }
                 }
+            } else {
+                _isLoading.postValue(false)
+                _dataFetchState.postValue(false)
             }
         }
     }

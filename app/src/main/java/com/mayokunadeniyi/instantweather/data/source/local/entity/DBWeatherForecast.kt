@@ -1,4 +1,4 @@
-package com.mayokunadeniyi.instantweather.data.local.entity
+package com.mayokunadeniyi.instantweather.data.source.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

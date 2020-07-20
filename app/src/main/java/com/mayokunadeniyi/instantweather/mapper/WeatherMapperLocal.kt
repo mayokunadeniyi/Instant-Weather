@@ -1,13 +1,14 @@
 package com.mayokunadeniyi.instantweather.mapper
 
-import com.mayokunadeniyi.instantweather.data.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.model.Weather
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
+
 
 /**
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
 
-class WeatherMapperLocal : BaseMapper<DBWeather,Weather>{
+class WeatherMapperLocal : BaseMapper<DBWeather, Weather> {
     override fun transformToDomain(type: DBWeather): Weather = Weather(
         uId = type.uId,
         cityId = type.cityId,
@@ -27,3 +28,6 @@ class WeatherMapperLocal : BaseMapper<DBWeather,Weather>{
     )
 
 }
+
+fun DBWeather.toDomain() = WeatherMapperLocal().transformToDomain(this)
+fun Weather.toDbModel() = WeatherMapperLocal().transformToDto(this)

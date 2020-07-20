@@ -4,9 +4,9 @@ import android.app.Application
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
-import com.mayokunadeniyi.instantweather.data.repository.ForecastRepository
-import com.mayokunadeniyi.instantweather.data.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.data.source.local.WeatherDatabase
+import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepositoryImpl
 import com.mayokunadeniyi.instantweather.utils.*
 
 /**
@@ -14,27 +14,23 @@ import com.mayokunadeniyi.instantweather.utils.*
  */
 
 class UpdateWeatherWorker(
-    context: Context, params: WorkerParameters, application: Application
+    context: Context,
+    params: WorkerParameters,
+    private val repository: WeatherRepository
 ) : CoroutineWorker(context, params) {
     private val notificationHelper = NotificationHelper("Weather Update", context)
-    private val database = WeatherDatabase.getInstance(context)
-    private val weatherRepository: WeatherRepository
-    private val forecastRepository: ForecastRepository
     private val sharedPrefs = SharedPreferenceHelper.getInstance(context)
 
-    init {
-        weatherRepository = WeatherRepository(database, application)
-        forecastRepository = ForecastRepository(database, application)
-    }
 
     override suspend fun doWork(): Result {
         val location = sharedPrefs.getLocation()
-        return when (val result = weatherRepository.fetchRemoteWeatherData(location)) {
+        return when (val result = repository.fetchRemoteWeatherData(location)) {
             is com.mayokunadeniyi.instantweather.utils.Result.Success -> {
-                if (result.data) {
-                    when (val foreResult = forecastRepository.fetchRemoteWeatherForecast()) {
+                if (result.data != null) {
+                    when (val foreResult =
+                        repository.fetchRemoteWeatherForecast(result.data.cityId)) {
                         is com.mayokunadeniyi.instantweather.utils.Result.Success -> {
-                            if (foreResult.data) {
+                            if (foreResult.data != null) {
                                 notificationHelper.createNotification()
                                 Result.success()
                             } else {

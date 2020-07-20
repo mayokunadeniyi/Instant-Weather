@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
+import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
@@ -21,20 +21,24 @@ import java.util.*
  */
 class ForecastFragment : Fragment() {
     private lateinit var binding: FragmentForecastBinding
-    private lateinit var viewModel: ForecastFragmentViewModel
+
+    private val viewModel by viewModels<ForecastFragmentViewModel> { getViewModelFactory() }
+
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
-        weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
-        viewModel = ViewModelProvider(this).get(ForecastFragmentViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
+
         setupCalendar()
 
         val recyclerView = binding.forecastRecyclerview
@@ -45,7 +49,7 @@ class ForecastFragment : Fragment() {
 
     private fun observeMoreViewModels() {
 
-        viewModel.weatherForecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
+        viewModel.forecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
             weatherForecast?.let {
                 weatherForecastAdapter.submitList(it)
             }
@@ -55,7 +59,7 @@ class ForecastFragment : Fragment() {
             initiateRefresh()
         }
 
-        viewModel.forecastFetchState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.dataFetchState.observe(viewLifecycleOwner, Observer { state ->
 
             binding.apply {
                 forecastRecyclerview.showIf { state }
@@ -97,7 +101,7 @@ class ForecastFragment : Fragment() {
                     val checkerMonth = selectedDay.month
                     val checkerYear = selectedDay.year
 
-                    val list = viewModel.weatherForecast.value
+                    val list = viewModel.forecast.value
                     val filteredList = list?.filter { weatherForecast ->
                         val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
                         val formattedDate = format.parse(weatherForecast.date)
@@ -110,7 +114,6 @@ class ForecastFragment : Fragment() {
                         ) == checkerYear
                     }
                     weatherForecastAdapter.submitList(filteredList)
-                    weatherForecastAdapter.notifyDataSetChanged()
                     binding.emptyListText.showIf { filteredList!!.isEmpty() }
                 }
 

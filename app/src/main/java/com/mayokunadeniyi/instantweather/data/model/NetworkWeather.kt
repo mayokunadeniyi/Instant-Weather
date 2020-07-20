@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
 
-//This class represents the Network DTO 
+
 data class NetworkWeather(
 
     val uId: Int,
