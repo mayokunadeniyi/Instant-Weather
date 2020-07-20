@@ -8,7 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.google.android.material.snackbar.Snackbar
+import com.mayokunadeniyi.instantweather.InstantWeatherApplication
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
 import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
@@ -30,14 +31,15 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: HomeFragmentViewModel
+    private val viewModel by viewModels<HomeFragmentViewModel> {
+        HomeFragmentViewModel.HomeFragmentViewModelFactory((applicationContext as InstantWeatherApplication).weatherRepository,application)
+    }
     private var isGPSEnabled = false
     private lateinit var prefs: SharedPreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         prefs = SharedPreferenceHelper.getInstance(this)
         setupNavigation()
@@ -58,8 +60,8 @@ class MainActivity : AppCompatActivity() {
         when {
             allPermissionsGranted() -> {
                 viewModel.getLocationLiveData().observe(this, Observer { location ->
-                    if (location != null){
-                        viewModel.initialWeatherFetch(location)
+                    if (location != null) {
+                        viewModel.getWeather(location)
                         setupWorkManager()
                     }
                 })

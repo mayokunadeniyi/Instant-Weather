@@ -3,7 +3,6 @@ package com.mayokunadeniyi.instantweather.data.model
 import com.google.gson.annotations.SerializedName
 
 
-//This class represents the DTO for the weather forecast
 data class NetworkWeatherForecast(
 
     val id: Int,

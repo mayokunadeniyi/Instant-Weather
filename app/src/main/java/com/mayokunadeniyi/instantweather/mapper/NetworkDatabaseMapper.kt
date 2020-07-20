@@ -1,7 +1,7 @@
 package com.mayokunadeniyi.instantweather.mapper
 
-import com.mayokunadeniyi.instantweather.data.local.entity.DBWeather
-import com.mayokunadeniyi.instantweather.data.local.entity.DBWeatherForecast
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
 

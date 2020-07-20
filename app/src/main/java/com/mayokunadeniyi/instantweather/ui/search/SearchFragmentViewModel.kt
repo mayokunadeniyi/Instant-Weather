@@ -1,8 +1,7 @@
 package com.mayokunadeniyi.instantweather.ui.search
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -15,11 +14,10 @@ import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.IndexName
 import com.mayokunadeniyi.instantweather.BuildConfig
-import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.SearchResult
 import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.repository.SearchWeatherRepository
-import com.mayokunadeniyi.instantweather.ui.BaseViewModel
+import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
@@ -29,11 +27,9 @@ import kotlinx.coroutines.launch
  * Created by Mayokun Adeniyi on 27/04/2020.
  */
 
-class SearchFragmentViewModel(application: Application) :
-    BaseViewModel(application) {
+class SearchFragmentViewModel(private val repository: WeatherRepository) :
+    ViewModel() {
 
-    private val database = WeatherDatabase.getInstance(getApplication())
-    private var repository: SearchWeatherRepository
     private val applicationID = BuildConfig.ALGOLIA_APP_ID
     private val algoliaAPIKey = BuildConfig.ALGOLIA_API_KEY
     private val client = ClientSearch(
@@ -60,34 +56,42 @@ class SearchFragmentViewModel(application: Application) :
     private val connection = ConnectionHandler()
 
     init {
-        repository = SearchWeatherRepository(database, application)
         connection += searchBox
         connection += stats
     }
 
-    val searchWeather = repository.searchWeather
+    private val _weatherInfo = MutableLiveData<Weather>()
+    val weatherInfo = _weatherInfo.asLiveData()
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading = _isLoading.asLiveData()
 
-    private val _searchWeatherState = MutableLiveData<Boolean>()
-    val searchWeatherState = _searchWeatherState.asLiveData()
+    private val _dataFetchState = MutableLiveData<Boolean>()
+    val dataFetchState = _dataFetchState.asLiveData()
 
     /**
      * Gets the [Weather] information for the user selected location[name]
      * @param name value of the location whose [Weather] data is to be fetched.
      */
     fun getSearchWeather(name: String) {
-        _isLoading.value = true
-        launch {
+        _isLoading.postValue(true)
+        viewModelScope.launch {
             when (val result = repository.getSearchRemoteWeather(name)) {
                 is Result.Success -> {
                     _isLoading.value = false
-                    _searchWeatherState.value = result.data
+                    if (result.data != null) {
+                        val networkWeather = result.data
+                        _dataFetchState.value = true
+                        _weatherInfo.postValue(WeatherMapperRemote().transformToDomain(networkWeather))
+                        repository.deleteWeatherData()
+                        repository.storeWeatherData(networkWeather)
+                    } else {
+                        _dataFetchState.postValue(false)
+                    }
                 }
                 is Result.Error -> {
                     _isLoading.value = false
-                    _searchWeatherState.value = false
+                    _dataFetchState.value = false
                 }
             }
         }
@@ -95,7 +99,6 @@ class SearchFragmentViewModel(application: Application) :
 
     override fun onCleared() {
         super.onCleared()
-        job.cancel()
         searcher.cancel()
         connection.disconnect()
     }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
-import com.mayokunadeniyi.instantweather.data.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 
 /**

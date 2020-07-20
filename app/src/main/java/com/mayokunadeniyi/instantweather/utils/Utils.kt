@@ -1,13 +1,10 @@
 package com.mayokunadeniyi.instantweather.utils
 
-import android.location.Location
-import android.location.LocationProvider
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.mayokunadeniyi.instantweather.data.model.LocationModel
 
 /**
  * Created by Mayokun Adeniyi on 30/03/2020.

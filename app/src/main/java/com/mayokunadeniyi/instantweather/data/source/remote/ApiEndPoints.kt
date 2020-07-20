@@ -1,4 +1,4 @@
-package com.mayokunadeniyi.instantweather.data.remote
+package com.mayokunadeniyi.instantweather.data.source.remote
 
 /**
  * Created by Mayokun Adeniyi on 23/05/2020.

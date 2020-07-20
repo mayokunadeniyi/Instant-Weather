@@ -1,11 +1,11 @@
-package com.mayokunadeniyi.instantweather.data.local
+package com.mayokunadeniyi.instantweather.data.source.local
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.mayokunadeniyi.instantweather.data.local.dao.WeatherDao
-import com.mayokunadeniyi.instantweather.data.local.entity.DBWeather
+import com.mayokunadeniyi.instantweather.data.source.local.dao.WeatherDao
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription
 import com.mayokunadeniyi.instantweather.data.model.Wind

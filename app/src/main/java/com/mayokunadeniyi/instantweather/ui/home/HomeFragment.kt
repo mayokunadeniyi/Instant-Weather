@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import com.mayokunadeniyi.instantweather.InstantWeatherApplication
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
-import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 
 /**
@@ -18,8 +19,13 @@ import com.mayokunadeniyi.instantweather.utils.observeOnce
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: HomeFragmentViewModel
-    private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
+
+    private val viewModel by viewModels<HomeFragmentViewModel> {
+        HomeFragmentViewModel.HomeFragmentViewModelFactory(
+            (requireContext().applicationContext as InstantWeatherApplication).weatherRepository,
+            requireActivity().application
+        )
+    }
 
 
     override fun onCreateView(
@@ -27,8 +33,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel = ViewModelProvider(requireActivity()).get(HomeFragmentViewModel::class.java)
-        sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
         return binding.root
     }
 
@@ -47,7 +51,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.getWeather().observe(viewLifecycleOwner, Observer { weather ->
+        viewModel.weather.observe(viewLifecycleOwner, Observer { weather ->
             weather?.let {
                 binding.weather = it
                 binding.networkWeatherDescription = it.networkWeatherDescription.first()

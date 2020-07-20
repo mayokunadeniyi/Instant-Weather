@@ -7,7 +7,6 @@ import kotlinx.android.parcel.Parcelize
  * Created by Mayokun Adeniyi on 27/02/2020.
  */
 
-//This represents the Domain weather model
 @Parcelize
 data class Weather(
 
