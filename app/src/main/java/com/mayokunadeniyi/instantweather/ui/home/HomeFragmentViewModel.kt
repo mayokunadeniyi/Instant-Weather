@@ -10,6 +10,7 @@ import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.mapper.toDomain
 import com.mayokunadeniyi.instantweather.utils.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,14 +47,18 @@ class HomeFragmentViewModel(
      * This enables the [Weather] for the [location] to be received.
      */
     fun getWeather(location: LocationModel) {
+        Timber.i("The location is $location")
         _isLoading.postValue(true)
         viewModelScope.launch {
             val localWeather = repository.getLocalWeatherData()
+            Timber.i("The local data is $localWeather")
             if (localWeather == null) {
+                Timber.i("Ok i am fetching here using $location")
                 refreshWeather(location)
             } else {
                 _weather.postValue(localWeather.toDomain())
                 _isLoading.postValue(false)
+                _dataFetchState.postValue(true)
             }
 
         }
@@ -72,7 +77,7 @@ class HomeFragmentViewModel(
      * This enables the [Weather] for the current [location] to be received.
      */
     fun refreshWeather(location: LocationModel) {
-        _isLoading.postValue(true)
+        _isLoading.value = true
         viewModelScope.launch {
             when (val result = repository.fetchRemoteWeatherData(location)) {
                 is Result.Success -> {
@@ -80,7 +85,9 @@ class HomeFragmentViewModel(
                     if (result.data != null) {
                         val networkWeather = result.data
                         _dataFetchState.value = true
-                        _weather.postValue(WeatherMapperRemote().transformToDomain(networkWeather))
+                        val check = WeatherMapperRemote().transformToDomain(networkWeather)
+                        Timber.i("The check is $check")
+                        _weather.value = check
                         repository.deleteWeatherData()
                         repository.storeWeatherData(networkWeather)
                     } else {

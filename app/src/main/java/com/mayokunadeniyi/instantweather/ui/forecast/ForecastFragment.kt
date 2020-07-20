@@ -8,15 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import java.text.SimpleDateFormat
-import java.util.*
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.

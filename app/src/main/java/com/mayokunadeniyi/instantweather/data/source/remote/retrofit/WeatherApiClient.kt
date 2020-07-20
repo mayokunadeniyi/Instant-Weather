@@ -1,7 +1,7 @@
-package com.mayokunadeniyi.instantweather.data.source.remote
+package com.mayokunadeniyi.instantweather.data.source.remote.retrofit
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.mayokunadeniyi.instantweather.data.source.remote.ApiEndPoints.BASE_URL
+import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.ApiEndPoints.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,6 +17,7 @@ private val retrofit = Retrofit.Builder()
 
 object WeatherApi {
     val retrofitService: WeatherApiService by lazy {
-        retrofit.create(WeatherApiService::class.java)
+        retrofit.create(
+            WeatherApiService::class.java)
     }
 }

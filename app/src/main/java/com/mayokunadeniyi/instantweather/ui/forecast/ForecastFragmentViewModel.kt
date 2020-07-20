@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,11 +32,12 @@ class ForecastFragmentViewModel(
         _isLoading.value = true
         viewModelScope.launch {
             val localForecast = repository.getLocalWeatherForecastData()
-            if (localForecast == null) {
+            if (localForecast.isNullOrEmpty()) {
                 refreshForecastData()
             } else {
                 _forecast.postValue(localForecast.toDomain())
                 _isLoading.postValue(false)
+                _dataFetchState.postValue(true)
             }
         }
     }

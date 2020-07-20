@@ -1,4 +1,4 @@
-package com.mayokunadeniyi.instantweather.data.source.remote
+package com.mayokunadeniyi.instantweather.data.source.remote.retrofit
 
 /**
  * Created by Mayokun Adeniyi on 23/05/2020.

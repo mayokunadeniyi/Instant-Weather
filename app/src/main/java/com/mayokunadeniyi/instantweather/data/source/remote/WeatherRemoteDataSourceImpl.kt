@@ -3,7 +3,8 @@ package com.mayokunadeniyi.instantweather.data.source.remote
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
-import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
+import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.WeatherApi
+import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.WeatherApiService
 import com.mayokunadeniyi.instantweather.utils.API_KEY
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher

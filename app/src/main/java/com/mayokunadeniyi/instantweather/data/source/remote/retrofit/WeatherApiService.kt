@@ -1,4 +1,4 @@
-package com.mayokunadeniyi.instantweather.data.source.remote
+package com.mayokunadeniyi.instantweather.data.source.remote.retrofit
 
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecastResponse
