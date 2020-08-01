@@ -9,7 +9,9 @@ import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForec
 import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
 import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
 import com.mayokunadeniyi.instantweather.utils.Result
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
@@ -64,5 +66,4 @@ class WeatherRepositoryImpl(
     override suspend fun deleteForecastData() {
         localDataSource.deleteForecastWeather()
     }
-
 }

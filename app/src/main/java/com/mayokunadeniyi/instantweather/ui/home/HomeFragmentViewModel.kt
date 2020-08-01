@@ -2,17 +2,23 @@ package com.mayokunadeniyi.instantweather.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.mapper.toDomain
-import com.mayokunadeniyi.instantweather.utils.*
+import com.mayokunadeniyi.instantweather.utils.LocationLiveData
+import com.mayokunadeniyi.instantweather.utils.Result
+import com.mayokunadeniyi.instantweather.utils.asLiveData
+import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
@@ -60,7 +66,6 @@ class HomeFragmentViewModel(
                 _isLoading.postValue(false)
                 _dataFetchState.postValue(true)
             }
-
         }
     }
 
@@ -85,9 +90,11 @@ class HomeFragmentViewModel(
                     if (result.data != null) {
                         val networkWeather = result.data
                         _dataFetchState.value = true
-                        val weatherValue = WeatherMapperRemote().transformToDomain(networkWeather.apply {
-                            this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
-                        })
+                        val weatherValue = WeatherMapperRemote().transformToDomain(
+                            networkWeather.apply {
+                                this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
+                            }
+                        )
                         _weather.value = weatherValue
                         repository.deleteWeatherData()
                         repository.storeWeatherData(networkWeather)
@@ -101,7 +108,6 @@ class HomeFragmentViewModel(
                 }
             }
         }
-
     }
 
     @Suppress("UNCHECKED_CAST")

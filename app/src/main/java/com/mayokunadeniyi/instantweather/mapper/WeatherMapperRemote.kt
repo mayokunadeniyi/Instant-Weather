@@ -7,7 +7,7 @@ import com.mayokunadeniyi.instantweather.data.model.Weather
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
 
-class WeatherMapperRemote : BaseMapper<NetworkWeather,Weather>{
+class WeatherMapperRemote : BaseMapper<NetworkWeather, Weather> {
     override fun transformToDomain(type: NetworkWeather): Weather = Weather(
         uId = type.uId,
         cityId = type.cityId,
@@ -25,5 +25,4 @@ class WeatherMapperRemote : BaseMapper<NetworkWeather,Weather>{
         networkWeatherDescriptions = type.networkWeatherDescription,
         networkWeatherCondition = type.networkWeatherCondition
     )
-
 }

@@ -1,30 +1,31 @@
 package com.mayokunadeniyi.instantweather.ui.home
 
-
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.InstantWeatherApplication
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
-import com.mayokunadeniyi.instantweather.ui.MainActivity
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /**
@@ -61,12 +62,15 @@ class HomeFragment : Fragment() {
     private fun invokeLocationAction() {
         when {
             allPermissionsGranted() -> {
-                viewModel.getLocationLiveData().observeOnce(viewLifecycleOwner, Observer { location ->
-                    if (location != null) {
-                        viewModel.getWeather(location)
-                        setupWorkManager()
+                viewModel.getLocationLiveData().observeOnce(
+                    viewLifecycleOwner,
+                    Observer { location ->
+                        if (location != null) {
+                            viewModel.getWeather(location)
+                            setupWorkManager()
+                        }
                     }
-                })
+                )
             }
 
             shouldShowRequestPermissionRationale() -> {
@@ -98,9 +102,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
@@ -122,21 +126,65 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.weather.observe(viewLifecycleOwner, Observer { weather ->
-            weather?.let {
-                binding.weather = it
-                binding.networkWeatherDescription = it.networkWeatherDescription.first()
-            }
-        })
-
-        viewModel.dataFetchState.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                true -> {
-                    unHideViews()
-                    binding.errorText.visibility = View.GONE
-
+        viewModel.weather.observe(
+            viewLifecycleOwner,
+            Observer { weather ->
+                weather?.let {
+                    binding.weather = it
+                    binding.networkWeatherDescription = it.networkWeatherDescription.first()
                 }
-                false -> {
+            }
+        )
+
+        viewModel.dataFetchState.observe(
+            viewLifecycleOwner,
+            Observer { state ->
+                when (state) {
+                    true -> {
+                        unHideViews()
+                        binding.errorText.visibility = View.GONE
+                    }
+                    false -> {
+                        hideViews()
+                        binding.apply {
+                            errorText.visibility = View.VISIBLE
+                            progressBar.visibility = View.GONE
+                            loadingText.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        )
+
+        viewModel.isLoading.observe(
+            viewLifecycleOwner,
+            Observer { state ->
+                when (state) {
+                    true -> {
+                        hideViews()
+                        binding.apply {
+                            progressBar.visibility = View.VISIBLE
+                            loadingText.visibility = View.VISIBLE
+                        }
+                    }
+                    false -> {
+                        binding.apply {
+                            progressBar.visibility = View.GONE
+                            loadingText.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    private fun initiateRefresh() {
+        viewModel.getLocationLiveData().observeOnce(
+            viewLifecycleOwner,
+            Observer { location ->
+                if (location != null) {
+                    viewModel.refreshWeather(location)
+                } else {
                     hideViews()
                     binding.apply {
                         errorText.visibility = View.VISIBLE
@@ -145,43 +193,8 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        })
-
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                true -> {
-                    hideViews()
-                    binding.apply {
-                        progressBar.visibility = View.VISIBLE
-                        loadingText.visibility = View.VISIBLE
-                    }
-                }
-                false -> {
-                    binding.apply {
-                        progressBar.visibility = View.GONE
-                        loadingText.visibility = View.GONE
-                    }
-                }
-            }
-        })
-
+        )
     }
-
-    private fun initiateRefresh() {
-        viewModel.getLocationLiveData().observeOnce(viewLifecycleOwner, Observer { location ->
-            if (location != null) {
-                viewModel.refreshWeather(location)
-            } else {
-                hideViews()
-                binding.apply {
-                    errorText.visibility = View.VISIBLE
-                    progressBar.visibility = View.GONE
-                    loadingText.visibility = View.GONE
-                }
-            }
-        })
-    }
-
 
     private fun hideViews() {
         binding.apply {
@@ -222,7 +235,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -278,9 +290,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupWorkManager() {
-        viewModel.getLocationLiveData().observeOnce(this, Observer {
-            prefs.saveLocation(it)
-        })
+        viewModel.getLocationLiveData().observeOnce(
+            this,
+            Observer {
+                prefs.saveLocation(it)
+            }
+        )
         val constraint = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -295,7 +310,5 @@ class HomeFragment : Fragment() {
             "Update_weather_worker",
             ExistingPeriodicWorkPolicy.REPLACE, weatherUpdateRequest
         )
-
     }
 }
-

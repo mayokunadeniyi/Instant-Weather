@@ -12,37 +12,36 @@ import com.mayokunadeniyi.instantweather.databinding.ItemSearchResultBinding
  * Created by Mayokun Adeniyi on 28/04/2020.
  */
 
-class SearchResultAdapter(private val clickListener: SearchResultListener) : PagedListAdapter<SearchResult,SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()){
+class SearchResultAdapter(private val clickListener: SearchResultListener) : PagedListAdapter<SearchResult, SearchResultAdapter.ViewHolder>(SearchResultDiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val searchResult = getItem(position)
-        if (searchResult != null){
-            holder.itemView.setOnClickListener{
+        if (searchResult != null) {
+            holder.itemView.setOnClickListener {
                 clickListener.onClick(searchResult)
             }
             holder.bind(searchResult)
         }
     }
 
-    class ViewHolder(private val binding: ItemSearchResultBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(searchResult: SearchResult){
+    class ViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(searchResult: SearchResult) {
             binding.searchResult = searchResult
             binding.executePendingBindings()
         }
-        companion object{
-            fun from(parent: ViewGroup): ViewHolder{
-                val  layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemSearchResultBinding.inflate(layoutInflater,parent,false)
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemSearchResultBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
     }
 
-
-    class SearchResultDiffCallBack: DiffUtil.ItemCallback<SearchResult>(){
+    class SearchResultDiffCallBack : DiffUtil.ItemCallback<SearchResult>() {
         override fun areItemsTheSame(oldItem: SearchResult, newItem: SearchResult): Boolean {
             return oldItem.name == newItem.name
         }
@@ -52,8 +51,8 @@ class SearchResultAdapter(private val clickListener: SearchResultListener) : Pag
         }
     }
 
-    //Onclick listener util class
-    class SearchResultListener(val clickListener: (name: String) -> Unit){
+    // Onclick listener util class
+    class SearchResultListener(val clickListener: (name: String) -> Unit) {
         fun onClick(searchResult: SearchResult) = clickListener(searchResult.name)
     }
 }

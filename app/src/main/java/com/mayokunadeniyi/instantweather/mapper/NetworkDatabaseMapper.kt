@@ -1,14 +1,13 @@
 package com.mayokunadeniyi.instantweather.mapper
 
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
  */
-
 
 fun NetworkWeather.toDatabaseModel() = DBWeather(
     uId = this.uId,
@@ -20,7 +19,7 @@ fun NetworkWeather.toDatabaseModel() = DBWeather(
 )
 
 fun NetworkWeatherForecast.toDatabaseModel() = DBWeatherForecast(
-   id = this.id,
+    id = this.id,
     date = this.date,
     wind = this.wind,
     networkWeatherDescriptions = this.networkWeatherDescription,

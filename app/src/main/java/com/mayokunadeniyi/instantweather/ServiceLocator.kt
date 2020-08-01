@@ -50,6 +50,4 @@ object ServiceLocator {
         database = result
         return result
     }
-
 }
-

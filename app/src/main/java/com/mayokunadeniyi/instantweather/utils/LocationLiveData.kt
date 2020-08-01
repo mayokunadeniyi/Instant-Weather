@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
-import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import java.util.concurrent.TimeUnit
+import com.mayokunadeniyi.instantweather.data.model.LocationModel
 
 class LocationLiveData(context: Context) : LiveData<LocationModel>() {
 
@@ -19,7 +18,6 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
         super.onInactive()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-
 
     @SuppressLint("MissingPermission")
     override fun onActive() {
@@ -66,5 +64,3 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
         }
     }
 }
-
-

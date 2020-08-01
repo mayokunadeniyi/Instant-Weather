@@ -27,5 +27,4 @@ class MyWorkerFactory(private val repository: WeatherRepository) : WorkerFactory
                 null
         }
     }
-
 }

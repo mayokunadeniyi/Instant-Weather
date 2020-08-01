@@ -2,7 +2,6 @@ package com.mayokunadeniyi.instantweather.utils
 
 import java.lang.Exception
 
-
 /**
  * Created by Mayokun Adeniyi on 23/05/2020.
  */

@@ -1,15 +1,11 @@
 package com.mayokunadeniyi.instantweather.data.source.local
 
-import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
 import com.mayokunadeniyi.instantweather.data.source.local.dao.WeatherDao
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
-import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 /**
  * Created by Mayokun Adeniyi on 13/07/2020.
@@ -44,5 +40,4 @@ class WeatherLocalDataSourceImpl(
     override suspend fun deleteForecastWeather() = withContext(ioDispatcher) {
         weatherDao.deleteAllWeatherForecast()
     }
-
 }

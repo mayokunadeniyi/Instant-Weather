@@ -1,7 +1,7 @@
 package com.mayokunadeniyi.instantweather.mapper
 
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
+import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 
 /**
  * Created by Mayokun Adeniyi on 15/03/2020.
@@ -32,7 +32,6 @@ class WeatherForecastMapperLocal :
             )
         }
     }
-
 }
 
 fun List<DBWeatherForecast>.toDomain() = WeatherForecastMapperLocal().transformToDomain(this)

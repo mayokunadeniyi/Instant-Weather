@@ -1,9 +1,9 @@
 package com.mayokunadeniyi.instantweather.utils.typeconverters
 
 import androidx.room.TypeConverter
-import com.mayokunadeniyi.instantweather.data.model.Wind
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.mayokunadeniyi.instantweather.data.model.Wind
 import java.lang.reflect.Type
 
 /**
@@ -19,15 +19,15 @@ class WindConverter {
      * Converts a [Wind] to a [String]
      */
     @TypeConverter
-    fun fromWind(wind: Wind?): String{
-        return gson.toJson(wind,type)
+    fun fromWind(wind: Wind?): String {
+        return gson.toJson(wind, type)
     }
 
     /**
      * Converts a [String] to a [Wind]
      */
     @TypeConverter
-    fun toWind(json: String?): Wind{
-        return gson.fromJson(json,type)
+    fun toWind(json: String?): Wind {
+        return gson.fromJson(json, type)
     }
 }

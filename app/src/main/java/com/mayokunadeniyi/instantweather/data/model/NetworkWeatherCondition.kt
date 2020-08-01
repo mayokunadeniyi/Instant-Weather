@@ -8,4 +8,4 @@ data class NetworkWeatherCondition(
     var temp: Double,
     val pressure: Double,
     val humidity: Double
-): Parcelable
+) : Parcelable

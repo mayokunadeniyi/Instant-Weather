@@ -66,5 +66,4 @@ class WeatherRemoteDataSourceImpl(
                 Result.Error(exception)
             }
         }
-
 }

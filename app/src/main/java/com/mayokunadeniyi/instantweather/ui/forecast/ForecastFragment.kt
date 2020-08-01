@@ -1,11 +1,10 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
@@ -14,7 +13,7 @@ import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -26,9 +25,9 @@ class ForecastFragment : Fragment() {
 
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
@@ -49,27 +48,36 @@ class ForecastFragment : Fragment() {
 
     private fun observeMoreViewModels() {
 
-        viewModel.forecast.observe(viewLifecycleOwner, Observer { weatherForecast ->
-            weatherForecast?.let {
-                weatherForecastAdapter.submitList(it)
+        viewModel.forecast.observe(
+            viewLifecycleOwner,
+            Observer { weatherForecast ->
+                weatherForecast?.let {
+                    weatherForecastAdapter.submitList(it)
+                }
             }
-        })
+        )
 
         binding.forecastSwipeRefresh.setOnRefreshListener {
             initiateRefresh()
         }
 
-        viewModel.dataFetchState.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.dataFetchState.observe(
+            viewLifecycleOwner,
+            Observer { state ->
 
-            binding.apply {
-                forecastRecyclerview.showIf { state }
-                forecastErrorText?.showIf { !state }
+                binding.apply {
+                    forecastRecyclerview.showIf { state }
+                    forecastErrorText?.showIf { !state }
+                }
             }
-        })
+        )
 
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { state ->
-            binding.forecastProgressBar.showIf { state }
-        })
+        viewModel.isLoading.observe(
+            viewLifecycleOwner,
+            Observer { state ->
+                binding.forecastProgressBar.showIf { state }
+            }
+        )
     }
 
     private fun initiateRefresh() {
@@ -83,15 +91,12 @@ class ForecastFragment : Fragment() {
     private fun setupCalendar() {
         binding.calendarView.setCalendarListener(object : CollapsibleCalendar.CalendarListener {
             override fun onClickListener() {
-
             }
 
             override fun onDataUpdate() {
-
             }
 
             override fun onDayChanged() {
-
             }
 
             override fun onDaySelect() {
@@ -108,7 +113,7 @@ class ForecastFragment : Fragment() {
                         val weatherForecastDay = formattedDate?.date
                         val weatherForecastMonth = formattedDate?.month
                         val weatherForecastYear = formattedDate?.year
-                        //This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
+                        // This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
                         weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
                             1900
                         ) == checkerYear
@@ -116,18 +121,15 @@ class ForecastFragment : Fragment() {
                     weatherForecastAdapter.submitList(filteredList)
                     binding.emptyListText.showIf { filteredList!!.isEmpty() }
                 }
-
             }
 
             override fun onItemClick(v: View) {
             }
 
             override fun onMonthChange() {
-
             }
 
             override fun onWeekChange(position: Int) {
-
             }
         })
     }

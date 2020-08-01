@@ -2,7 +2,6 @@ package com.mayokunadeniyi.instantweather.data.model
 
 import com.google.gson.annotations.SerializedName
 
-
 data class NetworkWeatherForecast(
 
     val id: Int,
