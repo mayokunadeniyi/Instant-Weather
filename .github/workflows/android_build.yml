@@ -20,7 +20,7 @@ jobs:
           echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
           echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
 
-      - name: Set Up JDK 1.8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -36,7 +36,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Create APIKEY.PROPERTIES File
         env:
           API_KEY: ${{ secrets.APIKEY }}
@@ -48,7 +50,7 @@ jobs:
           echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
           echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
 
-      - name: set up JDK 1.8
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
