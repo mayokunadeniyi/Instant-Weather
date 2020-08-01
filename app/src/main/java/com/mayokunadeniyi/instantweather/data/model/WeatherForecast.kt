@@ -1,7 +1,5 @@
 package com.mayokunadeniyi.instantweather.data.model
 
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
-
 /**
  * Created by Mayokun Adeniyi on 11/03/2020.
  */

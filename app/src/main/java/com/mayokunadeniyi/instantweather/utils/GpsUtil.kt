@@ -2,7 +2,6 @@ package com.mayokunadeniyi.instantweather.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.IntentSender
 import android.location.LocationManager
 import android.widget.Toast
 import com.google.android.gms.common.api.ApiException
@@ -38,8 +37,6 @@ class GpsUtil(private val context: Context) {
                 .addOnSuccessListener(context as Activity) {
                     OnGpsListener?.gpsStatus(true)
                 }.addOnFailureListener {
-
-
                 }.addOnFailureListener(context) { exception ->
 
                     when ((exception as ApiException).statusCode) {

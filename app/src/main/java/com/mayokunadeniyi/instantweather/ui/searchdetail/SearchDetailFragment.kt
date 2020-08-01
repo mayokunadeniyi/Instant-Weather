@@ -1,10 +1,10 @@
 package com.mayokunadeniyi.instantweather.ui.searchdetail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchDetailBinding
 import com.mayokunadeniyi.instantweather.ui.MainActivity
@@ -17,7 +17,8 @@ class SearchDetailFragment : Fragment() {
     private lateinit var binding: FragmentSearchDetailBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchDetailBinding.inflate(layoutInflater)
@@ -38,5 +39,4 @@ class SearchDetailFragment : Fragment() {
             (activity as MainActivity).onBackPressed()
         }
     }
-
 }

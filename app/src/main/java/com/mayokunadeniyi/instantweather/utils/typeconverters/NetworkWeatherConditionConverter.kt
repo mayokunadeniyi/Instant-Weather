@@ -1,9 +1,9 @@
 package com.mayokunadeniyi.instantweather.utils.typeconverters
 
 import androidx.room.TypeConverter
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
 import java.lang.reflect.Type
 
 /**

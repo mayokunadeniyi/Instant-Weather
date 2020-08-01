@@ -3,7 +3,6 @@ package com.mayokunadeniyi.instantweather.mapper
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
 
-
 /**
  * Created by Mayokun Adeniyi on 10/03/2020.
  */
@@ -26,7 +25,6 @@ class WeatherMapperLocal : BaseMapper<DBWeather, Weather> {
         networkWeatherDescription = type.networkWeatherDescription,
         networkWeatherCondition = type.networkWeatherCondition
     )
-
 }
 
 fun DBWeather.toDomain() = WeatherMapperLocal().transformToDomain(this)

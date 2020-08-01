@@ -11,7 +11,7 @@ import com.mayokunadeniyi.instantweather.data.model.Wind
  * Created by Mayokun Adeniyi on 2020-01-27.
  */
 
-//This class represents the Database DTO
+// This class represents the Database DTO
 @Entity(tableName = "weather_table")
 data class DBWeather(
 

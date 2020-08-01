@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather.utils
 
-
 import androidx.databinding.BindingAdapter
 import com.github.pwittchen.weathericonview.WeatherIconView
 
@@ -15,5 +14,5 @@ import com.github.pwittchen.weathericonview.WeatherIconView
 @BindingAdapter("setIcon")
 fun WeatherIconView.showIcon(condition: String?) {
     val context = this.context
-    WeatherIconGenerator.getIconResources(context,this,condition)
+    WeatherIconGenerator.getIconResources(context, this, condition)
 }

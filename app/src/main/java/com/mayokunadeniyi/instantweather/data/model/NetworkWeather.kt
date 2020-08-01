@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
 
-
 data class NetworkWeather(
 
     val uId: Int,
@@ -24,5 +23,3 @@ data class NetworkWeather(
     @SerializedName("main")
     val networkWeatherCondition: NetworkWeatherCondition
 )
-
-

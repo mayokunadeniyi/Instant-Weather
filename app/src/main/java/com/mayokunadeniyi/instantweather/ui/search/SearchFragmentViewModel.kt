@@ -1,6 +1,9 @@
 package com.mayokunadeniyi.instantweather.ui.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -99,5 +102,4 @@ class SearchFragmentViewModel(private val repository: WeatherRepository) :
         searcher.cancel()
         connection.disconnect()
     }
-
 }

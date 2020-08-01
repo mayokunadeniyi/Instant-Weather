@@ -29,5 +29,4 @@ interface WeatherRepository {
     suspend fun deleteWeatherData()
 
     suspend fun deleteForecastData()
-
 }

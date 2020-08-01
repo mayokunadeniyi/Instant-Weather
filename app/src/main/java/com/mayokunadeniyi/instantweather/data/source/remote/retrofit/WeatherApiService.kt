@@ -21,7 +21,7 @@ interface WeatherApiService {
         @Query("appid") apiKey: String
     ): Response<NetworkWeather>
 
-    //This function gets the weather information for the user's location.
+    // This function gets the weather information for the user's location.
     @GET("/data/2.5/weather")
     suspend fun getCurrentWeather(
         @Query("lat") latitude: Double,
@@ -29,7 +29,7 @@ interface WeatherApiService {
         @Query("appid") apiKey: String
     ): Response<NetworkWeather>
 
-    //This function gets the weather forecast information for the user's location.
+    // This function gets the weather forecast information for the user's location.
     @GET("data/2.5/forecast")
     suspend fun getWeatherForecast(
         @Query("id") cityId: Int,

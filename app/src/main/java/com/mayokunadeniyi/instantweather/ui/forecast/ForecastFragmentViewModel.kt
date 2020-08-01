@@ -68,7 +68,6 @@ class ForecastFragmentViewModel(
                         } else {
                             _dataFetchState.postValue(false)
                         }
-
                     }
 
                     is Result.Error -> {
@@ -82,5 +81,4 @@ class ForecastFragmentViewModel(
             }
         }
     }
-
 }

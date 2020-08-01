@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather.ui.settings
 
-
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
@@ -15,7 +14,7 @@ import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences,rootKey)
+        setPreferencesFromResource(R.xml.preferences, rootKey)
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
         init()
     }
@@ -30,7 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    private fun init(){
+    private fun init() {
         val themePreferenceKey = PREFERENCE_KEY_THEME
         val themePreference = findPreference<Preference>(themePreferenceKey)
         val selectedOption = sharedPreferenceHelper.getSelectedThemePref()
@@ -58,7 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
 
         val cachePreferenceKey = PREFERENCE_KEY_CACHE
-        if (key == cachePreferenceKey){
+        if (key == cachePreferenceKey) {
             val cachePreference = findPreference<Preference>(cachePreferenceKey)
             val setDuration = sharedPreferenceHelper.getUserSetCacheDuration()
             cachePreference?.summary = setDuration
@@ -69,9 +68,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    companion object{
+    companion object {
         private const val PREFERENCE_KEY_THEME = "theme_key"
         private const val PREFERENCE_KEY_CACHE = "cache_key"
     }
-
 }

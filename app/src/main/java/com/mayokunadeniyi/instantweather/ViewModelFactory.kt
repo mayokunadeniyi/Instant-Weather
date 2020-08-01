@@ -13,7 +13,6 @@ import com.mayokunadeniyi.instantweather.ui.search.SearchFragmentViewModel
  * Created by Mayokun Adeniyi on 20/07/2020.
  */
 
-
 /**
  * Factory for all ViewModels.
  */
