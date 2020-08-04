@@ -13,12 +13,12 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.mayokunadeniyi.instantweather"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 4
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,6 +30,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDirs += sharedTestDir
+            }
+            androidTest {
+                java.srcDirs += sharedTestDir
+            }
         }
     }
 
@@ -61,6 +74,7 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
+        exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
@@ -70,14 +84,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //Material Design
     implementation "com.google.android.material:material:$materialVersion"
@@ -114,18 +125,6 @@ dependencies {
     //Weather Image
     implementation 'com.github.pwittchen:weathericonview:1.1.0'
 
-    //Hamcrest
-    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
-
-    // AndroidX Test - JVM testing
-    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
-    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
-
-    //Test Coroutine Rule & Kotlinx-Coroutines-Test
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
-
     //CalenderView
     implementation "com.github.shrikanth7698:Collapsible-Calendar-View-Android:$calendarVersion"
 
@@ -150,4 +149,35 @@ dependencies {
 
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation 'junit:junit:4.13'
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    androidTestImplementation ("org.robolectric:robolectric:$robolectricVersion"){
+        exclude group: 'org.apache.maven', module: 'maven-artifact'
+        exclude group: 'org.apache.maven', module: 'maven-artifact-manager'
+        exclude group: 'org.apache.maven', module: 'maven-model'
+        exclude group: 'org.apache.maven', module: 'maven-plugin-registry'
+        exclude group: 'org.apache.maven', module: 'maven-profile'
+        exclude group: 'org.apache.maven', module: 'maven-project'
+        exclude group: 'org.apache.maven', module: 'maven-settings'
+        exclude group: 'org.apache.maven', module: 'maven-error-diagnostics'
+        exclude group: 'org.apache.maven', module: 'maven-ant-tasks'
+        exclude group: "org.apache.maven.wagon"
+        exclude group: "org.codehaus.plexus"
+    }
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 }
