@@ -22,12 +22,12 @@ class UpdateWeatherWorker(
 
     override suspend fun doWork(): Result {
         val location = sharedPrefs.getLocation()
-        return when (val result = repository.getWeather(location,true)) {
+        return when (val result = repository.getWeather(location, true)) {
             is Success -> {
                 if (result.data != null) {
                     when (
                         val foreResult =
-                            repository.getForecastWeather(result.data.cityId,true)
+                            repository.getForecastWeather(result.data.cityId, true)
                     ) {
                         is Success -> {
                             if (foreResult.data != null) {

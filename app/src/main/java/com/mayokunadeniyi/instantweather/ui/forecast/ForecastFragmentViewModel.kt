@@ -9,7 +9,6 @@ import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * Created by Mayokun Adeniyi on 28/02/2020.
@@ -30,27 +29,27 @@ class ForecastFragmentViewModel(
 
     fun getWeatherForecast(cityId: Int?) {
         _isLoading.value = true
-            viewModelScope.launch {
-                when (val result = repository.getForecastWeather(cityId!!, false)) {
-                    is Result.Success -> {
-                        _isLoading.postValue(false)
-                        if (!result.data.isNullOrEmpty()) {
-                            val forecasts = result.data
-                            _dataFetchState.value = true
-                            _forecast.value = forecasts
-                        } else {
-                            refreshForecastData(cityId)
-                        }
+        viewModelScope.launch {
+            when (val result = repository.getForecastWeather(cityId!!, false)) {
+                is Result.Success -> {
+                    _isLoading.postValue(false)
+                    if (!result.data.isNullOrEmpty()) {
+                        val forecasts = result.data
+                        _dataFetchState.value = true
+                        _forecast.value = forecasts
+                    } else {
+                        refreshForecastData(cityId)
                     }
-                    is Result.Error -> {
-                        _isLoading.value = false
-                        _dataFetchState.value = false
-                    }
-
-                    is Result.Loading -> _isLoading.postValue(true)
                 }
+                is Result.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                }
+
+                is Result.Loading -> _isLoading.postValue(true)
             }
         }
+    }
 
     fun refreshForecastData(cityId: Int?) {
         _isLoading.value = true
@@ -81,7 +80,6 @@ class ForecastFragmentViewModel(
 
                 is Result.Loading -> _isLoading.postValue(true)
             }
-
         }
     }
 }

@@ -9,14 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
-import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
-import com.mayokunadeniyi.instantweather.mapper.toDomain
 import com.mayokunadeniyi.instantweather.utils.LocationLiveData
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -56,7 +53,7 @@ class HomeFragmentViewModel(
     fun getWeather(location: LocationModel) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            when (val result = repository.getWeather(location,false)) {
+            when (val result = repository.getWeather(location, false)) {
                 is Result.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
@@ -92,7 +89,7 @@ class HomeFragmentViewModel(
     fun refreshWeather(location: LocationModel) {
         _isLoading.value = true
         viewModelScope.launch {
-            when (val result = repository.getWeather(location,true)) {
+            when (val result = repository.getWeather(location, true)) {
                 is Result.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {

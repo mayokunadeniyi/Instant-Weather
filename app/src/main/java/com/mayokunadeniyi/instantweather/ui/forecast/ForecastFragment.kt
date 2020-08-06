@@ -13,7 +13,6 @@ import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
 
