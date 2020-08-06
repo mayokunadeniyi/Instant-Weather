@@ -50,3 +50,4 @@ val fakeNetworkWeatherForecast = NetworkWeatherForecast(
 )
 
 val invalidDataException = Exception("Invalid Data")
+const val queryLocation = "Lagos"
