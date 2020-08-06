@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather.data.source.local.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
@@ -25,11 +26,12 @@ data class DBWeather(
     @ColumnInfo(name = "city_name")
     val cityName: String,
 
+    @Embedded
     val wind: Wind,
 
     @ColumnInfo(name = "weather_details")
     val networkWeatherDescription: List<NetworkWeatherDescription>,
 
-    @ColumnInfo(name = "main_details")
+    @Embedded
     val networkWeatherCondition: NetworkWeatherCondition
 )

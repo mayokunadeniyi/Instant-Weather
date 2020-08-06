@@ -25,6 +25,13 @@ android {
         buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
         buildConfigField("String", "ALGOLIA_API_KEY", apikeyProperties['ALGOLIA_API_KEY'])
         buildConfigField("String", "ALGOLIA_APP_ID", apikeyProperties['ALGOLIA_APP_ID'])
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation":
+                                      "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -46,7 +53,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
 
@@ -163,10 +170,10 @@ dependencies {
     // AndroidX Test - Instrumented testing
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    androidTestImplementation ("org.robolectric:robolectric:$robolectricVersion"){
+    androidTestImplementation("org.robolectric:robolectric:$robolectricVersion") {
         exclude group: 'org.apache.maven', module: 'maven-artifact'
         exclude group: 'org.apache.maven', module: 'maven-artifact-manager'
         exclude group: 'org.apache.maven', module: 'maven-model'
@@ -180,4 +187,8 @@ dependencies {
         exclude group: "org.codehaus.plexus"
     }
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
+
+    //Until the bug at https://issuetracker.google.com/128612536 is fixed
+    implementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_core_version"
 }

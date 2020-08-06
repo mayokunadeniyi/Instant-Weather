@@ -33,13 +33,3 @@ class WeatherForecastMapperLocal :
         }
     }
 }
-
-fun List<DBWeatherForecast>.toDomain() = WeatherForecastMapperLocal().transformToDomain(this)
-
-fun WeatherForecast.toDbModel() = DBWeatherForecast(
-    id = this.uID,
-    date = this.date,
-    wind = this.wind,
-    networkWeatherDescriptions = this.networkWeatherDescription,
-    networkWeatherCondition = this.networkWeatherCondition
-)

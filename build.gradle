@@ -63,4 +63,6 @@ ext {
     elastic_version = '2.0.7'
     work_version = '2.4.0'
     mockitoVersion = "2.27.0"
+    espresso_core_version = "3.2.0"
+    fragment_version = "1.3.0-alpha06"
 }
