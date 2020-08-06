@@ -1,17 +1,19 @@
 package com.mayokunadeniyi.instantweather.data.source.repository
 
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
+import com.mayokunadeniyi.instantweather.data.model.Weather
+import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
-import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
-import com.mayokunadeniyi.instantweather.mapper.toDatabaseModel
+import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperLocal
+import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperRemote
+import com.mayokunadeniyi.instantweather.mapper.WeatherMapperLocal
+import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
@@ -23,40 +25,102 @@ class WeatherRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : WeatherRepository {
 
-    override suspend fun fetchRemoteWeatherData(location: LocationModel): Result<NetworkWeather> =
+    override suspend fun getWeather(location: LocationModel, refresh: Boolean): Result<Weather> =
         withContext(ioDispatcher) {
-            return@withContext remoteDataSource.getWeather(location)
-        }
+            if (refresh) {
+                val mapper = WeatherMapperRemote()
+                when (val response = remoteDataSource.getWeather(location)) {
+                    is Result.Success -> {
+                        if (response.data != null) {
+                            Result.Success(mapper.transformToDomain(response.data))
+                        } else {
+                            Result.Success(null)
+                        }
+                    }
 
-    override suspend fun storeWeatherData(networkWeather: NetworkWeather) =
-        withContext(ioDispatcher) {
-            localDataSource.saveWeather(networkWeather.toDatabaseModel())
-        }
+                    is Result.Error -> {
+                        Result.Error(response.exception)
+                    }
 
-    override suspend fun getLocalWeatherData(): DBWeather? = withContext(ioDispatcher) {
-        return@withContext localDataSource.getWeather()
-    }
-
-    override suspend fun fetchRemoteWeatherForecast(cityId: Int): Result<List<NetworkWeatherForecast>> =
-        withContext(ioDispatcher) {
-            return@withContext remoteDataSource.getWeatherForecast(cityId)
-        }
-
-    override suspend fun getLocalWeatherForecastData(): List<DBWeatherForecast>? =
-        withContext(ioDispatcher) {
-            return@withContext localDataSource.getForecastWeather()
-        }
-
-    override suspend fun storeForecastData(listOfNetworkWeatherForecast: List<NetworkWeatherForecast>) =
-        withContext(ioDispatcher) {
-            listOfNetworkWeatherForecast.forEach {
-                localDataSource.saveForecastWeather(it.toDatabaseModel())
+                    else -> Result.Loading
+                }
+            } else {
+                val mapper = WeatherMapperLocal()
+                val forecast = localDataSource.getWeather()
+                if (forecast != null) {
+                    Result.Success(mapper.transformToDomain(forecast))
+                } else {
+                    Result.Success(null)
+                }
             }
         }
 
-    override suspend fun getSearchRemoteWeather(locationName: String): Result<NetworkWeather> =
+    override suspend fun getForecastWeather(
+        cityId: Int,
+        refresh: Boolean
+    ): Result<List<WeatherForecast>?> = withContext(ioDispatcher) {
+        Timber.i("The value for refresh is $refresh")
+        if (refresh) {
+            val mapper = WeatherForecastMapperRemote()
+            when (val response = remoteDataSource.getWeatherForecast(cityId)) {
+                is Result.Success -> {
+                    if (response.data != null) {
+                        Result.Success(mapper.transformToDomain(response.data))
+                    } else {
+                        Result.Success(null)
+                    }
+                }
+
+                is Result.Error -> {
+                    Result.Error(response.exception)
+                }
+
+                else -> Result.Loading
+            }
+        } else {
+            val mapper = WeatherForecastMapperLocal()
+            val forecast = localDataSource.getForecastWeather()
+            if (forecast != null) {
+                Result.Success(mapper.transformToDomain(forecast))
+            } else {
+                Result.Success(null)
+            }
+        }
+    }
+
+    override suspend fun storeWeatherData(weather: Weather) = withContext(ioDispatcher) {
+        val mapper = WeatherMapperLocal()
+        localDataSource.saveWeather(mapper.transformToDto(weather))
+    }
+
+    override suspend fun storeForecastData(forecasts: List<WeatherForecast>) =
         withContext(ioDispatcher) {
-            return@withContext remoteDataSource.getSearchWeather(locationName)
+            val mapper = WeatherForecastMapperLocal()
+            mapper.transformToDto(forecasts).let { listOfDbForecast ->
+                listOfDbForecast.forEach {
+                    localDataSource.saveForecastWeather(it)
+                }
+            }
+        }
+
+    override suspend fun getSearchWeather(location: String): Result<Weather?> =
+        withContext(ioDispatcher) {
+            val mapper = WeatherMapperRemote()
+            return@withContext when (val response = remoteDataSource.getSearchWeather(location)) {
+                is Result.Success -> {
+                    if (response.data != null) {
+                        Result.Success(mapper.transformToDomain(response.data))
+                    } else {
+                        Result.Success(null)
+                    }
+                }
+                is Result.Error -> {
+                    Result.Error(response.exception)
+                }
+                else -> {
+                    Result.Loading
+                }
+            }
         }
 
     override suspend fun deleteWeatherData() = withContext(ioDispatcher) {

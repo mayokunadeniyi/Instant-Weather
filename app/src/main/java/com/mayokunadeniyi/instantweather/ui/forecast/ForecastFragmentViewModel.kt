@@ -5,12 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
-import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperRemote
-import com.mayokunadeniyi.instantweather.mapper.toDomain
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Created by Mayokun Adeniyi on 28/02/2020.
@@ -29,56 +28,61 @@ class ForecastFragmentViewModel(
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
 
-    fun getWeatherForecast() {
+    fun getWeatherForecast(cityId: Int?) {
         _isLoading.value = true
-        viewModelScope.launch {
-            val localForecast = repository.getLocalWeatherForecastData()
-            if (localForecast.isNullOrEmpty()) {
-                refreshForecastData()
-            } else {
-                _forecast.postValue(localForecast.toDomain())
-                _isLoading.postValue(false)
-                _dataFetchState.postValue(true)
-            }
-        }
-    }
-
-    fun refreshForecastData() {
-        _isLoading.value = true
-        viewModelScope.launch {
-            val cityId = repository.getLocalWeatherData()?.cityId
-            if (cityId != null) {
-                when (val result = repository.fetchRemoteWeatherForecast(cityId)) {
+            viewModelScope.launch {
+                when (val result = repository.getForecastWeather(cityId!!, false)) {
                     is Result.Success -> {
-                        _isLoading.value = false
+                        _isLoading.postValue(false)
                         if (result.data != null) {
+                            val forecasts = result.data
                             _dataFetchState.value = true
-                            _forecast.postValue(
-                                WeatherForecastMapperRemote().transformToDomain(
-                                    result.data.apply {
-                                        forEach {
-                                            it.networkWeatherCondition.temp =
-                                                convertKelvinToCelsius(it.networkWeatherCondition.temp)
-                                        }
-                                    }
-                                )
-                            )
-                            repository.deleteForecastData()
-                            repository.storeForecastData(result.data)
+                            _forecast.value = forecasts
                         } else {
-                            _dataFetchState.postValue(false)
+                            refreshForecastData(cityId)
                         }
                     }
-
                     is Result.Error -> {
-                        _dataFetchState.value = false
                         _isLoading.value = false
+                        _dataFetchState.value = false
+                    }
+
+                    is Result.Loading -> _isLoading.postValue(true)
+                }
+            }
+        }
+
+    fun refreshForecastData(cityId: Int?) {
+        Timber.i("It called refresh")
+        _isLoading.value = true
+        viewModelScope.launch {
+            when (val result = repository.getForecastWeather(cityId!!, true)) {
+                is Result.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        _dataFetchState.value = true
+                        val forecast = result.data.apply {
+                            forEach {
+                                it.networkWeatherCondition.temp =
+                                    convertKelvinToCelsius(it.networkWeatherCondition.temp)
+                            }
+                        }
+                        _forecast.postValue(forecast)
+                        repository.deleteForecastData()
+                        repository.storeForecastData(forecast)
+                    } else {
+                        _dataFetchState.postValue(false)
                     }
                 }
-            } else {
-                _isLoading.postValue(false)
-                _dataFetchState.postValue(false)
+
+                is Result.Error -> {
+                    _dataFetchState.value = false
+                    _isLoading.value = false
+                }
+
+                is Result.Loading -> _isLoading.postValue(true)
             }
+
         }
     }
 }

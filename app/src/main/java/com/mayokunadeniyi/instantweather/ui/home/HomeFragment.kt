@@ -130,6 +130,7 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             Observer { weather ->
                 weather?.let {
+                    prefs.saveCityId(it.cityId)
                     binding.weather = it
                     binding.networkWeatherDescription = it.networkWeatherDescription.first()
                 }

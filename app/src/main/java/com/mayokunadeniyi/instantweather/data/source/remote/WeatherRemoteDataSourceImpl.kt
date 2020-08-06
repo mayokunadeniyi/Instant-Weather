@@ -10,6 +10,7 @@ import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.lang.Exception
 
 /**
@@ -43,6 +44,7 @@ class WeatherRemoteDataSourceImpl(
                 val result = retrofitClient.getWeatherForecast(cityId, API_KEY)
                 if (result.isSuccessful) {
                     val networkWeatherForecast = result.body()?.weathers
+                    Timber.i("The source weather is $networkWeatherForecast")
                     Result.Success(networkWeatherForecast)
                 } else {
                     Result.Success(null)

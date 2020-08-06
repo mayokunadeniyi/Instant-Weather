@@ -19,7 +19,6 @@ import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.data.model.SearchResult
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
-import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
@@ -78,13 +77,12 @@ class SearchFragmentViewModel(private val repository: WeatherRepository) :
     fun getSearchWeather(name: String) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            when (val result = repository.getSearchRemoteWeather(name)) {
+            when (val result = repository.getSearchWeather(name)) {
                 is Result.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
-                        val networkWeather = result.data
                         _dataFetchState.value = true
-                        _weatherInfo.postValue(WeatherMapperRemote().transformToDomain(networkWeather))
+                        _weatherInfo.postValue(result.data)
                     } else {
                         _dataFetchState.postValue(false)
                     }

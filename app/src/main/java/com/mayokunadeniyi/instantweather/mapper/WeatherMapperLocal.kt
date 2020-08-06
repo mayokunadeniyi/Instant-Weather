@@ -26,6 +26,3 @@ class WeatherMapperLocal : BaseMapper<DBWeather, Weather> {
         networkWeatherCondition = type.networkWeatherCondition
     )
 }
-
-fun DBWeather.toDomain() = WeatherMapperLocal().transformToDomain(this)
-fun Weather.toDbModel() = WeatherMapperLocal().transformToDto(this)

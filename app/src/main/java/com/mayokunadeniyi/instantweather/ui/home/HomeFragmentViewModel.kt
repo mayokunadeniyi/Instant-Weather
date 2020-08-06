@@ -49,22 +49,30 @@ class HomeFragmentViewModel(
     fun getLocationLiveData() = locationLiveData
 
     /**
-     * This is called after the [location] data has been received.
-     * This enables the [Weather] for the [location] to be received.
+     *This attempts to get the [Weather] from the local data source,
+     * if the result is null, it gets from the remote source.
+     * @see refreshWeather
      */
     fun getWeather(location: LocationModel) {
-        Timber.i("The location is $location")
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val localWeather = repository.getLocalWeatherData()
-            Timber.i("The local data is $localWeather")
-            if (localWeather == null) {
-                Timber.i("Ok i am fetching here using $location")
-                refreshWeather(location)
-            } else {
-                _weather.postValue(localWeather.toDomain())
-                _isLoading.postValue(false)
-                _dataFetchState.postValue(true)
+            when (val result = repository.getWeather(location,false)) {
+                is Result.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        val weather = result.data
+                        _dataFetchState.value = true
+                        _weather.value = weather
+                    } else {
+                        refreshWeather(location)
+                    }
+                }
+                is Result.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                }
+
+                is Result.Loading -> _isLoading.postValue(true)
             }
         }
     }
@@ -84,20 +92,18 @@ class HomeFragmentViewModel(
     fun refreshWeather(location: LocationModel) {
         _isLoading.value = true
         viewModelScope.launch {
-            when (val result = repository.fetchRemoteWeatherData(location)) {
+            when (val result = repository.getWeather(location,true)) {
                 is Result.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
-                        val networkWeather = result.data
+                        val weather = result.data.apply {
+                            this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
+                        }
                         _dataFetchState.value = true
-                        val weatherValue = WeatherMapperRemote().transformToDomain(
-                            networkWeather.apply {
-                                this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
-                            }
-                        )
-                        _weather.value = weatherValue
+                        _weather.value = weather
+
                         repository.deleteWeatherData()
-                        repository.storeWeatherData(networkWeather)
+                        repository.storeWeatherData(weather)
                     } else {
                         _dataFetchState.postValue(false)
                     }
@@ -106,6 +112,7 @@ class HomeFragmentViewModel(
                     _isLoading.value = false
                     _dataFetchState.value = false
                 }
+                is Result.Loading -> _isLoading.postValue(true)
             }
         }
     }

@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
+import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -24,6 +26,7 @@ class ForecastFragment : Fragment() {
     private val viewModel by viewModels<ForecastFragmentViewModel> { getViewModelFactory() }
 
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
+    private lateinit var prefs: SharedPreferenceHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,7 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
+        prefs = SharedPreferenceHelper.getInstance(requireContext())
         return binding.root
     }
 
@@ -42,15 +46,17 @@ class ForecastFragment : Fragment() {
 
         val recyclerView = binding.forecastRecyclerview
         recyclerView.adapter = weatherForecastAdapter
-        viewModel.getWeatherForecast()
+        viewModel.getWeatherForecast(prefs.getCityId())
+        Timber.i("GOT TO THE START ${prefs.getCityId()}..")
         observeMoreViewModels()
     }
 
     private fun observeMoreViewModels() {
-
+        Timber.i("Observing vms.")
         viewModel.forecast.observe(
             viewLifecycleOwner,
             Observer { weatherForecast ->
+                Timber.i("Forecast is $weatherForecast")
                 weatherForecast?.let {
                     weatherForecastAdapter.submitList(it)
                 }
@@ -84,7 +90,7 @@ class ForecastFragment : Fragment() {
         binding.forecastErrorText?.visibility = View.GONE
         binding.forecastProgressBar.visibility = View.VISIBLE
         binding.forecastRecyclerview.visibility = View.GONE
-        viewModel.refreshForecastData()
+        viewModel.refreshForecastData(prefs.getCityId())
         binding.forecastSwipeRefresh.isRefreshing = false
     }
 
