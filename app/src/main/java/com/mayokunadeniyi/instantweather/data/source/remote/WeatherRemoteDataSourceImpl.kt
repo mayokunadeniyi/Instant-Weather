@@ -44,7 +44,6 @@ class WeatherRemoteDataSourceImpl(
                 val result = retrofitClient.getWeatherForecast(cityId, API_KEY)
                 if (result.isSuccessful) {
                     val networkWeatherForecast = result.body()?.weathers
-                    Timber.i("The source weather is $networkWeatherForecast")
                     Result.Success(networkWeatherForecast)
                 } else {
                     Result.Success(null)

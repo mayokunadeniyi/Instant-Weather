@@ -47,16 +47,13 @@ class ForecastFragment : Fragment() {
         val recyclerView = binding.forecastRecyclerview
         recyclerView.adapter = weatherForecastAdapter
         viewModel.getWeatherForecast(prefs.getCityId())
-        Timber.i("GOT TO THE START ${prefs.getCityId()}..")
         observeMoreViewModels()
     }
 
     private fun observeMoreViewModels() {
-        Timber.i("Observing vms.")
         viewModel.forecast.observe(
             viewLifecycleOwner,
             Observer { weatherForecast ->
-                Timber.i("Forecast is $weatherForecast")
                 weatherForecast?.let {
                     weatherForecastAdapter.submitList(it)
                 }

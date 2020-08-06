@@ -59,7 +59,6 @@ class WeatherRepositoryImpl(
         cityId: Int,
         refresh: Boolean
     ): Result<List<WeatherForecast>?> = withContext(ioDispatcher) {
-        Timber.i("The value for refresh is $refresh")
         if (refresh) {
             val mapper = WeatherForecastMapperRemote()
             when (val response = remoteDataSource.getWeatherForecast(cityId)) {

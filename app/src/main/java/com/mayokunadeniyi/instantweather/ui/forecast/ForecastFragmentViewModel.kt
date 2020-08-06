@@ -34,7 +34,7 @@ class ForecastFragmentViewModel(
                 when (val result = repository.getForecastWeather(cityId!!, false)) {
                     is Result.Success -> {
                         _isLoading.postValue(false)
-                        if (result.data != null) {
+                        if (!result.data.isNullOrEmpty()) {
                             val forecasts = result.data
                             _dataFetchState.value = true
                             _forecast.value = forecasts
@@ -53,7 +53,6 @@ class ForecastFragmentViewModel(
         }
 
     fun refreshForecastData(cityId: Int?) {
-        Timber.i("It called refresh")
         _isLoading.value = true
         viewModelScope.launch {
             when (val result = repository.getForecastWeather(cityId!!, true)) {
