@@ -61,7 +61,7 @@ class SearchFragmentViewModel(private val repository: WeatherRepository) :
         connection += stats
     }
 
-    private val _weatherInfo = MutableLiveData<Weather>()
+    private val _weatherInfo = MutableLiveData<Weather?>()
     val weatherInfo = _weatherInfo.asLiveData()
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -84,6 +84,7 @@ class SearchFragmentViewModel(private val repository: WeatherRepository) :
                         _dataFetchState.value = true
                         _weatherInfo.postValue(result.data)
                     } else {
+                        _weatherInfo.postValue(null)
                         _dataFetchState.postValue(false)
                     }
                 }

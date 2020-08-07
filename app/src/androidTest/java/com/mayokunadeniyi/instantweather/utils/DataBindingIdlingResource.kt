@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.IdlingResource
-import java.util.*
+import java.util.UUID
 
 /**
  * Created by Mayokun Adeniyi on 25/07/2020.
@@ -40,9 +40,12 @@ class DataBindingIdlingResource : IdlingResource {
         } else {
             wasNotIdle = true
             // Check next frame.
-            activity.findViewById<View>(android.R.id.content).postDelayed({
-                isIdleNow
-            }, 16)
+            activity.findViewById<View>(android.R.id.content).postDelayed(
+                {
+                    isIdleNow
+                },
+                16
+            )
         }
         return idle
     }

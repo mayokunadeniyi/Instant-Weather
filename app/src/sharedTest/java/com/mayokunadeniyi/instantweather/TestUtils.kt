@@ -5,6 +5,8 @@ import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
+import com.mayokunadeniyi.instantweather.data.model.Weather
+import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.model.Wind
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
@@ -49,5 +51,23 @@ val fakeNetworkWeatherForecast = NetworkWeatherForecast(
     NetworkWeatherCondition(22.3, 22.2, 22.2)
 )
 
+val fakeWeather = Weather(
+    1,
+    123,
+    "Lagos",
+    Wind(32.5, 24),
+    listOf(NetworkWeatherDescription(1L, "Main", "Cloudy", "cloud")),
+    NetworkWeatherCondition(324.43, 1234.32, 32.5)
+)
+
+val fakeWeatherForecast = WeatherForecast(
+    1, "Date", Wind(22.2, 21),
+    listOf(
+        NetworkWeatherDescription(1L, "Main", "Desc", "Icon")
+    ),
+    NetworkWeatherCondition(22.3, 22.2, 22.2)
+)
+
 val invalidDataException = Exception("Invalid Data")
 const val queryLocation = "Lagos"
+const val cityId = 1234

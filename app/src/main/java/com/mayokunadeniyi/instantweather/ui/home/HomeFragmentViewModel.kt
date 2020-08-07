@@ -38,7 +38,7 @@ class HomeFragmentViewModel(
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
 
-    private val _weather = MutableLiveData<Weather>()
+    private val _weather = MutableLiveData<Weather?>()
     val weather = _weather.asLiveData()
 
     val time = currentSystemTime()
@@ -102,6 +102,7 @@ class HomeFragmentViewModel(
                         repository.deleteWeatherData()
                         repository.storeWeatherData(weather)
                     } else {
+                        _weather.postValue(null)
                         _dataFetchState.postValue(false)
                     }
                 }

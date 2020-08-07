@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
@@ -20,6 +21,7 @@ object ServiceLocator {
 
     @Volatile
     var weatherRepository: WeatherRepository? = null
+        @VisibleForTesting set
 
     fun provideWeatherRepository(context: Context): WeatherRepository {
         synchronized(this) {
@@ -49,5 +51,15 @@ object ServiceLocator {
         ).build()
         database = result
         return result
+    }
+
+    @VisibleForTesting
+    fun resetRepository() {
+        database?.apply {
+            clearAllTables()
+            close()
+        }
+        database = null
+        weatherRepository = null
     }
 }

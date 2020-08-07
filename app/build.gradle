@@ -54,11 +54,15 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        dataBinding {
+            enabled = true
+            enabledForTests = true
+        }
     }
 
     testOptions.unitTests {
         includeAndroidResources = true
+        returnDefaultValues = true
     }
 
     compileOptions {
@@ -163,6 +167,7 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     testImplementation 'junit:junit:4.13'
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
@@ -170,25 +175,15 @@ dependencies {
     // AndroidX Test - Instrumented testing
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    androidTestImplementation("org.robolectric:robolectric:$robolectricVersion") {
-        exclude group: 'org.apache.maven', module: 'maven-artifact'
-        exclude group: 'org.apache.maven', module: 'maven-artifact-manager'
-        exclude group: 'org.apache.maven', module: 'maven-model'
-        exclude group: 'org.apache.maven', module: 'maven-plugin-registry'
-        exclude group: 'org.apache.maven', module: 'maven-profile'
-        exclude group: 'org.apache.maven', module: 'maven-project'
-        exclude group: 'org.apache.maven', module: 'maven-settings'
-        exclude group: 'org.apache.maven', module: 'maven-error-diagnostics'
-        exclude group: 'org.apache.maven', module: 'maven-ant-tasks'
-        exclude group: "org.apache.maven.wagon"
-        exclude group: "org.codehaus.plexus"
-    }
+    androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 
     //Until the bug at https://issuetracker.google.com/128612536 is fixed
-    implementation "androidx.fragment:fragment-testing:$fragment_version"
-    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_core_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
 }

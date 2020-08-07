@@ -18,7 +18,7 @@ class ForecastFragmentViewModel(
     private val repository: WeatherRepository
 ) : ViewModel() {
 
-    private val _forecast = MutableLiveData<List<WeatherForecast>>()
+    private val _forecast = MutableLiveData<List<WeatherForecast>?>()
     val forecast = _forecast.asLiveData()
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -41,11 +41,6 @@ class ForecastFragmentViewModel(
                         refreshForecastData(cityId)
                     }
                 }
-                is Result.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
-                }
-
                 is Result.Loading -> _isLoading.postValue(true)
             }
         }
@@ -56,9 +51,8 @@ class ForecastFragmentViewModel(
         viewModelScope.launch {
             when (val result = repository.getForecastWeather(cityId!!, true)) {
                 is Result.Success -> {
-                    _isLoading.value = false
+                    _isLoading.postValue(false)
                     if (result.data != null) {
-                        _dataFetchState.value = true
                         val forecast = result.data.apply {
                             forEach {
                                 it.networkWeatherCondition.temp =
@@ -66,10 +60,12 @@ class ForecastFragmentViewModel(
                             }
                         }
                         _forecast.postValue(forecast)
+                        _dataFetchState.postValue(true)
                         repository.deleteForecastData()
                         repository.storeForecastData(forecast)
                     } else {
                         _dataFetchState.postValue(false)
+                        _forecast.postValue(null)
                     }
                 }
 
