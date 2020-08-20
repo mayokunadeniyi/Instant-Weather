@@ -17,10 +17,9 @@ import java.text.DecimalFormat
  * @param number the number to be converted to Celsius.
  */
 fun convertKelvinToCelsius(number: Number): Double {
-    return DecimalFormat.getInstance().run {
-        this as DecimalFormat
+    return DecimalFormat().run {
         applyPattern(".##")
-        parse(format(number.toDouble().minus(273))) as Double
+        parse(format(number.toDouble().minus(273))).toDouble()
     }
 }
 
