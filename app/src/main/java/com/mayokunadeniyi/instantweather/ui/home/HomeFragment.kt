@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -126,20 +127,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModels() {
-        viewModel.weather.observe(
-            viewLifecycleOwner,
-            Observer { weather ->
+        with(viewModel) {
+            weather.observe(viewLifecycleOwner) { weather ->
                 weather?.let {
                     prefs.saveCityId(it.cityId)
                     binding.weather = it
                     binding.networkWeatherDescription = it.networkWeatherDescription.first()
                 }
             }
-        )
 
-        viewModel.dataFetchState.observe(
-            viewLifecycleOwner,
-            Observer { state ->
+            dataFetchState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     true -> {
                         unHideViews()
@@ -155,11 +152,8 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        )
 
-        viewModel.isLoading.observe(
-            viewLifecycleOwner,
-            Observer { state ->
+            isLoading.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     true -> {
                         hideViews()
@@ -176,7 +170,9 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        )
+        }
+
+
     }
 
     private fun initiateRefresh() {

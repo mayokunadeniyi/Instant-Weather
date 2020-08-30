@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
@@ -50,36 +51,28 @@ class ForecastFragment : Fragment() {
     }
 
     private fun observeMoreViewModels() {
-        viewModel.forecast.observe(
-            viewLifecycleOwner,
-            Observer { weatherForecast ->
+        with(viewModel) {
+            forecast.observe(viewLifecycleOwner) { weatherForecast ->
                 weatherForecast?.let {
                     weatherForecastAdapter.submitList(it)
                 }
             }
-        )
 
-        binding.forecastSwipeRefresh.setOnRefreshListener {
-            initiateRefresh()
-        }
-
-        viewModel.dataFetchState.observe(
-            viewLifecycleOwner,
-            Observer { state ->
-
+            dataFetchState.observe(viewLifecycleOwner) { state ->
                 binding.apply {
                     forecastRecyclerview.showIf { state }
                     forecastErrorText?.showIf { !state }
                 }
             }
-        )
 
-        viewModel.isLoading.observe(
-            viewLifecycleOwner,
-            Observer { state ->
+            isLoading.observe(viewLifecycleOwner) { state ->
                 binding.forecastProgressBar.showIf { state }
             }
-        )
+        }
+
+        binding.forecastSwipeRefresh.setOnRefreshListener {
+            initiateRefresh()
+        }
     }
 
     private fun initiateRefresh() {
@@ -121,6 +114,7 @@ class ForecastFragment : Fragment() {
                         ) == checkerYear
                     }
                     weatherForecastAdapter.submitList(filteredList)
+                    weatherForecastAdapter.currentList
                     binding.emptyListText.showIf { filteredList!!.isEmpty() }
                 }
             }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -71,51 +72,44 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = searchResultAdapter
 
-        viewModel.locations.observe(
-            viewLifecycleOwner,
-            Observer { hits ->
-                searchResultAdapter.submitList(hits)
-                binding.zeroHits.showIf { hits.size == 0 }
-            }
-        )
+
+        viewModel.locations.observe(viewLifecycleOwner) { hits ->
+            searchResultAdapter.submitList(hits)
+            binding.zeroHits.showIf { hits.size == 0 }
+        }
     }
 
     private fun observeViewModel(location: String) {
-        viewModel.weatherInfo.observe(
-            viewLifecycleOwner,
-            Observer { weather ->
+        with(viewModel) {
+            weatherInfo.observe(viewLifecycleOwner) { weather ->
                 if (weather != null) {
                     val weatherValue = weather.apply {
-                        this.networkWeatherCondition.temp = convertKelvinToCelsius(this.networkWeatherCondition.temp)
+                        this.networkWeatherCondition.temp =
+                            convertKelvinToCelsius(this.networkWeatherCondition.temp)
                     }
-                    val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(
-                        weatherValue,
-                        location
-                    )
+                    val action =
+                        SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(
+                            weatherValue,
+                            location
+                        )
                     findNavController().navigate(action)
                 }
             }
-        )
 
-        viewModel.isLoading.observe(
-            viewLifecycleOwner,
-            Observer { state ->
+            isLoading.observe(viewLifecycleOwner) { state ->
                 binding.searchWeatherLoader.showIf { state }
             }
-        )
 
-        viewModel.dataFetchState.observe(
-            viewLifecycleOwner,
-            Observer { state ->
+            dataFetchState.observe(viewLifecycleOwner) { state ->
                 if (!state) {
                     Snackbar.make(
                         requireView(),
-                        "An error occured! Please try again.",
+                        "An error occurred! Please try again.",
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             }
-        )
+        }
     }
 
     override fun onDestroyView() {

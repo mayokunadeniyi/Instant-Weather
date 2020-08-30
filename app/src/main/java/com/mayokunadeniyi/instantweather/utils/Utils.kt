@@ -1,6 +1,7 @@
 package com.mayokunadeniyi.instantweather.utils
 
 import android.view.View
+import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,16 +32,18 @@ inline fun <T : View> T.showIf(condition: (T) -> Boolean) {
     }
 }
 
+
 /**
  * This functions helps in transforming a [MutableLiveData] of type [T]
  * to a [LiveData] of type [T]
  */
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
+
 /**
  * This function helps to observe a [LiveData] once
  */
-fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+inline fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     observe(
         lifecycleOwner,
         object : Observer<T> {
