@@ -21,6 +21,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.InstantWeatherApplication
+import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
@@ -76,13 +77,13 @@ class HomeFragment : Fragment() {
 
             shouldShowRequestPermissionRationale() -> {
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Location Permission")
-                    .setMessage("This application requires access to your location to function!")
+                    .setTitle(getString(R.string.location_permission))
+                    .setMessage(getString(R.string.access_location_message))
                     .setNegativeButton(
-                        "No"
+                        getString(R.string.no)
                     ) { _, _ -> requireActivity().finish() }
                     .setPositiveButton(
-                        "Ask me"
+                        getString(R.string.ask_me)
                     ) { _, _ ->
                         requestPermissions(REQUIRED_PERMISSIONS, LOCATION_REQUEST_CODE)
                     }
@@ -92,7 +93,7 @@ class HomeFragment : Fragment() {
             !isGPSEnabled -> {
                 Snackbar.make(
                     binding.root,
-                    "GPS is required for this application to function!",
+                    getString(R.string.gps_required_message),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
@@ -248,7 +249,7 @@ class HomeFragment : Fragment() {
                     GPS_REQUEST_CHECK_SETTINGS -> {
                         Snackbar.make(
                             binding.root,
-                            "Enable your GPS and restart!",
+                            getString(R.string.enable_gps),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
