@@ -171,8 +171,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     private fun initiateRefresh() {
