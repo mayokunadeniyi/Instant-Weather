@@ -12,7 +12,7 @@ import com.mayokunadeniyi.instantweather.databinding.WeatherItemBinding
  * Created by Mayokun Adeniyi on 15/03/2020.
  */
 
-class WeatherForecastAdapter(val clickListener: ForecastOnclickListener) : ListAdapter<WeatherForecast, WeatherForecastAdapter.ViewHolder>(WeatherForecastDiffCallBack()) {
+class WeatherForecastAdapter(private val clickListener: ForecastOnclickListener) : ListAdapter<WeatherForecast, WeatherForecastAdapter.ViewHolder>(WeatherForecastDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)

@@ -47,4 +47,9 @@
     <string name="location_optimization_error">Location Optimization Permission was not granted! \n\n Enable permission manually in application settings \n and restart the application.</string>
     <string name="general_main_error">An error occurred in getting your location! \n\n Ensure your device is connected to the internet \n\n Swipe down to refresh.</string>
     <string name="enable_gps">Enable your GPS and restart!</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="access_location_message">This application requires access to your location to function!</string>
+    <string name="no">No</string>
+    <string name="ask_me">Ask me</string>
+    <string name="gps_required_message">GPS is required for this application to function!</string>
 </resources>

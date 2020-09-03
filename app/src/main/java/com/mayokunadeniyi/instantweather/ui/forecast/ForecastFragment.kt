@@ -43,8 +43,7 @@ class ForecastFragment : Fragment() {
 
         setupCalendar()
 
-        val recyclerView = binding.forecastRecyclerview
-        recyclerView.adapter = weatherForecastAdapter
+        binding.forecastRecyclerview.adapter = weatherForecastAdapter
         viewModel.getWeatherForecast(prefs.getCityId())
         observeMoreViewModels()
     }
