@@ -108,6 +108,12 @@ class SharedPreferenceHelper {
     fun getSelectedThemePref() = prefs?.getString("theme_key", "")
 
     /**
+     * This function gets the value of the temperature unit the user set in the
+     * Settings Fragment.
+     */
+    fun getSelectedTemperatureUnit() = prefs?.getString("unit_key", "")
+
+    /**
      * This function saves a [LocationModel]
      */
     fun saveLocation(location: LocationModel) {

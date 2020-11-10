@@ -94,7 +94,7 @@
                     android:textColor="#FFFFFF"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="140dp"
-                    android:text="@{String.valueOf(weatherForecast.networkWeatherCondition.temp).concat(@string/temp_unit)}"
+                    app:setTemperature="@{weatherForecast.networkWeatherCondition.temp}"
                     android:textSize="18sp"
                     tools:text="36\u2103" />
 

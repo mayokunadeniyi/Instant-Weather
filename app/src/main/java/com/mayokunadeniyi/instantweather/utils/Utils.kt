@@ -23,6 +23,13 @@ fun convertKelvinToCelsius(number: Number): Double {
     }
 }
 
+fun convertCelsiusToFahrenheit(celsius: Double): Double {
+    return DecimalFormat().run {
+        applyPattern(".##")
+        parse(format(celsius.times(1.8).plus(32))).toDouble()
+    }
+}
+
 /**
  * This function helps to toggle the visibility of a [View]. If the condition
  * is met, the [View] is made visible else it is hidden.

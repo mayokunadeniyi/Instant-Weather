@@ -39,6 +39,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val cachePreference = findPreference<Preference>(cachePreferenceKey)
         val setDuration = sharedPreferenceHelper.getUserSetCacheDuration()
         cachePreference?.summary = setDuration
+
+        val unitPreferenceKey = PREFERENCE_KEY_TEMPERATURE_UNIT
+        val unitPreference = findPreference<Preference>(unitPreferenceKey)
+        val selectedUnit = sharedPreferenceHelper.getSelectedTemperatureUnit()
+        unitPreference?.summary = selectedUnit
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
@@ -62,6 +67,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             val setDuration = sharedPreferenceHelper.getUserSetCacheDuration()
             cachePreference?.summary = setDuration
         }
+
+        val unitPreferenceKey = PREFERENCE_KEY_TEMPERATURE_UNIT
+        if(key == unitPreferenceKey){
+            val unitPreference = findPreference<Preference>(unitPreferenceKey)
+            val selectedUnit = sharedPreferenceHelper.getSelectedTemperatureUnit()
+            unitPreference?.summary = selectedUnit
+        }
     }
 
     private fun setTheme(mode: Int) {
@@ -71,5 +83,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     companion object {
         private const val PREFERENCE_KEY_THEME = "theme_key"
         private const val PREFERENCE_KEY_CACHE = "cache_key"
+        private const val PREFERENCE_KEY_TEMPERATURE_UNIT = "unit_key"
     }
 }

@@ -26,6 +26,7 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
 import java.util.concurrent.TimeUnit
@@ -132,6 +133,10 @@ class HomeFragment : Fragment() {
             weather.observe(viewLifecycleOwner) { weather ->
                 weather?.let {
                     prefs.saveCityId(it.cityId)
+
+                    if(prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
+                        it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
+
                     binding.weather = it
                     binding.networkWeatherDescription = it.networkWeatherDescription.first()
                 }

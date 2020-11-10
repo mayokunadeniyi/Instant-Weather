@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
@@ -42,7 +44,6 @@ class ForecastFragment : Fragment() {
         weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
 
         setupCalendar()
-
         binding.forecastRecyclerview.adapter = weatherForecastAdapter
         viewModel.getWeatherForecast(prefs.getCityId())
         observeMoreViewModels()
@@ -52,6 +53,10 @@ class ForecastFragment : Fragment() {
         with(viewModel) {
             forecast.observe(viewLifecycleOwner) { weatherForecast ->
                 weatherForecast?.let {
+                    weatherForecast.forEach {
+                        if(prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
+                            it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
+                    }
                     weatherForecastAdapter.submitList(it)
                 }
             }
