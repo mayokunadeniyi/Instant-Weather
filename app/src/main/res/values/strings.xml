@@ -15,7 +15,8 @@
     <string name="loading_text">Fetching weather</string>
     <string name="weather_in">Weather in </string>
     <string name="comma">, </string>
-    <string name="temp_unit">\u2103</string>
+    <string name="temp_symbol_celsius">\u2103</string>
+    <string name="temp_symbol_fahrenheit">\u2109</string>
     <string name="select_date_text">Forecast up to 5days. Select end date for forecast.</string>
     <string name="weather_forecast">Weather Forecast</string>
     <string name="wind_speed">Wind speed</string>
@@ -52,4 +53,9 @@
     <string name="no">No</string>
     <string name="ask_me">Ask me</string>
     <string name="gps_required_message">GPS is required for this application to function!</string>
+
+    <string name="preference_temperature_unit_title">Temperature Unit</string>
+    <string name="temp_unit_celsius">Celsius/°C</string>
+    <string name="temp_unit_fahrenheit">Fahrenheit/°F</string>
+
 </resources>

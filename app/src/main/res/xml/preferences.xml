@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+<PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="Cache">
@@ -23,6 +23,20 @@
             android:icon="@drawable/ic_palette"
             android:key="theme_key"
             android:title="@string/preference_theme_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="unit_category"
+        android:title="Temperature Unit">
+
+        <ListPreference
+            android:defaultValue="Celsius/°C"
+            android:entries="@array/unit_values_array"
+            android:entryValues="@array/unit_values_array"
+            android:icon="@drawable/ic_baseline_title_24"
+            android:key="unit_key"
+            android:title="@string/preference_temperature_unit_title" />
 
     </PreferenceCategory>
 </PreferenceScreen>

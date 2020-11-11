@@ -13,4 +13,9 @@
         <item>@string/auto_battery_value</item>
         <item>@string/follow_system_value</item>
     </string-array>
+
+    <string-array name="unit_values_array">
+        <item>@string/temp_unit_celsius</item>
+        <item>@string/temp_unit_fahrenheit</item>
+    </string-array>
 </resources>

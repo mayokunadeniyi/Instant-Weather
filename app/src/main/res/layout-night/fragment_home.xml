@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@{String.valueOf(weather.networkWeatherCondition.temp).concat(@string/temp_unit)}"
+                    app:setTemperature="@{weather.networkWeatherCondition.temp}"
                     android:textColor="#FFFFFF"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
