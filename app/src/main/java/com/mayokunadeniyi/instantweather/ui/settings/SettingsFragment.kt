@@ -69,7 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
 
         val unitPreferenceKey = PREFERENCE_KEY_TEMPERATURE_UNIT
-        if(key == unitPreferenceKey){
+        if (key == unitPreferenceKey) {
             val unitPreference = findPreference<Preference>(unitPreferenceKey)
             val selectedUnit = sharedPreferenceHelper.getSelectedTemperatureUnit()
             unitPreference?.summary = selectedUnit

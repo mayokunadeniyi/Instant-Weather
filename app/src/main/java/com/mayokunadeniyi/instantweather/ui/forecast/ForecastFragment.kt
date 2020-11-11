@@ -54,7 +54,7 @@ class ForecastFragment : Fragment() {
             forecast.observe(viewLifecycleOwner) { weatherForecast ->
                 weatherForecast?.let {
                     weatherForecast.forEach {
-                        if(prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
+                        if (prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
                             it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
                     }
                     weatherForecastAdapter.submitList(it)

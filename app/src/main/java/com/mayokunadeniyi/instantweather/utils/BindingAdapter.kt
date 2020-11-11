@@ -20,11 +20,13 @@ fun WeatherIconView.showIcon(condition: String?) {
 }
 
 @BindingAdapter("setTemperature")
-fun TextView.setTemperature(double: Double){
+fun TextView.setTemperature(double: Double) {
     val context = this.context
-    if(SharedPreferenceHelper.getInstance(context).getSelectedTemperatureUnit()==context.getString(
-            R.string.temp_unit_fahrenheit))
-        this.text = double.toString()  + context.resources.getString(R.string.temp_symbol_fahrenheit)
+    if (SharedPreferenceHelper.getInstance(context).getSelectedTemperatureUnit() == context.getString(
+        R.string.temp_unit_fahrenheit
+    )
+    )
+        this.text = double.toString() + context.resources.getString(R.string.temp_symbol_fahrenheit)
     else
-        this.text = double.toString()  + context.resources.getString(R.string.temp_symbol_celsius)
+        this.text = double.toString() + context.resources.getString(R.string.temp_symbol_celsius)
 }
