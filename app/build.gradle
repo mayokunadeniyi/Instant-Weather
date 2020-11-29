@@ -54,12 +54,10 @@ android {
     }
 
     buildFeatures {
-        dataBinding {
-            enabled = true
-            enabledForTests = true
-        }
+        dataBinding = true
+        viewBinding = true
     }
-
+    
     testOptions.unitTests {
         includeAndroidResources = true
         returnDefaultValues = true
