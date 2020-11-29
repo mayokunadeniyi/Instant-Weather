@@ -23,13 +23,16 @@ import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 27/04/2020.
  */
 
-class SearchFragmentViewModel(private val repository: WeatherRepository) :
-    ViewModel() {
+class SearchFragmentViewModel
+@Inject constructor(
+    private val repository: WeatherRepository
+) : ViewModel() {
 
     private val applicationID = BuildConfig.ALGOLIA_APP_ID
     private val algoliaAPIKey = BuildConfig.ALGOLIA_API_KEY
