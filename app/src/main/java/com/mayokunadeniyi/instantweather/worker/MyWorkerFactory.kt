@@ -5,12 +5,17 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 16/06/2020.
  */
 
-class MyWorkerFactory(private val repository: WeatherRepository) : WorkerFactory() {
+class MyWorkerFactory
+@Inject constructor(
+    private val repository: WeatherRepository
+) : WorkerFactory() {
+
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
