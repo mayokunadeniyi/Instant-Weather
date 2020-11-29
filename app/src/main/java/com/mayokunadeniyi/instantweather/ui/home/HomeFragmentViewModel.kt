@@ -2,6 +2,7 @@ package com.mayokunadeniyi.instantweather.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,15 +17,15 @@ import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
-class HomeFragmentViewModel(
+class HomeFragmentViewModel @Inject constructor(
     private val repository: WeatherRepository,
     application: Application
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val locationLiveData = LocationLiveData(application)
 
