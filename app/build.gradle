@@ -30,6 +30,7 @@ android {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation":
                                       "$projectDir/schemas".toString()]
+                arguments = ["room.incremental":"true"]
             }
         }
     }
@@ -57,7 +58,7 @@ android {
         dataBinding = true
         viewBinding = true
     }
-    
+
     testOptions.unitTests {
         includeAndroidResources = true
         returnDefaultValues = true
