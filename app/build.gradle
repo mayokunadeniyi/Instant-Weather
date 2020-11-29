@@ -186,4 +186,9 @@ dependencies {
     //Until the bug at https://issuetracker.google.com/128612536 is fixed
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+
+    // Dagger2
+    kapt 'com.google.dagger:dagger-compiler:2.28.3'
+    implementation 'com.google.dagger:dagger-android-support:2.28.3'
+    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
 }
