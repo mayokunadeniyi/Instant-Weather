@@ -5,26 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
+import com.mayokunadeniyi.instantweather.factory.ViewModelProviderFactory
+import com.mayokunadeniyi.instantweather.ui.base.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
-import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class ForecastFragment : Fragment() {
+class ForecastFragment : BaseFragment() {
     private lateinit var binding: FragmentForecastBinding
 
-    private val viewModel by viewModels<ForecastFragmentViewModel> { getViewModelFactory() }
+    @Inject
+    lateinit var factory: ViewModelProviderFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, factory).get(ForecastFragmentViewModel::class.java)
+    }
 
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
     private lateinit var prefs: SharedPreferenceHelper
