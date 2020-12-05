@@ -57,5 +57,6 @@
     <string name="preference_temperature_unit_title">Temperature Unit</string>
     <string name="temp_unit_celsius">Celsius/°C</string>
     <string name="temp_unit_fahrenheit">Fahrenheit/°F</string>
+    <string name="share_artical">Share Artical</string>
 
 </resources>
