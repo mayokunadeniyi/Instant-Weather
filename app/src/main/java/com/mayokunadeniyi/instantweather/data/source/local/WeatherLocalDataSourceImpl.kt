@@ -6,14 +6,16 @@ import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForec
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 13/07/2020.
  */
 
-class WeatherLocalDataSourceImpl(
+class WeatherLocalDataSourceImpl
+@Inject constructor(
     private val weatherDao: WeatherDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher
 ) : WeatherLocalDataSource {
     override suspend fun getWeather(): DBWeather? = withContext(ioDispatcher) {
         return@withContext weatherDao.getWeather()

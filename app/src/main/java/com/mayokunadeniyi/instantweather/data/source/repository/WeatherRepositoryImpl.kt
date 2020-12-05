@@ -13,12 +13,13 @@ import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
  */
 
-class WeatherRepositoryImpl(
+class WeatherRepositoryImpl @Inject constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO

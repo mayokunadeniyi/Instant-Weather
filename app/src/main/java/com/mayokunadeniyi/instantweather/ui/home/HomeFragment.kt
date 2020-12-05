@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -23,6 +24,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.InstantWeatherApplication
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
+import com.mayokunadeniyi.instantweather.factory.ViewModelProviderFactory
+import com.mayokunadeniyi.instantweather.ui.base.BaseFragment
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
@@ -30,21 +33,22 @@ import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var isGPSEnabled = false
     private lateinit var prefs: SharedPreferenceHelper
 
-    private val viewModel by viewModels<HomeFragmentViewModel> {
-        HomeFragmentViewModel.HomeFragmentViewModelFactory(
-            (requireContext().applicationContext as InstantWeatherApplication).weatherRepository,
-            requireActivity().application
-        )
+    @Inject
+    lateinit var factory: ViewModelProviderFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, factory).get(HomeFragmentViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +71,7 @@ class HomeFragment : Fragment() {
             allPermissionsGranted() -> {
                 viewModel.getLocationLiveData().observeOnce(
                     viewLifecycleOwner,
-                    Observer { location ->
+                    { location ->
                         if (location != null) {
                             viewModel.getWeather(location)
                             setupWorkManager()

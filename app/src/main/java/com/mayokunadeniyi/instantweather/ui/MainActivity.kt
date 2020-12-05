@@ -8,8 +8,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

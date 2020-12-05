@@ -11,14 +11,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 13/07/2020.
  */
 
-class WeatherRemoteDataSourceImpl(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val retrofitClient: WeatherApiService = WeatherApi.retrofitService
+class WeatherRemoteDataSourceImpl
+@Inject constructor(
+    private val ioDispatcher: CoroutineDispatcher,
+    private val retrofitClient: WeatherApiService
 ) : WeatherRemoteDataSource {
     override suspend fun getWeather(location: LocationModel): Result<NetworkWeather> =
         withContext(ioDispatcher) {
