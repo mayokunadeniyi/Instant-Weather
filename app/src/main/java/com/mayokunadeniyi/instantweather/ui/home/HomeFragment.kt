@@ -7,8 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,6 +64,27 @@ class HomeFragment : BaseFragment() {
                 this@HomeFragment.isGPSEnabled = isGPSEnabled
             }
         })
+        setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.action_share -> {
+                val weatherInformation =
+                    "Weather Information In "+binding.weatherInText.text.toString()+"\n"+
+                    "Date: "+binding.dateText.text.toString()+"\n"+
+                    "Weather Temperature: "+binding.weatherTemperature.text.toString()+"\n"+
+                    "Humidity: "+binding.humidityText.text.toString()+"\n"+
+                    "Pressure: "+binding.pressureText.text.toString()+"\n"+
+                    "Wind Speed: "+binding.windSpeedText.text.toString()
+                shareWeatherInformation(weatherInformation)
+               true
+            }
+            else -> false
+        }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
     }
 
     override fun onStart() {
@@ -315,5 +341,15 @@ class HomeFragment : BaseFragment() {
             "Update_weather_worker",
             ExistingPeriodicWorkPolicy.REPLACE, weatherUpdateRequest
         )
+    }
+
+    private fun shareWeatherInformation(weatherInformation:String){
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_SUBJECT,weatherInformation)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 }
