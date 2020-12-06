@@ -343,10 +343,10 @@ class HomeFragment : BaseFragment() {
         )
     }
 
-    private fun shareWeatherInformation(WeatherInformation:String){
+    private fun shareWeatherInformation(weatherInformation:String){
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_SUBJECT, WeatherInformation)
+            putExtra(Intent.EXTRA_SUBJECT,weatherInformation)
             type = "text/plain"
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
