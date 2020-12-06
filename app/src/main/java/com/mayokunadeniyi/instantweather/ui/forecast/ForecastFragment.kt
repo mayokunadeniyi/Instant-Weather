@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import com.google.android.material.transition.MaterialFadeThrough
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.factory.ViewModelProviderFactory
@@ -48,8 +49,10 @@ class ForecastFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.weather_motion_duration_large).toLong()
+        }
         weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
-
         setupCalendar()
         binding.forecastRecyclerview.adapter = weatherForecastAdapter
         viewModel.getWeatherForecast(prefs.getCityId())

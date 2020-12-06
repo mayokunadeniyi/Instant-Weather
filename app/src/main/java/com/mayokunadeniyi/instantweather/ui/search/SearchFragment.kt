@@ -16,6 +16,9 @@ import com.algolia.instantsearch.helper.android.searchbox.connectView
 import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
+import com.mayokunadeniyi.instantweather.R
+import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
 import com.mayokunadeniyi.instantweather.factory.ViewModelProviderFactory
 import com.mayokunadeniyi.instantweather.ui.base.BaseFragment
@@ -52,7 +55,9 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.weather_motion_duration_large).toLong()
+        }
         searchBoxView = SearchBoxViewAppCompat(binding.searchView)
         searchBoxView.searchView.isIconified = false
 

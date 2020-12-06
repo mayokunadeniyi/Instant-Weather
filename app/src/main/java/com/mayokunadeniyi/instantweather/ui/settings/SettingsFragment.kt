@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.transition.MaterialFadeThrough
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 
@@ -15,6 +16,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+        enterTransition = MaterialFadeThrough().apply {
+            duration = resources.getInteger(R.integer.weather_motion_duration_large).toLong()
+        }
         sharedPreferenceHelper = SharedPreferenceHelper.getInstance(requireContext())
         init()
     }
