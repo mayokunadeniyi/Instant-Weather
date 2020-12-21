@@ -44,9 +44,6 @@ ALGOLIA_APP_ID = "YOUR_APP_ID"
 ## Contribution
 All contributions are welcome. If you are interested in seeing a particular feature implemented in this app, please open a new issue so after which you can make a PR!
 
-### TODO
-- [ ] Incorporate a Dependency Injection framework (Dagger2)
-
 ## LICENSE
 ```
 MIT License
