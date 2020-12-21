@@ -18,6 +18,7 @@ The architecture of this application relies and complies with the following poin
 ## Technologies used:
 
 * [Retrofit](https://square.github.io/retrofit/) a REST Client for Android which makes it relatively easy to retrieve and upload JSON (or other structured data) via a REST based webservice.
+* [Dagger2](https://dagger.dev/) for dependency injection.
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) to store and manage UI-related data in a lifecycle conscious way.
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) to handle data in a lifecycle-aware fashion.
 * [Navigation Component](https://developer.android.com/guide/navigation) to handle all navigations and also passing of data between destinations.
