@@ -18,6 +18,7 @@ The architecture of this application relies and complies with the following poin
 ## Technologies used:
 
 * [Retrofit](https://square.github.io/retrofit/) a REST Client for Android which makes it relatively easy to retrieve and upload JSON (or other structured data) via a REST based webservice.
+* [Dagger2](https://dagger.dev/) for dependency injection.
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) to store and manage UI-related data in a lifecycle conscious way.
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) to handle data in a lifecycle-aware fashion.
 * [Navigation Component](https://developer.android.com/guide/navigation) to handle all navigations and also passing of data between destinations.
@@ -43,9 +44,6 @@ ALGOLIA_APP_ID = "YOUR_APP_ID"
 ````
 ## Contribution
 All contributions are welcome. If you are interested in seeing a particular feature implemented in this app, please open a new issue so after which you can make a PR!
-
-### TODO
-- [ ] Incorporate a Dependency Injection framework (Dagger2)
 
 ## LICENSE
 ```
