@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mayokunadeniyi.instantweather.R
+import com.mayokunadeniyi.instantweather.di.Injectable
+import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import javax.inject.Inject
 
 /**
  * A simple [PreferenceFragmentCompat] subclass.

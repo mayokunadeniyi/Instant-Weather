@@ -17,22 +17,19 @@ interface WeatherApiService {
      */
     @GET("/data/2.5/weather")
     suspend fun getSpecificWeather(
-        @Query("q") location: String,
-        @Query("appid") apiKey: String
+        @Query("q") location: String
     ): Response<NetworkWeather>
 
     // This function gets the weather information for the user's location.
     @GET("/data/2.5/weather")
     suspend fun getCurrentWeather(
         @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double,
-        @Query("appid") apiKey: String
+        @Query("lon") longitude: Double
     ): Response<NetworkWeather>
 
     // This function gets the weather forecast information for the user's location.
     @GET("data/2.5/forecast")
     suspend fun getWeatherForecast(
-        @Query("id") cityId: Int,
-        @Query("appid") apiKey: String
+        @Query("id") cityId: Int
     ): Response<NetworkWeatherForecastResponse>
 }

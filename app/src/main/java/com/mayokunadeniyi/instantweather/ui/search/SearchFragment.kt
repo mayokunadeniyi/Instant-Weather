@@ -17,17 +17,17 @@ import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
+import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.search.SearchResultAdapter.SearchResultListener
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
-import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
     private lateinit var binding: FragmentSearchBinding
-    private val viewModel by viewModels<SearchFragmentViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<SearchFragmentViewModel> { viewModelFactoryProvider }
     private lateinit var searchResultAdapter: SearchResultAdapter
     private val connection = ConnectionHandler()
     private lateinit var searchBoxView: SearchBoxViewAppCompat

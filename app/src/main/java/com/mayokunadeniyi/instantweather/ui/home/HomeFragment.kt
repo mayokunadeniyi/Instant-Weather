@@ -20,9 +20,9 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
-import com.mayokunadeniyi.instantweather.InstantWeatherApplication
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
+import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
 import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
@@ -30,26 +30,24 @@ import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var isGPSEnabled = false
-    private lateinit var prefs: SharedPreferenceHelper
 
-    private val viewModel by viewModels<HomeFragmentViewModel> {
-        HomeFragmentViewModel.HomeFragmentViewModelFactory(
-            (requireContext().applicationContext as InstantWeatherApplication).weatherRepository,
-            requireActivity().application
-        )
-    }
+    @Inject
+    lateinit var prefs: SharedPreferenceHelper
+
+    private val viewModel by viewModels<HomeFragmentViewModel> { viewModelFactoryProvider }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = SharedPreferenceHelper.getInstance(requireContext())
         GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 this@HomeFragment.isGPSEnabled = isGPSEnabled
@@ -65,7 +63,7 @@ class HomeFragment : Fragment() {
     private fun invokeLocationAction() {
         when {
             allPermissionsGranted() -> {
-                viewModel.getLocationLiveData().observeOnce(
+                viewModel.fetchLocationLiveData().observeOnce(
                     viewLifecycleOwner,
                     Observer { location ->
                         if (location != null) {
@@ -135,7 +133,8 @@ class HomeFragment : Fragment() {
                     prefs.saveCityId(it.cityId)
 
                     if (prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
-                        it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
+                        it.networkWeatherCondition.temp =
+                            convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
 
                     binding.weather = it
                     binding.networkWeatherDescription = it.networkWeatherDescription.first()
@@ -180,7 +179,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initiateRefresh() {
-        viewModel.getLocationLiveData().observeOnce(
+        viewModel.fetchLocationLiveData().observeOnce(
             viewLifecycleOwner,
             Observer { location ->
                 if (location != null) {
@@ -291,7 +290,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupWorkManager() {
-        viewModel.getLocationLiveData().observeOnce(
+        viewModel.fetchLocationLiveData().observeOnce(
             this,
             Observer {
                 prefs.saveLocation(it)

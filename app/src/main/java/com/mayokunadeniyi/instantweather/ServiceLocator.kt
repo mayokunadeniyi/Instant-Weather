@@ -16,50 +16,50 @@ import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepositor
 
 object ServiceLocator {
 
-    private val lock = Any()
-    private var database: WeatherDatabase? = null
-
-    @Volatile
-    var weatherRepository: WeatherRepository? = null
-        @VisibleForTesting set
-
-    fun provideWeatherRepository(context: Context): WeatherRepository {
-        synchronized(this) {
-            return weatherRepository ?: createWeatherRepository(context)
-        }
-    }
-
-    private fun createWeatherRepository(context: Context): WeatherRepository {
-        val newRepo = WeatherRepositoryImpl(
-            WeatherRemoteDataSourceImpl(),
-            createLocalWeatherSource(context)
-        )
-        weatherRepository = newRepo
-        return newRepo
-    }
-
-    private fun createLocalWeatherSource(context: Context): WeatherLocalDataSource {
-        val database = database ?: createDatabase(context)
-        return WeatherLocalDataSourceImpl(database.weatherDao)
-    }
-
-    private fun createDatabase(context: Context): WeatherDatabase {
-        val result = Room.databaseBuilder(
-            context.applicationContext,
-            WeatherDatabase::class.java,
-            "InstantWeather.db"
-        ).build()
-        database = result
-        return result
-    }
-
-    @VisibleForTesting
-    fun resetRepository() {
-        database?.apply {
-            clearAllTables()
-            close()
-        }
-        database = null
-        weatherRepository = null
-    }
+//    private val lock = Any()
+//    private var database: WeatherDatabase? = null
+//
+//    @Volatile
+//    var weatherRepository: WeatherRepository? = null
+//        @VisibleForTesting set
+//
+//    fun provideWeatherRepository(context: Context): WeatherRepository {
+//        synchronized(this) {
+//            return weatherRepository ?: createWeatherRepository(context)
+//        }
+//    }
+//
+//    private fun createWeatherRepository(context: Context): WeatherRepository {
+//        val newRepo = WeatherRepositoryImpl(
+//            WeatherRemoteDataSourceImpl(),
+//            createLocalWeatherSource(context)
+//        )
+//        weatherRepository = newRepo
+//        return newRepo
+//    }
+//
+//    private fun createLocalWeatherSource(context: Context): WeatherLocalDataSource {
+//        val database = database ?: createDatabase(context)
+//        return WeatherLocalDataSourceImpl(database.weatherDao)
+//    }
+//
+//    private fun createDatabase(context: Context): WeatherDatabase {
+//        val result = Room.databaseBuilder(
+//            context.applicationContext,
+//            WeatherDatabase::class.java,
+//            "InstantWeather.db"
+//        ).build()
+//        database = result
+//        return result
+//    }
+//
+//    @VisibleForTesting
+//    fun resetRepository() {
+//        database?.apply {
+//            clearAllTables()
+//            close()
+//        }
+//        database = null
+//        weatherRepository = null
+//    }
 }

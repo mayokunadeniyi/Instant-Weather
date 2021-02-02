@@ -16,17 +16,18 @@ import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
-class HomeFragmentViewModel(
-    private val repository: WeatherRepository,
-    application: Application
+class HomeFragmentViewModel @Inject constructor(
+    private val repository: WeatherRepository
 ) :
     ViewModel() {
 
-    private val locationLiveData = LocationLiveData(application)
+    @Inject
+    lateinit var locationLiveData: LocationLiveData
 
     init {
         currentSystemTime()
@@ -43,7 +44,7 @@ class HomeFragmentViewModel(
 
     val time = currentSystemTime()
 
-    fun getLocationLiveData() = locationLiveData
+    fun fetchLocationLiveData() = locationLiveData
 
     /**
      *This attempts to get the [Weather] from the local data source,
@@ -115,12 +116,4 @@ class HomeFragmentViewModel(
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    class HomeFragmentViewModelFactory(
-        private val repository: WeatherRepository,
-        private val application: Application
-    ) : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel?> create(modelClass: Class<T>) =
-            (HomeFragmentViewModel(repository, application) as T)
-    }
 }

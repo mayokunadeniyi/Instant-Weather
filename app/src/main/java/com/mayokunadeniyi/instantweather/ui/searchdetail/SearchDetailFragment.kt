@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchDetailBinding
+import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.MainActivity
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchDetailFragment : Fragment() {
+class SearchDetailFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSearchDetailBinding
+    private val searchDetailFragmentArgs by navArgs<SearchDetailFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +24,6 @@ class SearchDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchDetailBinding.inflate(layoutInflater)
-        val searchDetailFragmentArgs by navArgs<SearchDetailFragmentArgs>()
         val weather = searchDetailFragmentArgs.searchWeatherResult
         val location = searchDetailFragmentArgs.location
         if (weather != null && location != null) {
@@ -33,8 +34,8 @@ class SearchDetailFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.fabClose.setOnClickListener {
             (activity as MainActivity).onBackPressed()
         }

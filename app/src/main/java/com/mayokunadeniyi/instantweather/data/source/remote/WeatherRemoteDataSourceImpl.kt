@@ -3,28 +3,27 @@ package com.mayokunadeniyi.instantweather.data.source.remote
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
 import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
-import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.WeatherApi
 import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.WeatherApiService
-import com.mayokunadeniyi.instantweather.utils.API_KEY
+import com.mayokunadeniyi.instantweather.di.scope.IoDispatcher
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 13/07/2020.
  */
 
-class WeatherRemoteDataSourceImpl(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val retrofitClient: WeatherApiService = WeatherApi.retrofitService
+class WeatherRemoteDataSourceImpl @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val apiService: WeatherApiService
 ) : WeatherRemoteDataSource {
     override suspend fun getWeather(location: LocationModel): Result<NetworkWeather> =
         withContext(ioDispatcher) {
             return@withContext try {
-                val result = retrofitClient.getCurrentWeather(
-                    location.latitude, location.longitude, API_KEY
+                val result = apiService.getCurrentWeather(
+                    location.latitude, location.longitude
                 )
                 if (result.isSuccessful) {
                     val networkWeather = result.body()
@@ -40,7 +39,7 @@ class WeatherRemoteDataSourceImpl(
     override suspend fun getWeatherForecast(cityId: Int): Result<List<NetworkWeatherForecast>> =
         withContext(ioDispatcher) {
             return@withContext try {
-                val result = retrofitClient.getWeatherForecast(cityId, API_KEY)
+                val result = apiService.getWeatherForecast(cityId)
                 if (result.isSuccessful) {
                     val networkWeatherForecast = result.body()?.weathers
                     Result.Success(networkWeatherForecast)
@@ -55,7 +54,7 @@ class WeatherRemoteDataSourceImpl(
     override suspend fun getSearchWeather(query: String): Result<NetworkWeather> =
         withContext(ioDispatcher) {
             return@withContext try {
-                val result = retrofitClient.getSpecificWeather(query, API_KEY)
+                val result = apiService.getSpecificWeather(query)
                 if (result.isSuccessful) {
                     val networkWeather = result.body()
                     Result.Success(networkWeather)

@@ -9,25 +9,28 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
+import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
-import com.mayokunadeniyi.instantweather.utils.getViewModelFactory
 import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class ForecastFragment : Fragment() {
+class ForecastFragment : BaseFragment() {
     private lateinit var binding: FragmentForecastBinding
 
-    private val viewModel by viewModels<ForecastFragmentViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<ForecastFragmentViewModel> { viewModelFactoryProvider }
 
     private lateinit var weatherForecastAdapter: WeatherForecastAdapter
-    private lateinit var prefs: SharedPreferenceHelper
+
+    @Inject
+    lateinit var prefs: SharedPreferenceHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +38,6 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(layoutInflater)
-        prefs = SharedPreferenceHelper.getInstance(requireContext())
         return binding.root
     }
 

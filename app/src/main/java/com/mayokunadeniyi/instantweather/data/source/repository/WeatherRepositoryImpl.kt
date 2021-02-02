@@ -5,23 +5,24 @@ import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
 import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
+import com.mayokunadeniyi.instantweather.di.scope.IoDispatcher
 import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperLocal
 import com.mayokunadeniyi.instantweather.mapper.WeatherForecastMapperRemote
 import com.mayokunadeniyi.instantweather.mapper.WeatherMapperLocal
 import com.mayokunadeniyi.instantweather.mapper.WeatherMapperRemote
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 27/02/2020.
  */
 
-class WeatherRepositoryImpl(
+class WeatherRepositoryImpl @Inject constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WeatherRepository {
 
     override suspend fun getWeather(location: LocationModel, refresh: Boolean): Result<Weather> =

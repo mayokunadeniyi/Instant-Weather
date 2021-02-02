@@ -9,12 +9,13 @@ import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 28/02/2020.
  */
 
-class ForecastFragmentViewModel(
+class ForecastFragmentViewModel @Inject constructor(
     private val repository: WeatherRepository
 ) : ViewModel() {
 
