@@ -25,6 +25,7 @@ android {
         buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
         buildConfigField("String", "ALGOLIA_API_KEY", apikeyProperties['ALGOLIA_API_KEY'])
         buildConfigField("String", "ALGOLIA_APP_ID", apikeyProperties['ALGOLIA_APP_ID'])
+        buildConfigField("String","BASE_URL","\"http://api.openweathermap.org/\"")
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -153,7 +154,7 @@ dependencies {
     implementation "com.algolia:instantsearch-android:$algolia_version"
 
     //Paging Library
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     //Elastic view
     implementation "com.github.skydoves:elasticviews:$elastic_version"
@@ -161,6 +162,19 @@ dependencies {
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
+    //Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+
+    //OKHttp Logging Interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //Chuck
+    debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
+    releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
 
     // AndroidX Test - JVM testing
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
