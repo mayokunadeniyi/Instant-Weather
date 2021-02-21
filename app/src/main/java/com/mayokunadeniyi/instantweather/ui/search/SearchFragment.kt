@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -20,7 +21,6 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.search.SearchResultAdapter.SearchResultListener
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
-import com.mayokunadeniyi.instantweather.utils.showIf
 
 /**
  * A simple [Fragment] subclass.
@@ -73,7 +73,7 @@ class SearchFragment : BaseFragment() {
 
         viewModel.locations.observe(viewLifecycleOwner) { hits ->
             searchResultAdapter.submitList(hits)
-            binding.zeroHits.showIf { hits.size == 0 }
+            binding.zeroHits.isVisible = hits.size == 0
         }
     }
 
@@ -95,7 +95,7 @@ class SearchFragment : BaseFragment() {
             }
 
             isLoading.observe(viewLifecycleOwner) { state ->
-                binding.searchWeatherLoader.showIf { state }
+                binding.searchWeatherLoader.isVisible = state
             }
 
             dataFetchState.observe(viewLifecycleOwner) { state ->

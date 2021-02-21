@@ -36,8 +36,6 @@ class SearchDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fabClose.setOnClickListener {
-            (activity as MainActivity).onBackPressed()
-        }
+        binding.fabClose.setOnClickListener { activity?.onBackPressed() }
     }
 }

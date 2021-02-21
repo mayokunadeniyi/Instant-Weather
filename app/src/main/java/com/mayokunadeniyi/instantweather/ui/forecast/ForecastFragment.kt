@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -13,7 +14,6 @@ import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
-import com.mayokunadeniyi.instantweather.utils.showIf
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -65,13 +65,13 @@ class ForecastFragment : BaseFragment() {
 
             dataFetchState.observe(viewLifecycleOwner) { state ->
                 binding.apply {
-                    forecastRecyclerview.showIf { state }
-                    forecastErrorText?.showIf { !state }
+                    forecastRecyclerview.isVisible = state
+                    forecastErrorText?.isVisible = !state
                 }
             }
 
             isLoading.observe(viewLifecycleOwner) { state ->
-                binding.forecastProgressBar.showIf { state }
+                binding.forecastProgressBar.isVisible = state
             }
         }
 
@@ -120,7 +120,7 @@ class ForecastFragment : BaseFragment() {
                     }
                     weatherForecastAdapter.submitList(filteredList)
                     weatherForecastAdapter.currentList
-                    binding.emptyListText.showIf { filteredList!!.isEmpty() }
+                    binding.emptyListText.isVisible = filteredList!!.isEmpty()
                 }
             }
 
