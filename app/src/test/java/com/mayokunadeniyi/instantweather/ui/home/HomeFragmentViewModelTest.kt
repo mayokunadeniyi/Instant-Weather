@@ -2,7 +2,6 @@ package com.mayokunadeniyi.instantweather.ui.home
 
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
 import com.mayokunadeniyi.instantweather.MainCoroutineRule
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.dummyLocation
@@ -53,7 +52,7 @@ class HomeFragmentViewModelTest {
     @Before
     fun setUp() {
         systemUnderTest =
-            HomeFragmentViewModel(repository, ApplicationProvider.getApplicationContext())
+            HomeFragmentViewModel(repository)
     }
 
     @Test

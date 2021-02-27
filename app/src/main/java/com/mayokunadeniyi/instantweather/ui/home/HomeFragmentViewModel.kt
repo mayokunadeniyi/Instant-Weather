@@ -1,10 +1,8 @@
 package com.mayokunadeniyi.instantweather.ui.home
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mayokunadeniyi.instantweather.data.model.LocationModel
 import com.mayokunadeniyi.instantweather.data.model.Weather
@@ -115,5 +113,4 @@ class HomeFragmentViewModel @Inject constructor(
             }
         }
     }
-
 }

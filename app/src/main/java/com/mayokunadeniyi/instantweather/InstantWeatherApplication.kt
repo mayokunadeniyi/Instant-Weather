@@ -28,13 +28,12 @@ class InstantWeatherApplication : Application(), Configuration.Provider, HasAndr
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
         AppInjector.init(this)
         initTheme()
     }
-
 
     private fun initTheme() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)

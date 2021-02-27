@@ -1,6 +1,5 @@
 package com.mayokunadeniyi.instantweather.di.module
 
-import com.mayokunadeniyi.instantweather.di.module.FragmentBuildersModule
 import com.mayokunadeniyi.instantweather.di.scope.PerActivity
 import com.mayokunadeniyi.instantweather.ui.MainActivity
 import dagger.Module

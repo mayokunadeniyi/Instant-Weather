@@ -15,9 +15,11 @@ abstract class BaseFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactoryProvider: ViewModelProvider.Factory
 
-
-    fun showSnackBar(message: String){
-        Snackbar.make(requireView(),message,Snackbar.LENGTH_SHORT).show()
+    fun showShortSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 
+    fun showLongSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    }
 }

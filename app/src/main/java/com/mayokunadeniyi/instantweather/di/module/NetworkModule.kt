@@ -10,7 +10,6 @@ import javax.inject.Singleton
  * Created by Mayokun Adeniyi on 02/02/2021.
  */
 
-
 @Module
 class NetworkModule {
 

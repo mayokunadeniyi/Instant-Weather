@@ -25,8 +25,8 @@ class ViewModelFactory @Inject constructor(
         var viewModel = viewModelMap[modelClass]
 
         if (viewModel == null) {
-            for (entry in viewModelMap){
-                if (modelClass.isAssignableFrom(entry.key)){
+            for (entry in viewModelMap) {
+                if (modelClass.isAssignableFrom(entry.key)) {
                     viewModel = entry.value
                     break
                 }
@@ -36,5 +36,4 @@ class ViewModelFactory @Inject constructor(
         if (viewModel == null) throw IllegalArgumentException("Unknown model class $modelClass")
         return viewModel.get() as T
     }
-
 }

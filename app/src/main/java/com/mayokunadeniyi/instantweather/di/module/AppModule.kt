@@ -5,8 +5,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.mayokunadeniyi.instantweather.BuildConfig
-import com.mayokunadeniyi.instantweather.data.source.remote.retrofit.WeatherApiService
-import com.mayokunadeniyi.instantweather.utils.GpsUtil
 import com.mayokunadeniyi.instantweather.utils.LocationLiveData
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.readystatesoftware.chuck.ChuckInterceptor
@@ -46,7 +44,6 @@ class AppModule {
         return LocationLiveData(context)
     }
 
-
     @Provides
     @Singleton
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
@@ -79,7 +76,8 @@ class AppModule {
     @Singleton
     fun provideRetrofitBuilder(
         client: Lazy<OkHttpClient>,
-        converterFactory: GsonConverterFactory, context: Context
+        converterFactory: GsonConverterFactory,
+        context: Context
     ): Retrofit {
         val retrofitBuilder = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
@@ -94,7 +92,7 @@ class AppModule {
                 val originalHttpUrl = original.url
 
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("appid",BuildConfig.API_KEY)
+                    .addQueryParameter("appid", BuildConfig.API_KEY)
                     .build()
 
                 Timber.d("Started making network call")
@@ -105,13 +103,10 @@ class AppModule {
                 val request = requestBuilder.build()
                 return@addInterceptor chain.proceed(request)
             }
-            .readTimeout(60,TimeUnit.SECONDS)
-        if (BuildConfig.DEBUG){
+            .readTimeout(60, TimeUnit.SECONDS)
+        if (BuildConfig.DEBUG) {
             okHttpClientBuilder.addInterceptor(ChuckInterceptor(context))
         }
         return retrofitBuilder.client(okHttpClientBuilder.build()).build()
     }
-
-
-
 }

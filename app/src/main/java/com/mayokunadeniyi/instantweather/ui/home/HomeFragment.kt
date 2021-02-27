@@ -45,7 +45,6 @@ class HomeFragment : BaseFragment() {
 
     private val viewModel by viewModels<HomeFragmentViewModel> { viewModelFactoryProvider }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
@@ -90,11 +89,7 @@ class HomeFragment : BaseFragment() {
             }
 
             !isGPSEnabled -> {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.gps_required_message),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showShortSnackBar(getString(R.string.gps_required_message))
             }
 
             else -> {

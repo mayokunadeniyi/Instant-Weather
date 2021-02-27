@@ -35,6 +35,4 @@ abstract class ViewModelModule {
     @Binds
     @ViewModelKey(SearchFragmentViewModel::class)
     abstract fun bindSearchFragmentViewModel(viewModel: SearchFragmentViewModel): ViewModel
-
-
 }
