@@ -22,7 +22,7 @@ import dagger.android.support.AndroidSupportInjection
 
 object AppInjector {
 
-    fun init(application: InstantWeatherApplication){
+    fun init(application: InstantWeatherApplication) {
         DaggerAppComponent
             .builder()
             .application(application)
@@ -49,7 +49,7 @@ object AppInjector {
     }
 
     private fun handleActivity(activity: Activity) {
-        if (activity is HasAndroidInjector){
+        if (activity is HasAndroidInjector) {
             AndroidInjection.inject(activity)
         }
 
@@ -62,11 +62,12 @@ object AppInjector {
                             f: Fragment,
                             savedInstanceState: Bundle?
                         ) {
-                            if (f is Injectable){
+                            if (f is Injectable) {
                                 AndroidSupportInjection.inject(f)
                             }
                         }
-                    }, true
+                    },
+                    true
                 )
         }
     }

@@ -21,17 +21,18 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [AndroidInjectionModule::class, DispatcherModule::class, RepositoryModule::class,
-        NetworkModule::class, DataSourcesModule::class, DatabaseModule::class, MainActivityModule::class, AppModule::class, ViewModelModule::class]
+    modules = [
+        AndroidInjectionModule::class, DispatcherModule::class, RepositoryModule::class,
+        NetworkModule::class, DataSourcesModule::class, DatabaseModule::class, MainActivityModule::class, AppModule::class, ViewModelModule::class
+    ]
 )
-interface AppComponent  {
+interface AppComponent {
     @Component.Builder
     interface Builder {
         @BindsInstance
         fun application(application: Application): Builder
 
         fun build(): AppComponent
-
     }
 
     fun inject(application: InstantWeatherApplication)

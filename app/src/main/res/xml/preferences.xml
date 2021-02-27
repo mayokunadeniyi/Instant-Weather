@@ -2,11 +2,11 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Cache">
+        android:title="Cache"
+        android:icon="@drawable/ic_cached">
         <EditTextPreference
             android:defaultValue="900"
             android:inputType="number"
-            android:icon="@drawable/ic_cached"
             android:key="cache_key"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -14,29 +14,27 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:key="theme_category"
-        android:title="Theme">
+        android:title="Theme"
+        android:icon="@drawable/ic_palette">
 
         <ListPreference
-            android:defaultValue="follow system"
+            android:defaultValue="@string/follow_system_value"
             android:entries="@array/theme_names_array"
             android:entryValues="@array/theme_values_array"
-            android:icon="@drawable/ic_palette"
-            android:key="theme_key"
-            android:title="@string/preference_theme_title" />
+            android:key="theme_key" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="unit_category"
-        android:title="Temperature Unit">
+        android:icon="@drawable/ic_baseline_title_24"
+        android:title="@string/preference_temperature_unit_title">
 
         <ListPreference
             android:defaultValue="Celsius/°C"
             android:entries="@array/unit_values_array"
             android:entryValues="@array/unit_values_array"
-            android:icon="@drawable/ic_baseline_title_24"
-            android:key="unit_key"
-            android:title="@string/preference_temperature_unit_title" />
+            android:key="unit_key" />
 
     </PreferenceCategory>
 </PreferenceScreen>

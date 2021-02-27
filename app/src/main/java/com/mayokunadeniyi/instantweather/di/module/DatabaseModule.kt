@@ -15,7 +15,6 @@ import javax.inject.Singleton
 @Module
 class DatabaseModule {
 
-
     @Singleton
     @Provides
     fun provideDatabase(context: Context): WeatherDatabase {
@@ -30,5 +29,4 @@ class DatabaseModule {
     fun provideWeatherDao(database: WeatherDatabase): WeatherDao {
         return database.weatherDao
     }
-
 }

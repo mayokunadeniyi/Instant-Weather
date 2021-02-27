@@ -26,5 +26,4 @@ object DispatcherModule {
     @Provides
     @MainDispatcher
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
-
 }
