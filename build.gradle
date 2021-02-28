@@ -10,6 +10,7 @@ buildscript {
         classpath Plugins.gradleAndroid
         classpath Plugins.kotlinGradlePlugin
         classpath Plugins.safeArgs
+        classpath Plugins.crashlyticsPlugin
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
