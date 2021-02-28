@@ -3,7 +3,6 @@ package com.mayokunadeniyi.instantweather.di.module
 import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.utils.LocationLiveData
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
@@ -82,7 +81,6 @@ class AppModule {
         val retrofitBuilder = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client.get())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(converterFactory)
 
         val okHttpClientBuilder = OkHttpClient.Builder()

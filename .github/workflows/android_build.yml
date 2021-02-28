@@ -16,9 +16,9 @@ jobs:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
         run: |
           touch apikey.properties
-          echo "API_KEY = $API_KEY" >> apikey.properties
-          echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
-          echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
+          echo "API_KEY=$API_KEY" >> apikey.properties
+          echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> apikey.properties
+          echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> apikey.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -46,9 +46,9 @@ jobs:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
         run: |
           touch apikey.properties
-          echo "API_KEY = $API_KEY" >> apikey.properties
-          echo "ALGOLIA_API_KEY = $ALGOLIA_API_KEY" >> apikey.properties
-          echo "ALGOLIA_APP_ID = $ALGOLIA_APP_ID" >> apikey.properties
+          echo "API_KEY=$API_KEY" >> apikey.properties
+          echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> apikey.properties
+          echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> apikey.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
