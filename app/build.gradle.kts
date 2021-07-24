@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -7,23 +9,9 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val API_KEY = "API_KEY"
-val ALGOLIA_API_KEY = "ALGOLIA_API_KEY"
-val ALGOLIA_APP_ID = "ALGOLIA_APP_ID"
-
-fun getProperty(key: String): String {
-    val items = HashMap<String, String>()
-
-    val fl = rootProject.file("apikey.properties")
-
-    (fl.exists())?.let {
-        fl.forEachLine {
-            items[it.split("=")[0]] = it.split("=")[1]
-        }
-    }
-
-    return items[key] ?: ""
-}
+val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
+val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
+val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
 
 
 android {
@@ -37,9 +25,9 @@ android {
         versionName(Config.versionName)
         testInstrumentationRunner(Config.testInstrumentationRunner)
 
-        buildConfigField("String", "API_KEY", getProperty(API_KEY))
-        buildConfigField("String", "ALGOLIA_API_KEY", getProperty(ALGOLIA_API_KEY))
-        buildConfigField("String", "ALGOLIA_APP_ID", getProperty(ALGOLIA_APP_ID))
+        buildConfigField("String", "API_KEY", API_KEY)
+        buildConfigField("String", "ALGOLIA_API_KEY", ALGOLIA_API_KEY)
+        buildConfigField("String", "ALGOLIA_APP_ID", ALGOLIA_APP_ID)
         buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/\"")
 
         kapt {

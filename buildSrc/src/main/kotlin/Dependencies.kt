@@ -25,7 +25,7 @@ interface Libraries {
 
 object Plugins {
     object Version {
-        const val gradleAndroidVersion = "4.1.2"
+        const val gradleAndroidVersion = "4.2.2"
         const val googleServices = "4.3.5"
     }
 
