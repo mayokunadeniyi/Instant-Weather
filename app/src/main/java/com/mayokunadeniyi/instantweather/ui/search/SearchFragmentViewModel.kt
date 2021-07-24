@@ -23,6 +23,7 @@ import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -82,6 +83,7 @@ class SearchFragmentViewModel @Inject constructor(private val repository: Weathe
                 is Result.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
+                        Timber.i("Mayokun Result ${result.data}")
                         _dataFetchState.value = true
                         _weatherInfo.postValue(result.data)
                     } else {

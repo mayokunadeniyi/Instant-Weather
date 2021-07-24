@@ -3,7 +3,6 @@ package com.mayokunadeniyi.instantweather.di.module
 import com.mayokunadeniyi.instantweather.ui.forecast.ForecastFragment
 import com.mayokunadeniyi.instantweather.ui.home.HomeFragment
 import com.mayokunadeniyi.instantweather.ui.search.SearchFragment
-import com.mayokunadeniyi.instantweather.ui.searchdetail.SearchDetailFragment
 import com.mayokunadeniyi.instantweather.ui.settings.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -23,9 +22,6 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSearchFragment(): SearchFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributeSearchDetailFragment(): SearchDetailFragment
 
     @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment

@@ -69,5 +69,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/location_search_recyclerview" />
 
+        <include
+            android:id="@+id/toolbar"
+            android:visibility="gone"
+            layout="@layout/fragment_search_detail" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -35,26 +35,5 @@
         <action
             android:id="@+id/action_searchFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_searchDetailFragment"
-            app:destination="@id/searchDetailFragment"
-            app:enterAnim="@anim/slide_down"
-            app:popExitAnim="@anim/slide_up" />
-    </fragment>
-    <fragment
-        tools:layout="@layout/fragment_search_detail"
-        android:id="@+id/searchDetailFragment"
-        android:name="com.mayokunadeniyi.instantweather.ui.searchdetail.SearchDetailFragment"
-        android:label="Search" >
-        <argument
-            android:name="searchWeatherResult"
-            app:argType="com.mayokunadeniyi.instantweather.data.model.Weather"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="location"
-            app:argType="string"
-            app:nullable="true"
-            />
     </fragment>
 </navigation>

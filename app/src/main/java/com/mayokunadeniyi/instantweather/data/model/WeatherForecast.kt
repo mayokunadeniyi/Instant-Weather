@@ -7,7 +7,7 @@ package com.mayokunadeniyi.instantweather.data.model
 data class WeatherForecast(
     val uID: Int,
 
-    val date: String,
+    var date: String,
 
     val wind: Wind,
 

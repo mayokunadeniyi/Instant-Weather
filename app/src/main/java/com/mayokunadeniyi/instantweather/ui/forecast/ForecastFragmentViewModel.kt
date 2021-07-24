@@ -8,6 +8,7 @@ import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepositor
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
+import com.mayokunadeniyi.instantweather.utils.formatDate
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,11 +55,10 @@ class ForecastFragmentViewModel @Inject constructor(
                 is Result.Success -> {
                     _isLoading.postValue(false)
                     if (result.data != null) {
-                        val forecast = result.data.apply {
-                            forEach {
-                                it.networkWeatherCondition.temp =
-                                    convertKelvinToCelsius(it.networkWeatherCondition.temp)
-                            }
+                        val forecast = result.data.onEach { forecast ->
+                            forecast.networkWeatherCondition.temp =
+                                convertKelvinToCelsius(forecast.networkWeatherCondition.temp)
+                            forecast.date = forecast.date.formatDate()
                         }
                         _forecast.postValue(forecast)
                         _dataFetchState.postValue(true)

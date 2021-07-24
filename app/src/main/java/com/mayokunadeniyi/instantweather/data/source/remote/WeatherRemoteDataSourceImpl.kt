@@ -8,7 +8,6 @@ import com.mayokunadeniyi.instantweather.di.scope.IoDispatcher
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 /**

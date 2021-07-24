@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Weather(
-
     val uId: Int,
     val cityId: Int,
     val name: String,

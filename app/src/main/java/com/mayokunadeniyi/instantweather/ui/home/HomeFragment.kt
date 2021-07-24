@@ -12,8 +12,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -64,7 +62,7 @@ class HomeFragment : BaseFragment() {
             allPermissionsGranted() -> {
                 viewModel.fetchLocationLiveData().observeOnce(
                     viewLifecycleOwner,
-                    Observer { location ->
+                    { location ->
                         if (location != null) {
                             viewModel.getWeather(location)
                             setupWorkManager()
@@ -176,7 +174,7 @@ class HomeFragment : BaseFragment() {
     private fun initiateRefresh() {
         viewModel.fetchLocationLiveData().observeOnce(
             viewLifecycleOwner,
-            Observer { location ->
+            { location ->
                 if (location != null) {
                     viewModel.refreshWeather(location)
                 } else {
@@ -234,18 +232,14 @@ class HomeFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            Activity.RESULT_OK -> {
-                when (requestCode) {
-                    GPS_REQUEST_CHECK_SETTINGS -> {
+            GPS_REQUEST_CHECK_SETTINGS -> {
+                when(resultCode) {
+                    Activity.RESULT_OK -> {
                         isGPSEnabled = true
                         invokeLocationAction()
                     }
-                }
-            }
 
-            Activity.RESULT_CANCELED -> {
-                when (requestCode) {
-                    GPS_REQUEST_CHECK_SETTINGS -> {
+                    Activity.RESULT_CANCELED ->{
                         Snackbar.make(
                             binding.root,
                             getString(R.string.enable_gps),
@@ -287,7 +281,7 @@ class HomeFragment : BaseFragment() {
     private fun setupWorkManager() {
         viewModel.fetchLocationLiveData().observeOnce(
             this,
-            Observer {
+            {
                 prefs.saveLocation(it)
             }
         )

@@ -36,7 +36,6 @@ class GpsUtil(private val context: Context) {
                 .checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener(context as Activity) {
                     OnGpsListener?.gpsStatus(true)
-                }.addOnFailureListener {
                 }.addOnFailureListener(context) { exception ->
 
                     when ((exception as ApiException).statusCode) {
