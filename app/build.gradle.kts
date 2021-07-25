@@ -65,12 +65,16 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfigs.getByName("release")?.let {
+                signingConfig = it
+            }
             isDebuggable = false
         }
 
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfigs.getByName("debug")?.let {
+                signingConfig = it
+            }
             isDebuggable = true
         }
     }
