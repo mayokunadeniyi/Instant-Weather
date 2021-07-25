@@ -65,15 +65,15 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfigs.getByName("release")?.let {
-                signingConfig = it
+            if (project.hasProperty("keystore.properties")){
+                signingConfig = signingConfigs.getByName("release")
             }
             isDebuggable = false
         }
 
         getByName("debug") {
-            signingConfigs.getByName("debug")?.let {
-                signingConfig = it
+            if (project.hasProperty("keystore.properties")){
+                signingConfig = signingConfigs.getByName("debug")
             }
             isDebuggable = true
         }
