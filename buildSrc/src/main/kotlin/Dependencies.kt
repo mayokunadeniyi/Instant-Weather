@@ -9,7 +9,7 @@ object Config {
     const val compileSdkVersion = 30
     const val targetSdkVersion = 30
     const val versionName = "1.0"
-    const val versionCode = 4
+    const val versionCode = 5
     val javaVersion = JavaVersion.VERSION_1_8
     const val buildTools = "30.0.3"
     const val isMultiDexEnabled = true
@@ -25,7 +25,7 @@ interface Libraries {
 
 object Plugins {
     object Version {
-        const val gradleAndroidVersion = "4.1.2"
+        const val gradleAndroidVersion = "4.2.2"
         const val googleServices = "4.3.5"
     }
 

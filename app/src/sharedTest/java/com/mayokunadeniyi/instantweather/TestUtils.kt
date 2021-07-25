@@ -61,7 +61,7 @@ val fakeWeather = Weather(
 )
 
 val fakeWeatherForecast = WeatherForecast(
-    1, "Date", Wind(22.2, 21),
+    1, "2021-07-25 14:22:10", Wind(22.2, 21),
     listOf(
         NetworkWeatherDescription(1L, "Main", "Desc", "Icon")
     ),

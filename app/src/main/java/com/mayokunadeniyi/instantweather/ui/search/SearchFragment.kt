@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.core.connection.ConnectionHandler
 import com.algolia.instantsearch.helper.android.item.StatsTextView
@@ -17,18 +15,24 @@ import com.algolia.instantsearch.helper.android.searchbox.connectView
 import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
 import com.google.android.material.snackbar.Snackbar
+import com.mayokunadeniyi.instantweather.R
+import com.mayokunadeniyi.instantweather.data.model.SearchResult
+import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.databinding.FragmentSearchBinding
+import com.mayokunadeniyi.instantweather.databinding.FragmentSearchDetailBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
-import com.mayokunadeniyi.instantweather.ui.search.SearchResultAdapter.SearchResultListener
+import com.mayokunadeniyi.instantweather.utils.BaseBottomSheetDialog
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment(), SearchResultAdapter.OnItemClickedListener {
     private lateinit var binding: FragmentSearchBinding
+    private lateinit var searchDetailBinding: FragmentSearchDetailBinding
+    private val bottomSheetDialog by lazy { BaseBottomSheetDialog(requireActivity(), R.style.AppBottomSheetDialogTheme) }
     private val viewModel by viewModels<SearchFragmentViewModel> { viewModelFactoryProvider }
-    private lateinit var searchResultAdapter: SearchResultAdapter
+    private val searchResultAdapter by lazy { SearchResultAdapter(this) }
     private val connection = ConnectionHandler()
     private lateinit var searchBoxView: SearchBoxViewAppCompat
 
@@ -38,6 +42,7 @@ class SearchFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchBinding.inflate(layoutInflater)
+        searchDetailBinding = FragmentSearchDetailBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -51,19 +56,10 @@ class SearchFragment : BaseFragment() {
         connection += viewModel.searchBox.connectView(searchBoxView)
         connection += viewModel.stats.connectView(statsView, StatsPresenterImpl())
 
-        searchResultAdapter = SearchResultAdapter(
-            SearchResultListener { name ->
-                searchBoxView.setText(name)
-                viewModel.getSearchWeather(name)
-                observeViewModel(name)
-            }
-        )
-
         searchBoxView.onQuerySubmitted = {
             binding.zeroHits.visibility = View.GONE
             if (it != null && it.isNotEmpty()) {
                 viewModel.getSearchWeather(it)
-                observeViewModel(it)
             }
         }
 
@@ -71,26 +67,25 @@ class SearchFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = searchResultAdapter
 
-        viewModel.locations.observe(viewLifecycleOwner) { hits ->
-            searchResultAdapter.submitList(hits)
-            binding.zeroHits.isVisible = hits.size == 0
+        searchDetailBinding.fabClose.setOnClickListener {
+            if (bottomSheetDialog.isShowing)
+                bottomSheetDialog.dismiss()
         }
-    }
 
-    private fun observeViewModel(location: String) {
         with(viewModel) {
+
+            locations.observe(viewLifecycleOwner) { hits ->
+                searchResultAdapter.submitList(hits)
+                binding.zeroHits.isVisible = hits.size == 0
+            }
+
             weatherInfo.observe(viewLifecycleOwner) { weather ->
-                if (weather != null) {
-                    val weatherValue = weather.apply {
+                weather?.let {
+                    val formattedWeather = it.apply {
                         this.networkWeatherCondition.temp =
                             convertKelvinToCelsius(this.networkWeatherCondition.temp)
                     }
-                    val action =
-                        SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(
-                            weatherValue,
-                            location
-                        )
-                    findNavController().navigate(action)
+                    displayWeatherResult(formattedWeather)
                 }
             }
 
@@ -108,10 +103,30 @@ class SearchFragment : BaseFragment() {
                 }
             }
         }
+
+    }
+
+    private fun displayWeatherResult(result: Weather) {
+        with(searchDetailBinding) {
+             weatherCondition = result.networkWeatherDescription.first()
+             location.text = result.name
+             weather = result
+        }
+
+        with(bottomSheetDialog) {
+            setCancelable(true)
+            setContentView(searchDetailBinding.root)
+            show()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         connection.disconnect()
+    }
+
+    override fun onSearchResultClicked(searchResult: SearchResult) {
+        searchBoxView.setText(searchResult.name)
+        viewModel.getSearchWeather(searchResult.name)
     }
 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
@@ -16,7 +15,7 @@ import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -108,7 +107,7 @@ class ForecastFragment : BaseFragment() {
 
                     val list = viewModel.forecast.value
                     val filteredList = list?.filter { weatherForecast ->
-                        val format = SimpleDateFormat("yyyy-M-dd HH:mm:ss", Locale.US)
+                        val format = SimpleDateFormat("d MMM y, h:mma", Locale.US)
                         val formattedDate = format.parse(weatherForecast.date)
                         val weatherForecastDay = formattedDate?.date
                         val weatherForecastMonth = formattedDate?.month

@@ -7,7 +7,7 @@ import com.mayokunadeniyi.instantweather.BuildConfig
  */
 
 const val GPS_REQUEST_CHECK_SETTINGS = 102
-const val ALGOLIA_INDEX_NAME = "prod_LOCATIONS"
+const val ALGOLIA_INDEX_NAME = "prod_LOCATIONS_V2"
 const val API_KEY = BuildConfig.API_KEY
 
 // Used for the LocationLiveData

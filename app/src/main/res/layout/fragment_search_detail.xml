@@ -38,15 +38,14 @@
                 app:layout_anchorGravity="center_horizontal|top"
                 />
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="48dp"
-                android:layout_marginBottom="-32dp"
-                app:cardCornerRadius="24dp"
-                android:backgroundTint="@color/primaryLightColor">
+                android:background="@drawable/bottom_sheet_dialog_top_background"
+                >
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
@@ -86,7 +85,7 @@
                                 android:id="@+id/imageView12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:tint="#FFFFFF"
+                                app:tint="#FFFFFF"
                                 app:layout_constraintEnd_toStartOf="@+id/imageView11"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -96,7 +95,7 @@
                                 android:id="@+id/imageView11"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:tint="#FFFFFF"
+                                app:tint="#FFFFFF"
                                 app:layout_constraintEnd_toStartOf="@+id/imageView10"
                                 app:layout_constraintStart_toEndOf="@id/imageView12"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -106,7 +105,7 @@
                                 android:id="@+id/imageView10"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:tint="#FFFFFF"
+                                app:tint="#FFFFFF"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/imageView11"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -246,7 +245,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
 
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

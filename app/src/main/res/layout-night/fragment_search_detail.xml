@@ -38,14 +38,13 @@
                 app:layout_anchorGravity="center_horizontal|top"
                 />
 
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="48dp"
-                android:layout_marginBottom="-32dp"
-                app:cardCornerRadius="24dp">
+                android:background="@drawable/bottom_sheet_dialog_top_background">
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
@@ -245,7 +244,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
 
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -29,4 +29,14 @@
         <item name="colorAccent">@color/primaryLightColor</item>
     </style>
 
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <!--        <item name="behavior_hideable">true</item>-->
+        <!--        <item name="behavior_skipCollapsed">true</item>-->
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>
