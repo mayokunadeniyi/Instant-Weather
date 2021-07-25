@@ -15,25 +15,27 @@ val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
 val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
 val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdkVersion(Config.compileSdkVersion)
     buildToolsVersion(Config.buildTools)
-    signingConfigs {
-        getByName("debug") {
-            keyAlias = keystoreProperties["keyAlias"].toString()
-            keyPassword = keystoreProperties["keyPassword"].toString()
-            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
-            storePassword = keystoreProperties["storePassword"].toString()
-        }
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"].toString()
-            keyPassword = keystoreProperties["keyPassword"].toString()
-            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
-            storePassword = keystoreProperties["storePassword"].toString()
+    if (project.hasProperty("keystore.properties")) {
+        val keystorePropertiesFile = rootProject.file("keystore.properties")
+        val keystoreProperties = Properties()
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+        signingConfigs {
+            getByName("debug") {
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+                storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"].toString()
+            }
+            create("release") {
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+                storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"].toString()
+            }
         }
     }
 
