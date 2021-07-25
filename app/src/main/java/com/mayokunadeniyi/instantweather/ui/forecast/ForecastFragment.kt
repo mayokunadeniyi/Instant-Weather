@@ -15,7 +15,7 @@ import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -53,12 +53,12 @@ class ForecastFragment : BaseFragment() {
     private fun observeMoreViewModels() {
         with(viewModel) {
             forecast.observe(viewLifecycleOwner) { weatherForecast ->
-                weatherForecast?.let {
+                weatherForecast?.let { list ->
                     weatherForecast.forEach {
                         if (prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
                             it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
                     }
-                    weatherForecastAdapter.submitList(it)
+                    weatherForecastAdapter.submitList(list)
                 }
             }
 
@@ -100,10 +100,10 @@ class ForecastFragment : BaseFragment() {
 
             override fun onDaySelect() {
                 val selectedDay = binding.calendarView.selectedDay
-                if (selectedDay != null) {
-                    val checkerDay = selectedDay.day
-                    val checkerMonth = selectedDay.month
-                    val checkerYear = selectedDay.year
+                selectedDay?.let {
+                    val checkerDay = it.day
+                    val checkerMonth = it.month
+                    val checkerYear = it.year
 
                     val list = viewModel.forecast.value
                     val filteredList = list?.filter { weatherForecast ->

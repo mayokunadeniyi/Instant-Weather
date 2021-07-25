@@ -43,7 +43,7 @@ class UserInteractionAwareCallback(
         return originalCallback.dispatchTrackballEvent(event)
     }
 
-    override  fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
         return originalCallback.dispatchGenericMotionEvent(event)
     }
 
@@ -72,7 +72,7 @@ class UserInteractionAwareCallback(
         return originalCallback.onMenuItemSelected(featureId, item)
     }
 
-    override  fun onWindowAttributesChanged(attrs: WindowManager.LayoutParams) {
+    override fun onWindowAttributesChanged(attrs: WindowManager.LayoutParams) {
         originalCallback.onWindowAttributesChanged(attrs)
     }
 
@@ -80,7 +80,7 @@ class UserInteractionAwareCallback(
         originalCallback.onContentChanged()
     }
 
-    override  fun onWindowFocusChanged(hasFocus: Boolean) {
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
         originalCallback.onWindowFocusChanged(hasFocus)
     }
 
@@ -106,17 +106,17 @@ class UserInteractionAwareCallback(
     }
 
     @Nullable
-    override  fun onWindowStartingActionMode(callback: ActionMode.Callback): ActionMode?{
+    override fun onWindowStartingActionMode(callback: ActionMode.Callback): ActionMode? {
         return originalCallback.onWindowStartingActionMode(callback)
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Nullable
-    override  fun onWindowStartingActionMode(callback: ActionMode.Callback, type: Int): ActionMode? {
+    override fun onWindowStartingActionMode(callback: ActionMode.Callback, type: Int): ActionMode? {
         return originalCallback.onWindowStartingActionMode(callback, type)
     }
 
-    override  fun onActionModeStarted(mode: ActionMode) {
+    override fun onActionModeStarted(mode: ActionMode) {
         originalCallback.onActionModeStarted(mode)
     }
 

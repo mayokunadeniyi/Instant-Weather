@@ -103,14 +103,13 @@ class SearchFragment : BaseFragment(), SearchResultAdapter.OnItemClickedListener
                 }
             }
         }
-
     }
 
     private fun displayWeatherResult(result: Weather) {
         with(searchDetailBinding) {
-             weatherCondition = result.networkWeatherDescription.first()
-             location.text = result.name
-             weather = result
+            weatherCondition = result.networkWeatherDescription.first()
+            location.text = result.name
+            weather = result
         }
 
         with(bottomSheetDialog) {
