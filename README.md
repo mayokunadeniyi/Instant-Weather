@@ -34,16 +34,34 @@ The architecture of this application relies and complies with the following poin
 * [Preferences](https://developer.android.com/guide/topics/ui/settings) to create interactive settings screens.
 
 ## Installation
-Instant Weather requires a minimum API level of 21. Clone the repository. You will need an API key from [Open Weather](https://openweathermap.org/) to request data. If you don’t already have an account, you will need to create one in order to request an API Key. Also, you will need an API key, APP ID and an [Index](https://www.algolia.com/doc/faq/basics/what-is-an-index/) from [Algolia](https://www.algolia.com/doc/) to be able to implement the search functionality in the application.
-In your project's root directory, create a file `apikey.properties` and include the following lines:
+Instant Weather requires a minimum API level of 21. Clone the repository. You will need an API key i.e. `API_KEY` from [Open Weather](https://openweathermap.org/) to request data. If you don’t already have an account, you will need to create one in order to request an API Key. Also, you will need to create an app on [Algolia](https://www.algolia.com/doc/). 
 
+Generate a search only API key i.e. `ALGOLIA_API_KEY`, the APP ID i.e. `ALGOLIA_APP_ID` for the app you created and then create an [Index](https://www.algolia.com/doc/faq/basics/what-is-an-index/) under that app, you will need the index name i.e. `ALGOLIA_INDEX_NAME` to setup the search functionality in this application. You can populate the index with records from [here](https://drive.google.com/file/d/1o-btuAm1bxAwKzd41DP8-1mToTc1QQz-/view?usp=sharing). 
+
+Each record follows this structure:
+
+````JSON
+{
+    "objectID": "ffe74e4cdddbc_dashboard_generated_id",
+    "country": "Zimbabwe",
+    "geonameid": 1085510,
+    "name": "Epworth",
+    "subcountry": "Harare"
+}
+  
 ````
+
+In your project's root directory, inside the `local.properties` file (create one if unavailable) include the following lines:
+
+````properties
 API_KEY = "YOUR_API_KEY"
 ALGOLIA_API_KEY = "YOUR_API_KEY"
 ALGOLIA_APP_ID = "YOUR_APP_ID"
+ALGOLIA_INDEX_NAME = "YOUR_INDEX_NAME"
+
 ````
 ## Contribution
-All contributions are welcome. If you are interested in seeing a particular feature implemented in this app, please open a new issue so after which you can make a PR!
+All contributions are welcome. If you are interested in seeing a particular feature implemented in this app, please open a new issue after which you can make a PR!
 
 ## LICENSE
 ```
