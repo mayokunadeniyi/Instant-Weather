@@ -1,4 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -13,10 +15,28 @@ val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
 val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
 val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 
 android {
     compileSdkVersion(Config.compileSdkVersion)
     buildToolsVersion(Config.buildTools)
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+            storePassword = keystoreProperties["storePassword"].toString()
+        }
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+            storePassword = keystoreProperties["storePassword"].toString()
+        }
+    }
     defaultConfig {
         applicationId(Config.applicationId)
         minSdkVersion(Config.minSdkVersion)
@@ -44,6 +64,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
+        }
+
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
         }
     }
 

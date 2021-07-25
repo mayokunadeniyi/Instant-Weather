@@ -98,6 +98,9 @@ lint/tmp/
 gen-external-apklibs
 output.json
 
+keystore.properties
+Instant-Weather-key
+
 # Replacement of .externalNativeBuild directories introduced
 # with Android Studio 3.5.
 
