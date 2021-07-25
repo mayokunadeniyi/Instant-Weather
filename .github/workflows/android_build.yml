@@ -19,7 +19,7 @@ jobs:
           echo "API_KEY=$API_KEY" >> local.properties
           echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> local.properties
           echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> local.properties
-          echo "ALGOLIA_INDEX_NAME=prod_LOCATIONS_V2" >> local.properties
+          echo "ALGOLIA_INDEX_NAME="prod_LOCATIONS_V2"" >> local.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -50,7 +50,7 @@ jobs:
           echo "API_KEY=$API_KEY" >> local.properties
           echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> local.properties
           echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> local.properties
-          echo "ALGOLIA_INDEX_NAME=prod_LOCATIONS_V2" >> local.properties
+          echo "ALGOLIA_INDEX_NAME="prod_LOCATIONS_V2"" >> local.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
