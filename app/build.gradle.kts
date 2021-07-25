@@ -11,10 +11,6 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
-val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
-val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
-
 android {
     compileSdkVersion(Config.compileSdkVersion)
     buildToolsVersion(Config.buildTools)
@@ -47,9 +43,15 @@ android {
         versionName(Config.versionName)
         testInstrumentationRunner(Config.testInstrumentationRunner)
 
+        val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
+        val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
+        val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
+        val ALGOLIA_INDEX_NAME: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_INDEX_NAME")
+
         buildConfigField("String", "API_KEY", API_KEY)
         buildConfigField("String", "ALGOLIA_API_KEY", ALGOLIA_API_KEY)
         buildConfigField("String", "ALGOLIA_APP_ID", ALGOLIA_APP_ID)
+        buildConfigField("String", "ALGOLIA_INDEX_NAME", ALGOLIA_INDEX_NAME)
         buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/\"")
 
         kapt {

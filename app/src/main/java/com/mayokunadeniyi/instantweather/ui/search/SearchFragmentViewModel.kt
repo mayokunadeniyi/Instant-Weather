@@ -19,7 +19,6 @@ import com.mayokunadeniyi.instantweather.BuildConfig
 import com.mayokunadeniyi.instantweather.data.model.SearchResult
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
-import com.mayokunadeniyi.instantweather.utils.ALGOLIA_INDEX_NAME
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
@@ -35,11 +34,12 @@ class SearchFragmentViewModel @Inject constructor(private val repository: Weathe
 
     private val applicationID = BuildConfig.ALGOLIA_APP_ID
     private val algoliaAPIKey = BuildConfig.ALGOLIA_API_KEY
+    private val algoliaIndexName = BuildConfig.ALGOLIA_INDEX_NAME
     private val client = ClientSearch(
         ApplicationID(applicationID),
         APIKey(algoliaAPIKey)
     )
-    private val index = client.initIndex(IndexName(ALGOLIA_INDEX_NAME))
+    private val index = client.initIndex(IndexName(algoliaIndexName))
     private val searcher = SearcherSingleIndex(index)
 
     private val dataSourceFactory = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
