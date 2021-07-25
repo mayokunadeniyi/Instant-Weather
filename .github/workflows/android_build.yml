@@ -9,20 +9,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Create LOCAL.PROPERTIES File
+      - name: Create Properties File
         env:
           API_KEY: ${{ secrets.APIKEY }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
         run: |
-          touch local.properties keystore.properties
+          touch local.properties
           echo "API_KEY=$API_KEY" >> local.properties
           echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> local.properties
           echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> local.properties
-          echo "storePassword=storePassword" >> keystore.properties
-          echo "keyPassword=keyPassword" >> keystore.properties
-          echo "keyAlias=keyAlias" >> keystore.properties
-          echo "storeFile=storeFile" >> keystore.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -43,20 +39,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create LOCAL.PROPERTIES File
+      - name: Create Properties File
         env:
           API_KEY: ${{ secrets.APIKEY }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
         run: |
-          touch local.properties keystore.properties
+          touch local.properties
           echo "API_KEY=$API_KEY" >> local.properties
           echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> local.properties
           echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> local.properties
-          echo "storePassword=storePassword" >> keystore.properties
-          echo "keyPassword=keyPassword" >> keystore.properties
-          echo "keyAlias=keyAlias" >> keystore.properties
-          echo "storeFile=storeFile" >> keystore.properties
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1

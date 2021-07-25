@@ -1,6 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -15,26 +15,27 @@ val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
 val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
 val ALGOLIA_APP_ID: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_APP_ID")
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
-
 android {
     compileSdkVersion(Config.compileSdkVersion)
     buildToolsVersion(Config.buildTools)
-    signingConfigs {
-        getByName("debug") {
-            keyAlias = keystoreProperties["keyAlias"].toString()
-            keyPassword = keystoreProperties["keyPassword"].toString()
-            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
-            storePassword = keystoreProperties["storePassword"].toString()
-        }
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"].toString()
-            keyPassword = keystoreProperties["keyPassword"].toString()
-            storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
-            storePassword = keystoreProperties["storePassword"].toString()
+    if (project.hasProperty("keystore.properties")) {
+        val keystorePropertiesFile = rootProject.file("keystore.properties")
+        val keystoreProperties = Properties()
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+        signingConfigs {
+            getByName("debug") {
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+                storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"].toString()
+            }
+            create("release") {
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+                storeFile = file(rootDir.absolutePath + keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"].toString()
+            }
         }
     }
 
@@ -56,7 +57,6 @@ android {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
         }
-
     }
     buildTypes {
         getByName("release") {
@@ -65,17 +65,19 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            if (project.hasProperty("keystore.properties")) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isDebuggable = false
         }
 
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
+            if (project.hasProperty("keystore.properties")) {
+                signingConfig = signingConfigs.getByName("debug")
+            }
             isDebuggable = true
         }
     }
-
-
 
     android {
         sourceSets {
@@ -121,7 +123,6 @@ android {
     }
 }
 
-
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(Kotlin.stdlib)
@@ -130,77 +131,76 @@ dependencies {
     implementation(View.constraintLayout)
     implementation(AndroidX.legacySupport)
 
-    //Material Design
+    // Material Design
     implementation(View.material)
 
-    //Room
+    // Room
     implementation(Database.roomRuntime)
     kapt(Database.roomCompiler)
     implementation(Database.roomKtx)
 
-    //Kotlin Coroutines
+    // Kotlin Coroutines
     implementation(Kotlin.coroutinesAndroid)
 
-    //Navigation Components
+    // Navigation Components
     implementation(Navigation.navigationFragment)
     implementation(Navigation.navigationUi)
 
-    //Retrofit
+    // Retrofit
     implementation(Network.retrofit)
     implementation(Network.gsonConverter)
     implementation(Network.gson)
 
-    //Preferences
+    // Preferences
     implementation(AndroidX.preferences)
 
-    //Timber
+    // Timber
     implementation(Utils.timber)
 
-    //Weather Image
+    // Weather Image
     implementation(Utils.weatherImage)
 
-    //CalenderView
+    // CalenderView
     implementation(Utils.calendarView)
 
-    //Google Play Services
+    // Google Play Services
     implementation(Google.googlePlayGms)
 
-    //VegaLayoutManager
+    // VegaLayoutManager
     implementation(Utils.vegaLayoutManager)
 
-
-    //Lifecycle KTX
+    // Lifecycle KTX
     implementation(AndroidX.viewModel)
     implementation(AndroidX.liveData)
     implementation(AndroidX.lifeCycleCommon)
 
-    //Algolia Search
+    // Algolia Search
     implementation(Utils.algoliaSearch)
 
-    //Paging Library
+    // Paging Library
     implementation(AndroidX.paging)
 
-    //Elastic view
+    // Elastic view
     implementation(Utils.elasticViews)
 
-    //WorkManager
+    // WorkManager
     implementation(AndroidX.workManager)
 
-    //Dagger
+    // Dagger
     implementation(Dagger.dagger)
     kapt(Dagger.daggerCompiler)
     implementation(Dagger.daggerAndroid)
     kapt(Dagger.daggerProcessor)
     implementation(Dagger.daggerAndroidSupport)
 
-    //OKHttp Logging Interceptor
+    // OKHttp Logging Interceptor
     implementation(Network.okhttpInterceptor)
 
-    //Chuck
+    // Chuck
     debugImplementation(Network.chuck)
     releaseImplementation(Network.chuckNoOp)
 
-    //Firebase BoM, Crashlytics, Analytics
+    // Firebase BoM, Crashlytics, Analytics
     implementation(platform(Firebase.firebaseBom))
     implementation(Firebase.crashlytics)
     implementation(Firebase.analytics)
@@ -226,7 +226,7 @@ dependencies {
     androidTestImplementation(AndroidX.testRules)
     androidTestImplementation(Kotlin.coroutineTest)
 
-    //Until the bug at https://issuetracker.google.com/128612536 is fixed
+    // Until the bug at https://issuetracker.google.com/128612536 is fixed
     debugImplementation(AndroidX.fragmentTesting)
     implementation(AndroidTest.idlingResource)
 }

@@ -233,13 +233,13 @@ class HomeFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             GPS_REQUEST_CHECK_SETTINGS -> {
-                when(resultCode) {
+                when (resultCode) {
                     Activity.RESULT_OK -> {
                         isGPSEnabled = true
                         invokeLocationAction()
                     }
 
-                    Activity.RESULT_CANCELED ->{
+                    Activity.RESULT_CANCELED -> {
                         Snackbar.make(
                             binding.root,
                             getString(R.string.enable_gps),

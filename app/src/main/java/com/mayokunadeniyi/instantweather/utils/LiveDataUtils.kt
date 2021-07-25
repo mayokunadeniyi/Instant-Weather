@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
  * Created by Mayokun Adeniyi on 30/03/2020.
  */
 
-
 /**
  * This functions helps in transforming a [MutableLiveData] of type [T]
  * to a [LiveData] of type [T]
