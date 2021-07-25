@@ -37,6 +37,7 @@ android {
             storePassword = keystoreProperties["storePassword"].toString()
         }
     }
+
     defaultConfig {
         applicationId(Config.applicationId)
         minSdkVersion(Config.minSdkVersion)
@@ -105,7 +106,6 @@ android {
             jvmTarget = Config.javaVersion.toString()
         }
     }
-
 
     packagingOptions {
         exclude("META-INF/DEPENDENCIES")
