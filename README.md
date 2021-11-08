@@ -63,8 +63,7 @@ ALGOLIA_INDEX_NAME = "YOUR_INDEX_NAME"
 ## Contribution
 All contributions are welcome. If you are interested in seeing a particular feature implemented in this app, please open a new issue after which you can make a PR!
 
-
-![Alt](https://repobeats.axiom.co/api/embed/7866dbe173cbe795399725a4fcbcf353d8d0d60f.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/84dfd3cd94832805dbcaa3569ec855d19e5c9401.svg "Repobeats analytics image")
 
 ## LICENSE
 ```
