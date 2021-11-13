@@ -102,16 +102,14 @@ object AndroidX : Libraries {
 object Dagger : Libraries {
 
     private object Versions {
-        const val dagger = "2.32"
+        const val hilt = "2.40.1"
     }
 
-    const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
-    const val daggerAndroid = "com.google.dagger:dagger-android:${Versions.dagger}"
-    const val daggerAndroidSupport = "com.google.dagger:dagger-android-support:${Versions.dagger}"
-    const val daggerProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
-    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    const val daggerHilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hilt}"
+    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
 
-    override val components: List<String> = listOf(dagger, daggerAndroid, daggerAndroidSupport)
+    override val components: List<String> = listOf(daggerHilt, hiltCompiler)
 }
 
 object Network : Libraries {
@@ -198,17 +196,15 @@ object Utils : Libraries {
     private object Versions {
         const val timber = "4.7.1"
         const val glide = "4.12.0"
-        const val vega = "1.0.6"
         const val weather = "1.1.0"
         const val calendar = "v1.0.3"
-        const val algolia = "2.3.1"
+        const val algolia = "2.11.1"
         const val elastic = "2.0.7"
     }
 
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
     const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
-    const val vegaLayoutManager = "com.stone.vega.library:VegaLayoutManager:${Versions.vega}"
     const val weatherImage = "com.github.pwittchen:weathericonview:${Versions.weather}"
     const val calendarView = "com.github.shrikanth7698:Collapsible-Calendar-View-Android:${Versions.calendar}"
     const val algoliaSearch = "com.algolia:instantsearch-android:${Versions.algolia}"

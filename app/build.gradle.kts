@@ -1,6 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -9,6 +9,7 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -58,6 +59,7 @@ android {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
+            correctErrorTypes = true
         }
     }
     buildTypes {
@@ -86,6 +88,10 @@ android {
             getByName("test").java.srcDir("src/sharedTest/java")
             getByName("androidTest").java.srcDir("src/sharedTest/java")
         }
+    }
+
+    hilt {
+        enableAggregatingTask = true
     }
 
     buildFeatures {
@@ -168,16 +174,14 @@ dependencies {
     // Google Play Services
     implementation(Google.googlePlayGms)
 
-    // VegaLayoutManager
-    implementation(Utils.vegaLayoutManager)
+
+    // Algolia Search
+    implementation(Utils.algoliaSearch)
 
     // Lifecycle KTX
     implementation(AndroidX.viewModel)
     implementation(AndroidX.liveData)
     implementation(AndroidX.lifeCycleCommon)
-
-    // Algolia Search
-    implementation(Utils.algoliaSearch)
 
     // Paging Library
     implementation(AndroidX.paging)
@@ -188,12 +192,9 @@ dependencies {
     // WorkManager
     implementation(AndroidX.workManager)
 
-    // Dagger
-    implementation(Dagger.dagger)
-    kapt(Dagger.daggerCompiler)
-    implementation(Dagger.daggerAndroid)
-    kapt(Dagger.daggerProcessor)
-    implementation(Dagger.daggerAndroidSupport)
+    // Dagger-Hilt
+    implementation(Dagger.daggerHilt)
+    kapt(Dagger.hiltCompiler)
 
     // OKHttp Logging Interceptor
     implementation(Network.okhttpInterceptor)

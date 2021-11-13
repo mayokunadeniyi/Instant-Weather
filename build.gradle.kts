@@ -3,13 +3,14 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath(Plugins.gradleAndroid)
         classpath(Plugins.kotlinGradlePlugin)
         classpath(Plugins.safeArgs)
         classpath(Plugins.crashlyticsPlugin)
+        classpath(Dagger.hiltGradlePlugin)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -22,7 +23,7 @@ plugins {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven(url = "https://jitpack.io")
     }
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
