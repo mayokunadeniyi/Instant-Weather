@@ -8,9 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 
-/**
- * A simple [PreferenceFragmentCompat] subclass.
- */
+
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var sharedPreferenceHelper: SharedPreferenceHelper
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

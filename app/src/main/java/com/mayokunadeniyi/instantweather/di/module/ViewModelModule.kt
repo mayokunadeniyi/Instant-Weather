@@ -9,12 +9,15 @@ import com.mayokunadeniyi.instantweather.ui.home.HomeFragmentViewModel
 import com.mayokunadeniyi.instantweather.ui.search.SearchFragmentViewModel
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
 
 /**
  * Created by Mayokun Adeniyi on 02/02/2021.
  */
 
+@InstallIn(SingletonComponent::class)
 @Module
 abstract class ViewModelModule {
 

@@ -8,15 +8,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.ActivityMainBinding
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -35,7 +30,4 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onSupportNavigateUp() = findNavController(R.id.mainNavFragment).navigateUp()
 
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
-    }
 }
