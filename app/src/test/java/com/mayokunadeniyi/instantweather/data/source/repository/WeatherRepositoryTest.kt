@@ -1,34 +1,22 @@
 package com.mayokunadeniyi.instantweather.data.source.repository
 
-import com.mayokunadeniyi.instantweather.MainCoroutineRule
+import com.mayokunadeniyi.instantweather.*
 import com.mayokunadeniyi.instantweather.data.model.Weather
 import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.local.WeatherLocalDataSource
 import com.mayokunadeniyi.instantweather.data.source.remote.WeatherRemoteDataSource
-import com.mayokunadeniyi.instantweather.dummyLocation
-import com.mayokunadeniyi.instantweather.fakeDbWeatherEntity
-import com.mayokunadeniyi.instantweather.fakeDbWeatherForecast
-import com.mayokunadeniyi.instantweather.fakeNetworkWeather
-import com.mayokunadeniyi.instantweather.fakeNetworkWeatherForecast
-import com.mayokunadeniyi.instantweather.invalidDataException
-import com.mayokunadeniyi.instantweather.queryLocation
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.notNullValue
-import org.hamcrest.CoreMatchers.nullValue
+import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 /**

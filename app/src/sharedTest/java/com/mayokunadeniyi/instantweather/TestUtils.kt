@@ -1,13 +1,6 @@
 package com.mayokunadeniyi.instantweather
 
-import com.mayokunadeniyi.instantweather.data.model.LocationModel
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeather
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherCondition
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherDescription
-import com.mayokunadeniyi.instantweather.data.model.NetworkWeatherForecast
-import com.mayokunadeniyi.instantweather.data.model.Weather
-import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
-import com.mayokunadeniyi.instantweather.data.model.Wind
+import com.mayokunadeniyi.instantweather.data.model.*
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeather
 import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForecast
 
