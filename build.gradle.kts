@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(Plugins.gradleAndroid)
         classpath(Plugins.kotlinGradlePlugin)
+        classpath(Plugins.gradleAndroid)
         classpath(Plugins.safeArgs)
         classpath(Plugins.crashlyticsPlugin)
         classpath(Dagger.hiltGradlePlugin)

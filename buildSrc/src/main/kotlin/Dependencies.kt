@@ -10,7 +10,7 @@ object Config {
     const val targetSdkVersion = 30
     const val versionName = "1.0"
     const val versionCode = 5
-    val javaVersion = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_11
     const val buildTools = "30.0.3"
     const val isMultiDexEnabled = true
     const val applicationId = "com.mayokunadeniyi.instantweather"
@@ -25,7 +25,7 @@ interface Libraries {
 
 object Plugins {
     object Version {
-        const val gradleAndroidVersion = "4.2.2"
+        const val gradleAndroidVersion = "7.0.2"
         const val googleServices = "4.3.5"
     }
 
@@ -253,8 +253,8 @@ object AndroidTest : Libraries {
 object Firebase {
 
     object Versions {
-        const val firebase = "26.5.0"
-        const val crashlytics_plugin = "2.5.0"
+        const val firebase = "29.0.0"
+        const val crashlytics_plugin = "2.8.0"
     }
 
     // When using the BoM, you don't specify versions in Firebase library dependencies
