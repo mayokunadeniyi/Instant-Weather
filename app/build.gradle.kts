@@ -1,6 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -37,12 +37,12 @@ android {
     }
 
     defaultConfig {
-        applicationId(Config.applicationId)
+        applicationId = Config.applicationId
         minSdkVersion(Config.minSdkVersion)
         targetSdkVersion(Config.targetSdkVersion)
-        versionCode(Config.versionCode)
-        versionName(Config.versionName)
-        testInstrumentationRunner(Config.testInstrumentationRunner)
+        versionCode = Config.versionCode
+        versionName = Config.versionName
+        testInstrumentationRunner = Config.testInstrumentationRunner
 
         val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
         val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
@@ -173,7 +173,6 @@ dependencies {
 
     // Google Play Services
     implementation(Google.googlePlayGms)
-
 
     // Algolia Search
     implementation(Utils.algoliaSearch)

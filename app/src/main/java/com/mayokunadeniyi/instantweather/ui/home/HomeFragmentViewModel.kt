@@ -13,7 +13,7 @@ import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 /**

@@ -22,7 +22,6 @@ class InstantWeatherApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var weatherRepository: WeatherRepository
 
-
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {

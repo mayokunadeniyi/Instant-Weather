@@ -24,7 +24,6 @@ import com.mayokunadeniyi.instantweather.utils.BaseBottomSheetDialog
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class SearchFragment : BaseFragment(), SearchResultAdapter.OnItemClickedListener {
     private lateinit var binding: FragmentSearchBinding

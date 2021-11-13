@@ -15,9 +15,8 @@ import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class ForecastFragment : BaseFragment() {

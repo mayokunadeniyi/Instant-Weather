@@ -11,17 +11,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentHomeBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
-import com.mayokunadeniyi.instantweather.utils.*
+import com.mayokunadeniyi.instantweather.utils.GPS_REQUEST_CHECK_SETTINGS
+import com.mayokunadeniyi.instantweather.utils.GpsUtil
+import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
+import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
+import com.mayokunadeniyi.instantweather.utils.observeOnce
 import com.mayokunadeniyi.instantweather.worker.UpdateWeatherWorker
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
