@@ -3,7 +3,7 @@
 
 ![Android Build](https://github.com/mayokunthefirst/Instant-Weather/workflows/Android%20Build/badge.svg) ![Android Weekly](https://androidweekly.net/issues/issue-413/badge) [![BCH compliance](https://bettercodehub.com/edge/badge/mayokunthefirst/Instant-Weather?branch=master)](https://bettercodehub.com/) ![My twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fmayokunadeniyi) ![Shield](https://img.shields.io/badge/contributions-welcome-brightgreen)
 
-An Android weather application implemented using the MVVM pattern, Retrofit2, Dagger2, LiveData, ViewModel, Coroutines, Room, Navigation Components, Data Binding and some other libraries from the [Android Jetpack](https://developer.android.com/jetpack) . Instant Weather fetches data from the [OpenWeatherMap API](https://openweathermap.org/api) to provide real time weather information. It also makes use of the [Algolia Instant Search](https://www.algolia.com/products/instantsearch/) service which enables you search for weather conditions of various locations.
+An Android weather application implemented using the MVVM pattern, Retrofit2, Dagger Hilt, LiveData, ViewModel, Coroutines, Room, Navigation Components, Data Binding and some other libraries from the [Android Jetpack](https://developer.android.com/jetpack) . Instant Weather fetches data from the [OpenWeatherMap API](https://openweathermap.org/api) to provide real time weather information. It also makes use of the [Algolia Instant Search](https://www.algolia.com/products/instantsearch/) service which enables you search for weather conditions of various locations.
 
 <a href='https://play.google.com/store/apps/details?id=com.mayokunadeniyi.instantweather&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="280"/></a>
 
@@ -18,7 +18,7 @@ The architecture of this application relies and complies with the following poin
 ## Technologies used:
 
 * [Retrofit](https://square.github.io/retrofit/) a REST Client for Android which makes it relatively easy to retrieve and upload JSON (or other structured data) via a REST based webservice.
-* [Dagger2](https://dagger.dev/) for dependency injection.
+* [Dagger Hilt](https://dagger.dev/hilt/) for dependency injection.
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) to store and manage UI-related data in a lifecycle conscious way.
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) to handle data in a lifecycle-aware fashion.
 * [Navigation Component](https://developer.android.com/guide/navigation) to handle all navigations and also passing of data between destinations.
