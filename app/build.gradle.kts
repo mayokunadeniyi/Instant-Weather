@@ -9,11 +9,12 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(Config.compileSdkVersion)
-    buildToolsVersion(Config.buildTools)
+    compileSdk = Config.compileSdkVersion
+    buildToolsVersion = Config.buildTools
     if (project.hasProperty("keystore.properties")) {
         val keystorePropertiesFile = rootProject.file("keystore.properties")
         val keystoreProperties = Properties()
@@ -36,12 +37,12 @@ android {
     }
 
     defaultConfig {
-        applicationId(Config.applicationId)
-        minSdkVersion(Config.minSdkVersion)
-        targetSdkVersion(Config.targetSdkVersion)
-        versionCode(Config.versionCode)
-        versionName(Config.versionName)
-        testInstrumentationRunner(Config.testInstrumentationRunner)
+        applicationId = Config.applicationId
+        minSdk = Config.minSdkVersion
+        targetSdk = Config.targetSdkVersion
+        versionCode = Config.versionCode
+        versionName = Config.versionName
+        testInstrumentationRunner = Config.testInstrumentationRunner
 
         val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
         val ALGOLIA_API_KEY: String = gradleLocalProperties(rootDir).getProperty("ALGOLIA_API_KEY")
@@ -58,6 +59,7 @@ android {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
+            correctErrorTypes = true
         }
     }
     buildTypes {
@@ -88,6 +90,10 @@ android {
         }
     }
 
+    hilt {
+        enableAggregatingTask = true
+    }
+
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -112,16 +118,10 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/LGPL2.1")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
+        resources.excludes.add("**/attach_hotspot_windows.dll")
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
@@ -168,16 +168,13 @@ dependencies {
     // Google Play Services
     implementation(Google.googlePlayGms)
 
-    // VegaLayoutManager
-    implementation(Utils.vegaLayoutManager)
+    // Algolia Search
+    implementation(Utils.algoliaSearch)
 
     // Lifecycle KTX
     implementation(AndroidX.viewModel)
     implementation(AndroidX.liveData)
     implementation(AndroidX.lifeCycleCommon)
-
-    // Algolia Search
-    implementation(Utils.algoliaSearch)
 
     // Paging Library
     implementation(AndroidX.paging)
@@ -188,12 +185,9 @@ dependencies {
     // WorkManager
     implementation(AndroidX.workManager)
 
-    // Dagger
-    implementation(Dagger.dagger)
-    kapt(Dagger.daggerCompiler)
-    implementation(Dagger.daggerAndroid)
-    kapt(Dagger.daggerProcessor)
-    implementation(Dagger.daggerAndroidSupport)
+    // Dagger-Hilt
+    implementation(Dagger.daggerHilt)
+    kapt(Dagger.hiltCompiler)
 
     // OKHttp Logging Interceptor
     implementation(Network.okhttpInterceptor)

@@ -6,12 +6,15 @@ import com.mayokunadeniyi.instantweather.data.source.local.WeatherDatabase
 import com.mayokunadeniyi.instantweather.data.source.local.dao.WeatherDao
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
  * Created by Mayokun Adeniyi on 02/02/2021.
  */
 
+@InstallIn(SingletonComponent::class)
 @Module
 class DatabaseModule {
 

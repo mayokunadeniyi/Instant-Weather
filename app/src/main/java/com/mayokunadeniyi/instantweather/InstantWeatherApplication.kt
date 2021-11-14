@@ -6,32 +6,27 @@ import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.DelegatingWorkerFactory
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
-import com.mayokunadeniyi.instantweather.di.AppInjector
 import com.mayokunadeniyi.instantweather.utils.ThemeManager
 import com.mayokunadeniyi.instantweather.worker.MyWorkerFactory
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Created by Mayokun Adeniyi on 2020-01-25.
  */
-class InstantWeatherApplication : Application(), Configuration.Provider, HasAndroidInjector {
+
+@HiltAndroidApp
+class InstantWeatherApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var weatherRepository: WeatherRepository
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        AppInjector.init(this)
         initTheme()
     }
 
@@ -53,9 +48,5 @@ class InstantWeatherApplication : Application(), Configuration.Provider, HasAndr
             .setMinimumLoggingLevel(Log.INFO)
             .setWorkerFactory(myWorkerFactory)
             .build()
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
     }
 }

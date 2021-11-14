@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -23,10 +22,9 @@ import com.mayokunadeniyi.instantweather.databinding.FragmentSearchDetailBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
 import com.mayokunadeniyi.instantweather.utils.BaseBottomSheetDialog
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass.
- */
+@AndroidEntryPoint
 class SearchFragment : BaseFragment(), SearchResultAdapter.OnItemClickedListener {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var searchDetailBinding: FragmentSearchDetailBinding

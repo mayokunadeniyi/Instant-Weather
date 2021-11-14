@@ -5,6 +5,8 @@ import com.mayokunadeniyi.instantweather.di.scope.IoDispatcher
 import com.mayokunadeniyi.instantweather.di.scope.MainDispatcher
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -12,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
  * Created by Mayokun Adeniyi on 02/02/2021.
  */
 
+@InstallIn(SingletonComponent::class)
 @Module
 object DispatcherModule {
 

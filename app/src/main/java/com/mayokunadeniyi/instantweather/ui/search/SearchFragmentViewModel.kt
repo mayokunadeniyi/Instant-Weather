@@ -22,6 +22,7 @@ import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepositor
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.jsonPrimitive
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,9 +45,9 @@ class SearchFragmentViewModel @Inject constructor(private val repository: Weathe
 
     private val dataSourceFactory = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
         SearchResult(
-            name = hit.json.getPrimitive("name").content,
-            subcountry = hit.json.getPrimitive("subcountry").content,
-            country = hit.json.getPrimitive("country").content
+            name = hit["name"]?.jsonPrimitive?.content ?: "",
+            subcountry = hit["subcountry"]?.jsonPrimitive?.content ?: "",
+            country = hit["country"]?.jsonPrimitive?.content ?: ""
         )
     }
 

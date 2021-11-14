@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
@@ -14,13 +13,12 @@ import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.Fore
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- */
+@AndroidEntryPoint
 class ForecastFragment : BaseFragment() {
     private lateinit var binding: FragmentForecastBinding
 

@@ -10,6 +10,8 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,6 +24,7 @@ import javax.inject.Singleton
  * Created by Mayokun Adeniyi on 1/18/21.
  */
 
+@InstallIn(SingletonComponent::class)
 @Module
 class AppModule {
 
