@@ -5,11 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mayokunadeniyi.instantweather.data.model.WeatherForecast
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.di.scope.DefaultDispatcher
 import com.mayokunadeniyi.instantweather.utils.Result
 import com.mayokunadeniyi.instantweather.utils.asLiveData
 import com.mayokunadeniyi.instantweather.utils.convertKelvinToCelsius
 import com.mayokunadeniyi.instantweather.utils.formatDate
+import com.shrikanthravi.collapsiblecalendarview.data.Day
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -17,7 +22,8 @@ import javax.inject.Inject
  */
 
 class ForecastFragmentViewModel @Inject constructor(
-    private val repository: WeatherRepository
+    private val repository: WeatherRepository,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _forecast = MutableLiveData<List<WeatherForecast>?>()
@@ -28,6 +34,9 @@ class ForecastFragmentViewModel @Inject constructor(
 
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
+
+    private val _filteredForecast = MutableLiveData<List<WeatherForecast>>()
+    val filteredForecast = _filteredForecast.asLiveData()
 
     fun getWeatherForecast(cityId: Int?) {
         _isLoading.value = true
@@ -76,6 +85,29 @@ class ForecastFragmentViewModel @Inject constructor(
                 }
 
                 is Result.Loading -> _isLoading.postValue(true)
+            }
+        }
+    }
+
+    fun updateWeatherForecast(selectedDay: Day, list: List<WeatherForecast>) {
+        viewModelScope.launch(defaultDispatcher) {
+            selectedDay.let {
+                val checkerDay = it.day
+                val checkerMonth = it.month
+                val checkerYear = it.year
+
+                val filteredList = list.filter { weatherForecast ->
+                    val format = SimpleDateFormat("d MMM y, h:mma", Locale.US)
+                    val formattedDate = format.parse(weatherForecast.date)
+                    val weatherForecastDay = formattedDate?.date
+                    val weatherForecastMonth = formattedDate?.month
+                    val weatherForecastYear = formattedDate?.year
+                    // This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
+                    weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
+                        1900
+                    ) == checkerYear
+                }
+                _filteredForecast.postValue(filteredList)
             }
         }
     }
