@@ -1,0 +1,45 @@
+name: Generate APK
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+ apk:
+  name: Generate APK
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Create Properties File
+      env:
+        API_KEY: ${{ secrets.APIKEY }}
+        ALGOLIA_API_KEY: ${{ secrets.ALGOLIAAPIKEY }}
+        ALGOLIA_APP_ID: ${{ secrets.ALGOLIAAPPID }}
+        ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+      run: |
+        touch local.properties
+        echo "API_KEY=$API_KEY" >> local.properties
+        echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >> local.properties
+        echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >> local.properties
+        echo "ALGOLIA_INDEX_NAME=$ALGOLIA_INDEX_NAME" >> local.properties
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: temurin
+        java-version: 11
+        cache: gradle
+    - name: Build debug APK
+      run: bash ./gradlew assembleDebug --stacktrace
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app
+        path: app/build/outputs/apk/debug/app-debug.apk

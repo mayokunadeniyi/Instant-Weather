@@ -1,8 +1,12 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.mayokunadeniyi.instantweather.*
+import com.mayokunadeniyi.instantweather.MainCoroutineRule
+import com.mayokunadeniyi.instantweather.cityId
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
+import com.mayokunadeniyi.instantweather.fakeWeatherForecast
+import com.mayokunadeniyi.instantweather.getOrAwaitValue
+import com.mayokunadeniyi.instantweather.invalidDataException
 import com.mayokunadeniyi.instantweather.utils.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -14,7 +18,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 /**

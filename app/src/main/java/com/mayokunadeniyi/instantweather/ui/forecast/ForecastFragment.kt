@@ -73,7 +73,6 @@ class ForecastFragment : BaseFragment(), ForecastOnClickListener {
                 weatherForecastAdapter.submitList(it)
                 binding.emptyListText.isVisible = it.isEmpty()
             }
-
         }
 
         binding.forecastSwipeRefresh.setOnRefreshListener {
