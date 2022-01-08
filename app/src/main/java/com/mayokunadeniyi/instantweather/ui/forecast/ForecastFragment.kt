@@ -9,22 +9,21 @@ import androidx.fragment.app.viewModels
 import com.mayokunadeniyi.instantweather.R
 import com.mayokunadeniyi.instantweather.databinding.FragmentForecastBinding
 import com.mayokunadeniyi.instantweather.ui.BaseFragment
-import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnclickListener
+import com.mayokunadeniyi.instantweather.ui.forecast.WeatherForecastAdapter.ForecastOnClickListener
 import com.mayokunadeniyi.instantweather.utils.SharedPreferenceHelper
 import com.mayokunadeniyi.instantweather.utils.convertCelsiusToFahrenheit
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.Locale
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ForecastFragment : BaseFragment() {
+class ForecastFragment : BaseFragment(), ForecastOnClickListener {
     private lateinit var binding: FragmentForecastBinding
 
     private val viewModel by viewModels<ForecastFragmentViewModel> { viewModelFactoryProvider }
 
-    private lateinit var weatherForecastAdapter: WeatherForecastAdapter
+    private val weatherForecastAdapter by lazy { WeatherForecastAdapter(this) }
 
     @Inject
     lateinit var prefs: SharedPreferenceHelper
@@ -40,7 +39,6 @@ class ForecastFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weatherForecastAdapter = WeatherForecastAdapter(ForecastOnclickListener())
 
         setupCalendar()
         binding.forecastRecyclerview.adapter = weatherForecastAdapter
@@ -53,7 +51,7 @@ class ForecastFragment : BaseFragment() {
             forecast.observe(viewLifecycleOwner) { weatherForecast ->
                 weatherForecast?.let { list ->
                     weatherForecast.forEach {
-                        if (prefs.getSelectedTemperatureUnit() == activity?.resources?.getString(R.string.temp_unit_fahrenheit))
+                        if (prefs.getSelectedTemperatureUnit() == requireActivity().resources.getString(R.string.temp_unit_fahrenheit))
                             it.networkWeatherCondition.temp = convertCelsiusToFahrenheit(it.networkWeatherCondition.temp)
                     }
                     weatherForecastAdapter.submitList(list)
@@ -70,6 +68,12 @@ class ForecastFragment : BaseFragment() {
             isLoading.observe(viewLifecycleOwner) { state ->
                 binding.forecastProgressBar.isVisible = state
             }
+
+            filteredForecast.observe(viewLifecycleOwner) {
+                weatherForecastAdapter.submitList(it)
+                binding.emptyListText.isVisible = it.isEmpty()
+            }
+
         }
 
         binding.forecastSwipeRefresh.setOnRefreshListener {
@@ -97,27 +101,13 @@ class ForecastFragment : BaseFragment() {
             }
 
             override fun onDaySelect() {
-                val selectedDay = binding.calendarView.selectedDay
-                selectedDay?.let {
-                    val checkerDay = it.day
-                    val checkerMonth = it.month
-                    val checkerYear = it.year
-
+                binding.emptyListText.visibility = View.GONE
+                runCatching {
+                    val selectedDay = binding.calendarView.selectedDay
                     val list = viewModel.forecast.value
-                    val filteredList = list?.filter { weatherForecast ->
-                        val format = SimpleDateFormat("d MMM y, h:mma", Locale.US)
-                        val formattedDate = format.parse(weatherForecast.date)
-                        val weatherForecastDay = formattedDate?.date
-                        val weatherForecastMonth = formattedDate?.month
-                        val weatherForecastYear = formattedDate?.year
-                        // This checks if the selected day, month and year are equal. The year requires an addition of 1900 to get the correct year.
-                        weatherForecastDay == checkerDay && weatherForecastMonth == checkerMonth && weatherForecastYear?.plus(
-                            1900
-                        ) == checkerYear
-                    }
-                    weatherForecastAdapter.submitList(filteredList)
-                    weatherForecastAdapter.currentList
-                    binding.emptyListText.isVisible = filteredList!!.isEmpty()
+                    viewModel.updateWeatherForecast(requireNotNull(selectedDay), requireNotNull(list))
+                }.onFailure {
+                    Timber.d(it)
                 }
             }
 
