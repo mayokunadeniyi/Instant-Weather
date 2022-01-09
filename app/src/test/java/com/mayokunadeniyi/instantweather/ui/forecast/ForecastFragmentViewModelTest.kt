@@ -1,13 +1,16 @@
 package com.mayokunadeniyi.instantweather.ui.forecast
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.mayokunadeniyi.instantweather.CoroutineTestRule
 import com.mayokunadeniyi.instantweather.MainCoroutineRule
 import com.mayokunadeniyi.instantweather.cityId
 import com.mayokunadeniyi.instantweather.data.source.repository.WeatherRepository
 import com.mayokunadeniyi.instantweather.fakeWeatherForecast
+import com.mayokunadeniyi.instantweather.fakeWeatherForecastList
 import com.mayokunadeniyi.instantweather.getOrAwaitValue
 import com.mayokunadeniyi.instantweather.invalidDataException
 import com.mayokunadeniyi.instantweather.utils.Result
+import com.shrikanthravi.collapsiblecalendarview.data.Day
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
@@ -47,9 +50,12 @@ class ForecastFragmentViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+    @get:Rule
+    var coroutineTestRule = CoroutineTestRule()
+
     @Before
     fun setUp() {
-        systemUnderTest = ForecastFragmentViewModel(repository)
+        systemUnderTest = ForecastFragmentViewModel(repository,coroutineTestRule.dispatcher)
     }
 
     @Test
@@ -158,11 +164,13 @@ class ForecastFragmentViewModelTest {
             assertThat(systemUnderTest.isLoading.getOrAwaitValue(), `is`(false))
         }
 
-    // region helper methods
 
-    // endregion helper methods
+    @Test
+    fun `assert that updateWeatherForecast returns a correctly filtered list`() = mainCoroutineRule.runBlockingTest {
+        val day = Day(2022,0,9)
 
-    // region helper classes
+        systemUnderTest.updateWeatherForecast(day, fakeWeatherForecastList)
 
-    // endregion helper classes
+        assertThat(systemUnderTest.filteredForecast.getOrAwaitValue().size, `is`(3))
+    }
 }

@@ -97,7 +97,7 @@ class ForecastFragmentViewModel @Inject constructor(
                 val checkerYear = it.year
 
                 val filteredList = list.filter { weatherForecast ->
-                    val format = SimpleDateFormat("d MMM y, h:mma", Locale.US)
+                    val format = SimpleDateFormat("d MMM y, h:mma", Locale.ENGLISH)
                     val formattedDate = format.parse(weatherForecast.date)
                     val weatherForecastDay = formattedDate?.date
                     val weatherForecastMonth = formattedDate?.month

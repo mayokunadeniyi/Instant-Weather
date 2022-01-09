@@ -68,6 +68,23 @@ val fakeWeatherForecast = WeatherForecast(
     NetworkWeatherCondition(22.3, 22.2, 22.2)
 )
 
+fun createNewWeatherForecast(date: String): WeatherForecast {
+    return WeatherForecast(
+        1, date, Wind(22.2, 21),
+        listOf(
+            NetworkWeatherDescription(1L, "Main", "Desc", "Icon")
+        ),
+        NetworkWeatherCondition(22.3, 22.2, 22.2))
+}
+
+
+val fakeWeatherForecastList = listOf(
+    createNewWeatherForecast("3 Jan 2022, 2:00pm"),
+    createNewWeatherForecast("4 Jan 2022, 12:00am"),
+    createNewWeatherForecast("9 Jan 2022, 12:00am"),
+    createNewWeatherForecast("9 Jan 2022, 12:00am"),
+    createNewWeatherForecast("9 Jan 2022, 12:00am"))
+
 val invalidDataException = Exception("Invalid Data")
 const val queryLocation = "Lagos"
 const val cityId = 1234
