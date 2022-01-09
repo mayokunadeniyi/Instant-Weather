@@ -55,7 +55,7 @@ class ForecastFragmentViewModelTest {
 
     @Before
     fun setUp() {
-        systemUnderTest = ForecastFragmentViewModel(repository,coroutineTestRule.dispatcher)
+        systemUnderTest = ForecastFragmentViewModel(repository, coroutineTestRule.dispatcher)
     }
 
     @Test
@@ -164,10 +164,9 @@ class ForecastFragmentViewModelTest {
             assertThat(systemUnderTest.isLoading.getOrAwaitValue(), `is`(false))
         }
 
-
     @Test
     fun `assert that updateWeatherForecast returns a correctly filtered list`() = mainCoroutineRule.runBlockingTest {
-        val day = Day(2022,0,9)
+        val day = Day(2022, 0, 9)
 
         systemUnderTest.updateWeatherForecast(day, fakeWeatherForecastList)
 
