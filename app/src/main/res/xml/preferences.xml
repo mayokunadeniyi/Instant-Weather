@@ -37,4 +37,11 @@
             android:key="unit_key" />
 
     </PreferenceCategory>
+    <Preference
+        android:title="@string/rate_app"
+        android:icon="@drawable/ic_baseline_star_24">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://play.google.com/store/apps/details?id=com.mayokunadeniyi.instantweather"/>
+    </Preference>
 </PreferenceScreen>
