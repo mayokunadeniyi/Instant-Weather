@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         tools:targetApi="m">
         <activity android:name="com.mayokunadeniyi.instantweather.ui.MainActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
