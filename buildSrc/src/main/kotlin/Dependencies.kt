@@ -6,8 +6,8 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val minSdkVersion = 21
-    const val compileSdkVersion = 30
-    const val targetSdkVersion = 30
+    const val compileSdkVersion = 31
+    const val targetSdkVersion = 31
     const val versionName = "1.0"
     const val versionCode = 5
     val javaVersion = JavaVersion.VERSION_11
@@ -43,7 +43,7 @@ object Plugins {
 object Kotlin {
 
     object Versions {
-        const val kotlin = "1.4.21"
+        const val kotlin = "1.6.0"
         const val coroutines = "1.4.2"
     }
 
@@ -66,10 +66,10 @@ object AndroidX : Libraries {
         const val legacy = "1.0.0"
         const val work = "2.5.0"
         const val paging = "2.1.2"
-        const val fragment = "1.3.0-alpha06"
+        const val fragment = "1.4.0"
 
         const val archCoreTesting = "2.1.0"
-        const val coreKtxTest = "1.3.0"
+        const val coreKtxTest = "1.4.0"
         const val testExt = "1.1.2"
         const val testRules = "1.3.0"
     }
@@ -138,7 +138,7 @@ object Network : Libraries {
 object Database : Libraries {
 
     object Versions {
-        const val room = "2.2.6"
+        const val room = "2.4.2"
     }
 
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"

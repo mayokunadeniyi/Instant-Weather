@@ -6,7 +6,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
+    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
