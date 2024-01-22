@@ -13,8 +13,10 @@ plugins {
 }
 
 android {
+
     compileSdk = Config.compileSdkVersion
     buildToolsVersion = Config.buildTools
+
     if (project.hasProperty("keystore.properties")) {
         val keystorePropertiesFile = rootProject.file("keystore.properties")
         val keystoreProperties = Properties()
@@ -37,11 +39,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = Config.applicationId
         minSdk = Config.minSdkVersion
         targetSdk = Config.targetSdkVersion
         versionCode = Config.versionCode
         versionName = Config.versionName
+        namespace = "com.mayokunadeniyi.instantweather"
         testInstrumentationRunner = Config.testInstrumentationRunner
 
         val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
@@ -96,6 +98,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
         viewBinding = true
     }
 

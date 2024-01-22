@@ -96,6 +96,10 @@ class SearchFragmentViewModel @Inject constructor(private val repository: Weathe
                     _isLoading.value = false
                     _dataFetchState.value = false
                 }
+
+                else -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false}
             }
         }
     }

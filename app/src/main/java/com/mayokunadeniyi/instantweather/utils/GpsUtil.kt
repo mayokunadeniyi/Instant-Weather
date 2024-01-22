@@ -28,35 +28,38 @@ class GpsUtil(private val context: Context) {
         builder.setAlwaysShow(true)
     }
 
-    fun turnGPSOn(OnGpsListener: OnGpsListener?) {
+    fun turnGPSOn(onGpsListener: OnGpsListener?) {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            OnGpsListener?.gpsStatus(true)
+            onGpsListener?.gpsStatus(true)
         } else {
-            settingsClient
-                .checkLocationSettings(locationSettingsRequest)
-                .addOnSuccessListener(context as Activity) {
-                    OnGpsListener?.gpsStatus(true)
-                }.addOnFailureListener(context) { exception ->
+            if (locationSettingsRequest != null) {
+                settingsClient
+                    .checkLocationSettings(locationSettingsRequest)
+                    .addOnSuccessListener(context as Activity) {
+                        onGpsListener?.gpsStatus(true)
+                    }.addOnFailureListener(context) { exception ->
 
-                    when ((exception as ApiException).statusCode) {
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                            try {
-                                val resApiException = exception as ResolvableApiException
-                                resApiException.startResolutionForResult(context, GPS_REQUEST_CHECK_SETTINGS)
-                            } catch (sendIntentException: Exception) {
-                                sendIntentException.printStackTrace()
-                                Timber.i("PendingIntent unable to execute request. ")
+                        when ((exception as ApiException).statusCode) {
+                            LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                                try {
+                                    val resApiException = exception as ResolvableApiException
+                                    resApiException.startResolutionForResult(context, GPS_REQUEST_CHECK_SETTINGS)
+                                } catch (sendIntentException: Exception) {
+                                    sendIntentException.printStackTrace()
+                                    Timber.i("PendingIntent unable to execute request. ")
+                                }
+                            }
+
+                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                                val errorMessage =
+                                    "Location settings are inadequate, and cannot be " + "fixed here. Fix in Settings."
+                                Timber.e(errorMessage)
+
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                             }
                         }
-                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                            val errorMessage =
-                                "Location settings are inadequate, and cannot be " + "fixed here. Fix in Settings."
-                            Timber.e(errorMessage)
-
-                            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
-                        }
                     }
-                }
+            }
         }
     }
 
