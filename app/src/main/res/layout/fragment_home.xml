@@ -164,17 +164,17 @@
                         android:id="@+id/imageView12"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toStartOf="@+id/imageView11"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_humidity" />
+                        app:srcCompat="@drawable/ic_humidity"
+                        app:tint="@color/primaryLightColor" />
 
                     <ImageView
                         android:id="@+id/imageView11"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:tint="@color/primaryLightColor"
+                        app:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toStartOf="@+id/imageView10"
                         app:layout_constraintStart_toEndOf="@id/imageView12"
                         app:layout_constraintTop_toTopOf="parent"
@@ -184,7 +184,7 @@
                         android:id="@+id/imageView10"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:tint="@color/primaryLightColor"
+                        app:tint="@color/primaryLightColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/imageView11"
                         app:layout_constraintTop_toTopOf="parent"

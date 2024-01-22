@@ -6,11 +6,11 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val minSdkVersion = 21
-    const val compileSdkVersion = 30
-    const val targetSdkVersion = 30
+    const val compileSdkVersion = 33
+    const val targetSdkVersion = 33
     const val versionName = "1.0"
     const val versionCode = 5
-    val javaVersion = JavaVersion.VERSION_11
+    val javaVersion = JavaVersion.VERSION_17
     const val buildTools = "30.0.3"
     const val isMultiDexEnabled = true
     const val applicationId = "com.mayokunadeniyi.instantweather"
@@ -25,7 +25,7 @@ interface Libraries {
 
 object Plugins {
     object Version {
-        const val gradleAndroidVersion = "7.0.2"
+        const val gradleAndroidVersion = "8.0.2"
         const val googleServices = "4.3.5"
     }
 
@@ -43,8 +43,8 @@ object Plugins {
 object Kotlin {
 
     object Versions {
-        const val kotlin = "1.4.21"
-        const val coroutines = "1.4.2"
+        const val kotlin = "1.8.10"
+        const val coroutines = "1.7.2"
     }
 
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
@@ -59,7 +59,7 @@ object Kotlin {
 
 object AndroidX : Libraries {
     private object Versions {
-        const val androidx_core = "1.3.2"
+        const val androidx_core = "1.5.0"
         const val appCompat = "1.2.0"
         const val lifeCycle = "2.3.0-alpha03"
         const val preferences = "1.1.1"
@@ -102,7 +102,7 @@ object AndroidX : Libraries {
 object Dagger : Libraries {
 
     private object Versions {
-        const val hilt = "2.40.1"
+        const val hilt = "2.48.1"
     }
 
     const val daggerHilt = "com.google.dagger:hilt-android:${Versions.hilt}"
@@ -138,7 +138,7 @@ object Network : Libraries {
 object Database : Libraries {
 
     object Versions {
-        const val room = "2.2.6"
+        const val room = "2.5.1"
     }
 
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
@@ -153,7 +153,7 @@ object Database : Libraries {
 object Navigation : Libraries {
 
     object Versions {
-        const val navigation = "2.3.3"
+        const val navigation = "2.5.0"
     }
 
     const val navigationFragment =

@@ -10,7 +10,6 @@ import com.mayokunadeniyi.instantweather.data.source.local.entity.DBWeatherForec
 /**
  * Created by Mayokun Adeniyi on 2020-01-27.
  */
-
 @Dao
 interface WeatherDao {
 
@@ -18,7 +17,7 @@ interface WeatherDao {
     suspend fun insertWeather(vararg dbWeather: DBWeather)
 
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC LIMIT 1")
-    suspend fun getWeather(): DBWeather
+    suspend fun getWeather(): DBWeather?
 
     @Query("SELECT * FROM weather_table ORDER BY unique_id DESC")
     suspend fun getAllWeather(): List<DBWeather>

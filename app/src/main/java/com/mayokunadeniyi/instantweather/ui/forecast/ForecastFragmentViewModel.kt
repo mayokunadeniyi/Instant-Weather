@@ -53,6 +53,10 @@ class ForecastFragmentViewModel @Inject constructor(
                     }
                 }
                 is Result.Loading -> _isLoading.postValue(true)
+                else -> {
+                    _dataFetchState.value = false
+                    _isLoading.value = false
+                }
             }
         }
     }

@@ -112,7 +112,7 @@
                         android:id="@+id/imageView12"
                         style="@style/weather_item_icons"
                         app:srcCompat="@drawable/ic_humidity"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                         android:id="@+id/imageView11"
                         style="@style/weather_item_icons"
                         app:srcCompat="@drawable/ic_pressure"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
                         android:id="@+id/imageView10"
                         app:srcCompat="@drawable/ic_wind"
                         style="@style/weather_item_icons"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"

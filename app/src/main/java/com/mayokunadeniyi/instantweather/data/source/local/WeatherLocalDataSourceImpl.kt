@@ -17,7 +17,7 @@ class WeatherLocalDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WeatherLocalDataSource {
     override suspend fun getWeather(): DBWeather = withContext(ioDispatcher) {
-        return@withContext weatherDao.getWeather()
+        return@withContext weatherDao.getWeather()!!
     }
 
     override suspend fun saveWeather(weather: DBWeather) = withContext(ioDispatcher) {

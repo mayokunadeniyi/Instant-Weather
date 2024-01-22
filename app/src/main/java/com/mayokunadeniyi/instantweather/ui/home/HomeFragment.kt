@@ -43,7 +43,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GpsUtil(requireContext()).turnGPSOn(object : GpsUtil.OnGpsListener {
+        GpsUtil(requireActivity()).turnGPSOn(object : GpsUtil.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 this@HomeFragment.isGPSEnabled = isGPSEnabled
             }
@@ -138,6 +138,7 @@ class HomeFragment : BaseFragment() {
                         unHideViews()
                         binding.errorText.visibility = View.GONE
                     }
+
                     false -> {
                         hideViews()
                         binding.apply {
@@ -158,6 +159,7 @@ class HomeFragment : BaseFragment() {
                             loadingText.visibility = View.VISIBLE
                         }
                     }
+
                     false -> {
                         binding.apply {
                             progressBar.visibility = View.GONE
@@ -171,20 +173,19 @@ class HomeFragment : BaseFragment() {
 
     private fun initiateRefresh() {
         viewModel.fetchLocationLiveData().observeOnce(
-            viewLifecycleOwner,
-            { location ->
-                if (location != null) {
-                    viewModel.refreshWeather(location)
-                } else {
-                    hideViews()
-                    binding.apply {
-                        errorText.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        loadingText.visibility = View.GONE
-                    }
+            viewLifecycleOwner
+        ) { location ->
+            if (location != null) {
+                viewModel.refreshWeather(location)
+            } else {
+                hideViews()
+                binding.apply {
+                    errorText.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    loadingText.visibility = View.GONE
                 }
             }
-        )
+        }
     }
 
     private fun hideViews() {
@@ -278,11 +279,10 @@ class HomeFragment : BaseFragment() {
 
     private fun setupWorkManager() {
         viewModel.fetchLocationLiveData().observeOnce(
-            this,
-            {
-                prefs.saveLocation(it)
-            }
-        )
+            this
+        ) {
+            prefs.saveLocation(it)
+        }
         val constraint = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
