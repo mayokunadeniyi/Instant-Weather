@@ -43,7 +43,7 @@ android {
         targetSdk = Config.targetSdkVersion
         versionCode = Config.versionCode
         versionName = Config.versionName
-        namespace = "com.mayokunadeniyi.instantweather"
+        namespace = Config.applicationId
         testInstrumentationRunner = Config.testInstrumentationRunner
 
         val API_KEY: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
