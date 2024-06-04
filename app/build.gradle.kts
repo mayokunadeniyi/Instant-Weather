@@ -83,11 +83,9 @@ android {
         }
     }
 
-    android {
-        sourceSets {
-            getByName("test").java.srcDir("src/sharedTest/java")
-            getByName("androidTest").java.srcDir("src/sharedTest/java")
-        }
+    sourceSets {
+        getByName("test").java.srcDir("src/sharedTest/java")
+        getByName("androidTest").java.srcDir("src/sharedTest/java")
     }
 
     hilt {
@@ -107,11 +105,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(Config.javaVersion)
-        targetCompatibility(Config.javaVersion)
+        sourceCompatibility = Config.javaVersion
+        targetCompatibility = Config.javaVersion
     }
 
-    tasks.withType().all {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             jvmTarget = Config.javaVersion.toString()
         }
@@ -162,7 +160,7 @@ dependencies {
     // Weather Image
     implementation(Utils.weatherImage)
 
-    // CalenderView
+    // CalendarView
     implementation(Utils.calendarView)
 
     // Google Play Services
