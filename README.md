@@ -69,7 +69,7 @@ All contributions are welcome. If you are interested in seeing a particular feat
 ```
 MIT License
 
-Copyright (c) 2020 Mayokun Adeniyi
+Copyright (c) 2022 Mayokun Adeniyi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
